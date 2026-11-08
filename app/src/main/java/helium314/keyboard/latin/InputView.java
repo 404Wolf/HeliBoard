@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewKt;
@@ -127,7 +129,7 @@ public final class InputView extends FrameLayout {
         if (strip == null || !strip.isShown())
             return true;
         if (mStripSuggestions != null && mStripSuggestions.isShown()
-                && mStripSuggestions instanceof ViewGroup group && group.getChildCount() > 0)
+                && mStripSuggestions instanceof ViewGroup group && hasStripContent(group))
             return false;
         if (mStripToolbar != null && mStripToolbar.isShown())
             return false;
@@ -138,6 +140,22 @@ public final class InputView extends FrameLayout {
                 return false;
         }
         return true;
+    }
+
+    /** Words with text, or other views such as inline autofill suggestions; empty word slots and dividers don't count. */
+    private static boolean hasStripContent(final ViewGroup suggestions) {
+        for (int i = 0; i < suggestions.getChildCount(); i++) {
+            final View child = suggestions.getChildAt(i);
+            if (child.getVisibility() != View.VISIBLE)
+                continue;
+            if (child instanceof TextView text) {
+                if (text.getText().length() > 0)
+                    return true;
+            } else if (!(child instanceof ImageView)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Rebuilds the clip path for the keyboard frame if the split gap, the strip or the frame changed. */
