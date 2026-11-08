@@ -52,6 +52,12 @@ public class KeyboardParams {
     public int mLeftPadding;
     public int mRightPadding;
 
+    /** Horizontal extent of the empty gap between the halves of a split keyboard, -1 if there is none */
+    public int mSplitGapLeft = -1;
+    public int mSplitGapRight = -1;
+    /** Bottom of the split gap, equal to mOccupiedHeight if the gap goes through all rows */
+    public int mSplitGapBottom = -1;
+
     @Nullable
     public KeyVisualAttributes mKeyVisualAttributes;
 

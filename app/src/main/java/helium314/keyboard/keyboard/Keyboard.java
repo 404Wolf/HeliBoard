@@ -62,6 +62,11 @@ public class Keyboard {
     /** Default gap between rows */
     public final int mVerticalGap;
 
+    /** Empty gap between the halves of a split keyboard (in keyboard coordinates), -1 if there is none */
+    public final int mSplitGapLeft;
+    public final int mSplitGapRight;
+    public final int mSplitGapBottom;
+
     /** Per keyboard key visual parameters */
     public final KeyVisualAttributes mKeyVisualAttributes;
 
@@ -105,6 +110,9 @@ public class Keyboard {
         mKeyVisualAttributes = params.mKeyVisualAttributes;
         mTopPadding = params.mTopPadding;
         mVerticalGap = params.mVerticalGap;
+        mSplitGapLeft = params.mSplitGapLeft;
+        mSplitGapRight = params.mSplitGapRight;
+        mSplitGapBottom = params.mSplitGapBottom;
 
         mSortedKeys = Collections.unmodifiableList(new ArrayList<>(params.mSortedKeys));
         mShiftKeys = Collections.unmodifiableList(params.mShiftKeys);
@@ -131,6 +139,9 @@ public class Keyboard {
         mKeyVisualAttributes = keyboard.mKeyVisualAttributes;
         mTopPadding = keyboard.mTopPadding;
         mVerticalGap = keyboard.mVerticalGap;
+        mSplitGapLeft = keyboard.mSplitGapLeft;
+        mSplitGapRight = keyboard.mSplitGapRight;
+        mSplitGapBottom = keyboard.mSplitGapBottom;
 
         mSortedKeys = keyboard.mSortedKeys;
         mShiftKeys = keyboard.mShiftKeys;

@@ -132,6 +132,7 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
         mParams.mHorizontalGap = (mParams.mRelativeHorizontalGap * mParams.mId.width).toInt()
         var maxWidthBeforeSpacer = 0f
         var maxWidthAfterSpacer = 0f
+        val rowSpacers = ArrayList<KeyParams?>(keysInRows.size)
         for (row in keysInRows) {
             val y = row.first().yPos // all have the same y, so this is fine
             val relativeWidthSum = row.sumOf { it.mWidth } // sum up relative widths
@@ -161,9 +162,11 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
                     spacer.mWidth = spacerWidth
                     row.add(insertIndex, spaceRight)
                     row.add(insertIndex, spacer)
+                    rowSpacers.add(spacer)
                 } else {
                     // otherwise increase space width, so other keys are resized properly
                     spaceLeft.mWidth += spacerWidth
+                    rowSpacers.add(null)
                 }
             } else {
                 val widthBeforeSpacer = row.subList(0, insertIndex).sumOf { it.mWidth }
@@ -171,6 +174,7 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
                 maxWidthBeforeSpacer = maxWidthBeforeSpacer.coerceAtLeast(widthBeforeSpacer)
                 maxWidthAfterSpacer = maxWidthAfterSpacer.coerceAtLeast(widthAfterSpacer)
                 row.add(insertIndex, spacer)
+                rowSpacers.add(spacer)
             }
             // re-calculate relative widths
             val relativeWidthSumNew = row.sumOf { it.mWidth }
@@ -183,6 +187,28 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
                 currentX += it.mAbsoluteWidth
             }
         }
+        setSplitGap(rowSpacers)
+    }
+
+    /**
+     *  Store the area that is empty in all rows from the top down, so views can leave it transparent.
+     *  The gap ends above the first row without spacer (e.g. a space bar spanning both halves).
+     */
+    private fun setSplitGap(rowSpacers: List<KeyParams?>) {
+        var left = 0f
+        var right = Float.MAX_VALUE
+        var bottom = 0f
+        for ((i, spacer) in rowSpacers.withIndex()) {
+            if (spacer == null) break
+            left = left.coerceAtLeast(spacer.xPos)
+            right = right.coerceAtMost(spacer.xPos + spacer.mAbsoluteWidth)
+            val rowKey = keysInRows[i].first() // spacer height may differ from row height
+            bottom = rowKey.yPos + rowKey.mAbsoluteHeight
+        }
+        if (bottom <= 0f || right - left < 1f) return
+        mParams.mSplitGapLeft = left.toInt()
+        mParams.mSplitGapRight = right.toInt()
+        mParams.mSplitGapBottom = if (rowSpacers.all { it != null }) mParams.mOccupiedHeight else bottom.toInt()
     }
 
     // reduce width of symbol and action key if in the (to be split) row, and add this width to space to keep other key size constant
