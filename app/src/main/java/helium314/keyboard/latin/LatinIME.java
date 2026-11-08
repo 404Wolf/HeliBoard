@@ -1237,6 +1237,8 @@ public class LatinIME extends InputMethodService implements
                 // let taps in the gap between the split keyboard halves pass through to the app
                 if (mSplitGapRect.bottom >= inputHeight)
                     mSplitGapRect.bottom = touchBottom;
+                if (((InputView) mInputView).isStripOverSplitGapOpen())
+                    mSplitGapRect.top = touchTop; // the idle strip leaves the gap open up to the top
                 outInsets.touchableRegion.op(mSplitGapRect, Region.Op.DIFFERENCE);
             }
         }

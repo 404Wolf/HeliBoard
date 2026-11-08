@@ -15,6 +15,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -33,7 +34,7 @@ import kotlin.Unit;
 
 
 public final class InputView extends FrameLayout {
-    private static final float SPLIT_CARD_CORNER_RADIUS_DP = 12f;
+    private static final float SPLIT_CARD_CORNER_RADIUS_DP = 14f;
 
     private final Rect mInputViewRect = new Rect();
     private MainKeyboardView mMainKeyboardView;
@@ -43,6 +44,11 @@ public final class InputView extends FrameLayout {
     private final Rect mSplitFrame = new Rect();
     private final Rect mTmpGap = new Rect();
     private final Path mSplitCardsPath = new Path();
+    // whether the strip area above the split gap is see-through, see isStripOverSplitGapOpen
+    private boolean mStripOverGapOpen;
+    private SuggestionStripView mSuggestionStripView;
+    private View mStripSuggestions;
+    private View mStripToolbar;
     private final ViewTreeObserver.OnPreDrawListener mSplitGapUpdater = () -> {
         updateSplitCards();
         return true;
@@ -62,6 +68,9 @@ public final class InputView extends FrameLayout {
                 findViewById(R.id.suggestion_strip_view);
         mMainKeyboardView = findViewById(R.id.keyboard_view);
         mMainKeyboardFrame = findViewById(R.id.main_keyboard_frame);
+        mSuggestionStripView = suggestionStripView;
+        mStripSuggestions = suggestionStripView.findViewById(R.id.suggestions_strip);
+        mStripToolbar = suggestionStripView.findViewById(R.id.toolbar_container);
         mKeyboardTopPaddingForwarder = new KeyboardTopPaddingForwarder(
                 mMainKeyboardView, suggestionStripView);
         mMoreSuggestionsViewCanceler = new MoreSuggestionsViewCanceler(
@@ -104,33 +113,79 @@ public final class InputView extends FrameLayout {
         return !outRect.isEmpty();
     }
 
-    /** Rebuilds the clip path for the keyboard frame if the split gap or the frame changed. */
+    /**
+     * Whether the strip area above the split gap is see-through, so the halves are two separate
+     * cards: true while the strip shows nothing that spans the gap (no suggestions, no expanded
+     * toolbar, nothing drawn over the strip). Only meaningful while {@link #getSplitGap} is true.
+     */
+    public boolean isStripOverSplitGapOpen() {
+        return mStripOverGapOpen;
+    }
+
+    private boolean isStripIdle() {
+        final SuggestionStripView strip = mSuggestionStripView;
+        if (strip == null || !strip.isShown())
+            return true;
+        if (mStripSuggestions != null && mStripSuggestions.isShown()
+                && mStripSuggestions instanceof ViewGroup group && group.getChildCount() > 0)
+            return false;
+        if (mStripToolbar != null && mStripToolbar.isShown())
+            return false;
+        // anything else shown in the strip (e.g. an indicator added over it) may span the gap
+        for (int i = 0; i < strip.getChildCount(); i++) {
+            final View child = strip.getChildAt(i);
+            if (child.getId() != R.id.suggestions_strip_wrapper && child.getVisibility() == View.VISIBLE)
+                return false;
+        }
+        return true;
+    }
+
+    /** Rebuilds the clip path for the keyboard frame if the split gap, the strip or the frame changed. */
     private void updateSplitCards() {
         if (!getSplitGap(mTmpGap))
             mTmpGap.setEmpty();
+        final boolean stripOpen = !mTmpGap.isEmpty() && isStripIdle();
         final View frame = mMainKeyboardFrame;
-        if (mTmpGap.equals(mSplitGap) && frame.getLeft() == mSplitFrame.left && frame.getTop() == mSplitFrame.top
+        if (mTmpGap.equals(mSplitGap) && stripOpen == mStripOverGapOpen
+                && frame.getLeft() == mSplitFrame.left && frame.getTop() == mSplitFrame.top
                 && frame.getRight() == mSplitFrame.right && frame.getBottom() == mSplitFrame.bottom)
             return;
+        final boolean openChanged = stripOpen != mStripOverGapOpen;
         mSplitGap.set(mTmpGap);
+        mStripOverGapOpen = stripOpen;
         mSplitFrame.set(frame.getLeft(), frame.getTop(), frame.getRight(), frame.getBottom());
         mSplitCardsPath.reset();
-        if (!mSplitGap.isEmpty()) {
-            // strip / toolbar (if any) stays a full width bar, each keyboard half gets its own rounded card
-            final float radius = SPLIT_CARD_CORNER_RADIUS_DP * getResources().getDisplayMetrics().density;
-            final Rect f = mSplitFrame;
-            final int keysTop = mSplitGap.top;
-            final boolean hasBarAbove = keysTop > f.top;
-            if (hasBarAbove)
-                mSplitCardsPath.addRect(f.left, f.top, f.right, keysTop, Path.Direction.CW);
-            final float topRadius = hasBarAbove ? 0f : radius;
-            final float[] radii = { topRadius, topRadius, topRadius, topRadius, radius, radius, radius, radius };
-            mSplitCardsPath.addRoundRect(new RectF(f.left, keysTop, mSplitGap.left, f.bottom), radii, Path.Direction.CW);
-            mSplitCardsPath.addRoundRect(new RectF(mSplitGap.right, keysTop, f.right, f.bottom), radii, Path.Direction.CW);
-            if (mSplitGap.bottom < f.bottom) // rows below the gap span the whole width
-                mSplitCardsPath.addRect(f.left, mSplitGap.bottom, f.right, f.bottom, Path.Direction.CW);
-        }
+        if (!mSplitGap.isEmpty())
+            buildSplitCardsPath(mSplitCardsPath, mSplitFrame, mSplitGap, stripOpen,
+                    SPLIT_CARD_CORNER_RADIUS_DP * getResources().getDisplayMetrics().density);
         invalidate();
+        if (openChanged)
+            requestLayout(); // the touchable region (LatinIME.onComputeInsets) depends on it
+    }
+
+    /**
+     * Each keyboard half is a rounded card, the gap between them stays see-through. While the
+     * strip (if any) shows something, it bridges the cards above the gap, with rounded inner
+     * corners where it meets the gap; while it is idle the gap reaches up to the top.
+     */
+    private static void buildSplitCardsPath(final Path out, final Rect f, final Rect gap,
+            final boolean stripOpen, final float r) {
+        final int keysTop = gap.top;
+        final boolean bridge = keysTop > f.top && !stripOpen;
+        out.addRoundRect(new RectF(f.left, f.top, gap.left, f.bottom), r, r, Path.Direction.CW);
+        out.addRoundRect(new RectF(gap.right, f.top, f.right, f.bottom), r, r, Path.Direction.CW);
+        if (gap.bottom < f.bottom) // rows below the gap span the whole width
+            out.addRect(f.left, gap.bottom, f.right, f.bottom, Path.Direction.CW);
+        if (!bridge)
+            return;
+        final Path bridgePath = new Path();
+        // covers the inner top corners of both cards, plus concave fillets below it
+        bridgePath.addRect(gap.left - r, f.top, gap.right + r, keysTop + r, Path.Direction.CW);
+        final Path hole = new Path();
+        hole.addRoundRect(new RectF(gap.left, keysTop, gap.right, Math.max(gap.bottom, keysTop + 2 * r)),
+                new float[] { r, r, r, r, 0, 0, 0, 0 }, Path.Direction.CW);
+        bridgePath.op(hole, Path.Op.DIFFERENCE);
+        out.op(bridgePath, Path.Op.UNION);
     }
 
     @Override
