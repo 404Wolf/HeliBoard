@@ -70,6 +70,32 @@
     <string name="split_spacer_scale">Split distance</string>
     <!-- Option for the height of the band at the bottom of the split keyboard that apps don't extend into, in key rows -->
     <string name="split_gap_reserved_rows">Rows kept free below apps in split gap</string>
+    <!-- In-keyboard dictation -->
+    <string name="settings_category_dictation">Voice input</string>
+    <string name="dictation">Dictate in the keyboard</string>
+    <string name="dictation_summary">The mic key types what you say right here. Off: it switches to a voice input method instead</string>
+    <string name="dictation_engine">Speech recognition</string>
+    <string name="dictation_engine_google">Google (live)</string>
+    <string name="dictation_engine_system">System default</string>
+    <string name="dictation_engine_not_installed">not installed, uses system default</string>
+    <string name="dictation_commands">Voice commands</string>
+    <string name="dictation_commands_summary">English: \"new line\", \"new paragraph\", \"period\", \"comma\", \"question mark\", \"delete that\", \"undo\", \"send\", \"stop listening\"</string>
+    <string name="dictation_auto_send">Send when dictation ends</string>
+    <string name="dictation_auto_send_summary">After a silence timeout or \"stop listening\", perform the field\'s action (send, search, …)</string>
+    <string name="dictation_silence_timeout">Stop listening after silence</string>
+    <string name="dictation_seconds">%s s</string>
+    <string name="dictation_starting">Starting…</string>
+    <string name="dictation_listening">Listening</string>
+    <string name="dictation_listening_offline">Listening (offline)</string>
+    <string name="dictation_finishing">Finishing…</string>
+    <string name="dictation_offline">No network: trying offline recognition</string>
+    <string name="dictation_no_network">Dictation needs a network connection or an offline speech model</string>
+    <string name="dictation_fallback_system">Using the system speech recognizer</string>
+    <string name="dictation_unavailable">No speech recognition available</string>
+    <string name="dictation_audio_error">Microphone not available</string>
+    <string name="dictation_nothing_to_delete">Nothing to delete</string>
+    <string name="dictation_permission_granted">Microphone allowed: tap the mic key again</string>
+    <string name="dictation_permission_denied">Dictation needs the microphone permission</string>
     <!-- Option name for including other IMEs in the language key switch list -->
     <string name="language_switch_key_switch_input_method">Switch to other input methods</string>
     <!-- Option name for switching language / subtype only -->

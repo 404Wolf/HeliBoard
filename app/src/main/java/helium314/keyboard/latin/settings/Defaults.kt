@@ -86,6 +86,11 @@ object Defaults {
     @JvmField
     val PREF_SPLIT_SPACER_SCALE = Array(4) { DEFAULT_SIZE_SCALE }
     const val PREF_SPLIT_GAP_RESERVED_ROWS = 1f
+    const val PREF_DICTATION = true
+    const val PREF_DICTATION_ENGINE = "google"
+    const val PREF_DICTATION_COMMANDS = true
+    const val PREF_DICTATION_AUTO_SEND = false
+    const val PREF_DICTATION_SILENCE_TIMEOUT = 10 // seconds, > 60 means no limit
     @JvmField
     val PREF_KEYBOARD_HEIGHT_SCALE = Array(4) { DEFAULT_SIZE_SCALE }
     @JvmField

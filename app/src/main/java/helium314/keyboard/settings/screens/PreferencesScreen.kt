@@ -14,6 +14,7 @@ import helium314.keyboard.keyboard.KeyboardSwitcher
 import helium314.keyboard.latin.AudioAndHapticFeedbackManager
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.database.ClipboardDao
+import helium314.keyboard.latin.dictation.DictationEngine
 import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.Log
@@ -42,6 +43,7 @@ fun PreferencesScreen(
     if ((b?.value ?: 0) < 0)
         Log.v("irrelevant", "stupid way to trigger recomposition on preference change")
     val clipboardHistoryEnabled = prefs.getBoolean(Settings.PREF_ENABLE_CLIPBOARD_HISTORY, Defaults.PREF_ENABLE_CLIPBOARD_HISTORY)
+    val dictationEnabled = prefs.getBoolean(Settings.PREF_DICTATION, Defaults.PREF_DICTATION)
     val items = listOf(
         R.string.settings_category_input,
         Settings.PREF_SHOW_HINTS,
@@ -75,6 +77,12 @@ fun PreferencesScreen(
         Settings.PREF_LANGUAGE_SWITCH_KEY,
         Settings.PREF_SHOW_EMOJI_KEY,
         Settings.PREF_REMOVE_REDUNDANT_POPUPS,
+        R.string.settings_category_dictation,
+        Settings.PREF_DICTATION,
+        if (dictationEnabled) Settings.PREF_DICTATION_ENGINE else null,
+        if (dictationEnabled) Settings.PREF_DICTATION_COMMANDS else null,
+        if (dictationEnabled) Settings.PREF_DICTATION_SILENCE_TIMEOUT else null,
+        if (dictationEnabled) Settings.PREF_DICTATION_AUTO_SEND else null,
         R.string.settings_category_clipboard_history,
         Settings.PREF_ENABLE_CLIPBOARD_HISTORY,
         if (clipboardHistoryEnabled) Settings.PREF_CLIPBOARD_HISTORY_RETENTION_TIME else null,
@@ -163,6 +171,37 @@ fun createPreferencesSettings(context: Context) = listOf(
         R.string.remove_redundant_popups, R.string.remove_redundant_popups_summary)
     {
         SwitchPreference(it, Defaults.PREF_REMOVE_REDUNDANT_POPUPS) { KeyboardSwitcher.getInstance().setThemeNeedsReload() }
+    },
+    Setting(context, Settings.PREF_DICTATION, R.string.dictation, R.string.dictation_summary) {
+        SwitchPreference(it, Defaults.PREF_DICTATION) { KeyboardSwitcher.getInstance().reloadKeyboard() }
+    },
+    Setting(context, Settings.PREF_DICTATION_ENGINE, R.string.dictation_engine) {
+        ListPreference(
+            it,
+            listOf(
+                stringResource(R.string.dictation_engine_google) to DictationEngine.GOOGLE.prefValue,
+                stringResource(R.string.dictation_engine_system) to DictationEngine.SYSTEM.prefValue,
+            ),
+            Defaults.PREF_DICTATION_ENGINE
+        )
+    },
+    Setting(context, Settings.PREF_DICTATION_COMMANDS, R.string.dictation_commands, R.string.dictation_commands_summary) {
+        SwitchPreference(it, Defaults.PREF_DICTATION_COMMANDS)
+    },
+    Setting(context, Settings.PREF_DICTATION_AUTO_SEND, R.string.dictation_auto_send, R.string.dictation_auto_send_summary) {
+        SwitchPreference(it, Defaults.PREF_DICTATION_AUTO_SEND)
+    },
+    Setting(context, Settings.PREF_DICTATION_SILENCE_TIMEOUT, R.string.dictation_silence_timeout) { setting ->
+        SliderPreference(
+            name = setting.title,
+            key = setting.key,
+            default = Defaults.PREF_DICTATION_SILENCE_TIMEOUT,
+            description = {
+                if (it > 60) stringResource(R.string.settings_no_limit)
+                else stringResource(R.string.dictation_seconds, it.toString())
+            },
+            range = 3f..61f,
+        )
     },
     Setting(context, Settings.PREF_ENABLE_CLIPBOARD_HISTORY,
         R.string.enable_clipboard_history, R.string.enable_clipboard_history_summary)
