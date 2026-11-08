@@ -62,6 +62,7 @@ public final class InputView extends FrameLayout {
     private final ViewTreeObserver.OnPreDrawListener mSplitGapUpdater = () -> {
         updateSplitCards();
         updateHub();
+        if (mSuggestionStripView != null) mSuggestionStripView.refreshTerminalKeys();
         return true;
     };
     private KeyboardTopPaddingForwarder mKeyboardTopPaddingForwarder;
@@ -181,8 +182,11 @@ public final class InputView extends FrameLayout {
         }
         final int keysLeft = mMainKeyboardView.getLeft() + mMainKeyboardView.getPaddingLeft();
         final int keysTop = mMainKeyboardView.getTop() + mMainKeyboardView.getPaddingTop() + keyboard.mTopPadding;
-        final int insetX = keyboard.mMostCommonKeyWidth / 8;
+        // cells line up with the keys: key gaps around and between them
+        final int cellGap = keyboard.mVerticalGap;
+        final int insetX = cellGap;
         final int insetY = keyboard.mVerticalGap / 2;
+        hub.setRows(keyboard.mVerticalGap, cellGap);
         final int left = keysLeft + keyboard.mSplitGapLeft + insetX;
         final int width = keyboard.mSplitGapRight - keyboard.mSplitGapLeft - 2 * insetX;
         final int top = keysTop + insetY;

@@ -30,6 +30,7 @@ import android.widget.TextView
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import helium314.keyboard.event.HapticEvent
+import helium314.keyboard.keyboard.KeyboardActionListener
 import helium314.keyboard.keyboard.KeyboardSwitcher
 import helium314.keyboard.keyboard.KeyboardTheme
 import helium314.keyboard.keyboard.internal.KeyboardIconsSet
@@ -248,6 +249,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         }
 
         toolbarExpandKey.scaleX = (if (toolbarVisible) -1f else 1f) * direction
+        applyTerminalMode()
     }
 
     fun setSuggestions(suggestions: SuggestedWords, isRtlLanguage: Boolean) {
@@ -261,8 +263,37 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
             context, suggestedWords, suggestionsStrip, this
         )
         updateHub()
+        applyTerminalMode()
         isExternalSuggestionVisible = false
         updateKeys()
+    }
+
+    /** Keys a terminal needs, shown instead of suggestions in terminal fields (one row). */
+    private val terminalRow = TerminalKeysView(context, TerminalKeysView.STRIP, 3.dpToPx(resources)).also {
+        it.visibility = GONE
+        val wrapper = suggestionsStrip.parent as ViewGroup
+        wrapper.addView(it, wrapper.indexOfChild(suggestionsStrip) + 1, LinearLayout.LayoutParams(
+            0, resources.getDimensionPixelSize(R.dimen.config_suggestion_chip_height), 1f
+        ).apply { gravity = android.view.Gravity.CENTER_VERTICAL; marginStart = 4.dpToPx(resources); marginEnd = 4.dpToPx(resources) })
+    }
+
+    fun setTerminalKeysListener(listener: KeyboardActionListener) {
+        terminalRow.listener = listener
+    }
+
+    /** Terminal fields (SettingsValues.mIsTerminal): terminal keys instead of suggestions. */
+    private fun applyTerminalMode() {
+        val terminal = Settings.getValues().mIsTerminal
+        hub?.setTerminal(terminal)
+        val showRow = terminal && !toolbarContainer.isVisible
+        terminalRow.isVisible = showRow
+        if (showRow) suggestionsStrip.isVisible = false
+        else if (!toolbarContainer.isVisible) suggestionsStrip.isVisible = true
+    }
+
+    fun refreshTerminalKeys() {
+        if (terminalRow.isShown) terminalRow.refresh()
+        hub?.refreshTerminalKeys()
     }
 
     /** Show the current words in the hub: the centre (best) one first. */

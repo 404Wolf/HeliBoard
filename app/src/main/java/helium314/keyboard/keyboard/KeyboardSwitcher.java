@@ -761,6 +761,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         final SplitHubView hubView = mCurrentInputView.findViewById(R.id.split_hub);
         hubView.attach(mSuggestionStripView, mLatinIME.mKeyboardActionListener);
         mSuggestionStripView.setHub(hubView);
+        mSuggestionStripView.setTerminalKeysListener(mLatinIME.mKeyboardActionListener);
         mBackgroundGatheringIndicator = mCurrentInputView.findViewById(R.id.backgroundGatheringIndicator);
 
         prefs.registerOnSharedPreferenceChangeListener(mSuggestionStripView);
