@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<resources>
+    <!-- view tag: a suggestion word's padding before chips were moved over the split halves -->
+    <item name="suggestion_base_padding" type="id" />
+</resources>

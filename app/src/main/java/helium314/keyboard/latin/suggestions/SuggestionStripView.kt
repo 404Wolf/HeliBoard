@@ -254,7 +254,9 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         clear()
         setRtl(isRtlLanguage)
         suggestedWords = suggestions
-        layoutHelper.setSlotWeights(splitSlotWeights())
+        val split = splitSlots()
+        layoutHelper.setSlotWeights(split?.weights)
+        centreSideChipsOverHalves(split)
         startIndexOfMoreSuggestions = layoutHelper.layoutAndReturnStartIndexOfMoreSuggestions(
             context, suggestedWords, suggestionsStrip, this
         )
@@ -262,11 +264,15 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         updateKeys()
     }
 
+    /** Slot widths of the strip for a split keyboard, and how far to move the side chips. */
+    private class SplitSlots(val weights: FloatArray, val leftShift: Float, val rightShift: Float)
+
     /**
      * With chips on a split keyboard: slot widths so the centre suggestion sits over the gap and
-     * the others over the halves; null otherwise.
+     * the others over the halves, plus the shifts that centre the side chips over their halves
+     * (the strip starts after the toolbar key and ends before the pinned keys); null otherwise.
      */
-    private fun splitSlotWeights(): FloatArray? {
+    private fun splitSlots(): SplitSlots? {
         if (!chips) return null
         val keyboardView = KeyboardSwitcher.getInstance().mainKeyboardView ?: return null
         val keyboard = keyboardView.keyboard ?: return null
@@ -278,7 +284,22 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         val gapRight = (keysLeft + keyboard.mSplitGapRight).toFloat()
         val width = suggestionsStrip.width.toFloat()
         if (gapLeft <= 0 || gapRight >= width) return null
-        return floatArrayOf(gapLeft, gapRight - gapLeft, width - gapRight)
+        val stripStart = (stripLocation[0] - keyboardLocation[0]).toFloat()
+        val stripEnd = (keyboardLocation[0] + keyboardView.width - stripLocation[0] - suggestionsStrip.width).toFloat()
+        return SplitSlots(floatArrayOf(gapLeft, gapRight - gapLeft, width - gapRight), -stripStart / 2, stripEnd / 2)
+    }
+
+    /** Move the text (and so the chip) of the side slots by padding them asymmetrically. */
+    private fun centreSideChipsOverHalves(split: SplitSlots?) {
+        val first = wordViews.first()
+        val last = wordViews[min(wordViews.lastIndex, 2)]
+        for ((view, shift) in listOf(first to (split?.leftShift ?: 0f), last to (split?.rightShift ?: 0f))) {
+            val base = view.getTag(R.id.suggestion_base_padding) as? Int
+                ?: view.paddingLeft.also { view.setTag(R.id.suggestion_base_padding, it) }
+            val s = (2 * kotlin.math.abs(shift)).toInt()
+            if (shift < 0) view.setPadding(base, view.paddingTop, base + s, view.paddingBottom)
+            else view.setPadding(base + s, view.paddingTop, base, view.paddingBottom)
+        }
     }
 
     fun setExternalSuggestionView(view: View?, addCloseButton: Boolean) {

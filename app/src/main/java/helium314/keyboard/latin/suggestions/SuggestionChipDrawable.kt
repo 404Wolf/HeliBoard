@@ -40,10 +40,12 @@ class SuggestionChipDrawable(
             if (text.isNullOrEmpty()) return
             val textWidth = textView.layout?.let { l -> (0 until l.lineCount).maxOfOrNull { l.getLineWidth(it) } }
                 ?: textView.paint.measureText(text, 0, text.length)
-            val maxWidth = b.width().toFloat()
+            val maxWidth = (b.width() - kotlin.math.abs(textView.paddingLeft - textView.paddingRight)).toFloat()
             (textWidth * textView.textScaleX + 2 * padding).coerceAtLeast(h * 1.4f).coerceAtMost(maxWidth)
         }
-        val cx = b.exactCenterX()
+        // centre of the text area: suggestion words may be padded asymmetrically to move the chip
+        val cx = if (textView == null) b.exactCenterX()
+            else b.left + textView.paddingLeft + (b.width() - textView.paddingLeft - textView.paddingRight) / 2f
         val cy = b.exactCenterY()
         rect.set(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2)
         fill.color = tint?.getColorForState(state, tint!!.defaultColor) ?: 0xff303030.toInt()
