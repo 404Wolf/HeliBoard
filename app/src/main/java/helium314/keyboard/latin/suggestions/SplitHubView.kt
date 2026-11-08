@@ -1,11 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 package helium314.keyboard.latin.suggestions
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.os.SystemClock
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.Gravity
+import android.view.HapticFeedbackConstants
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -13,57 +21,47 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import helium314.keyboard.keyboard.KeyShapeDrawable
 import helium314.keyboard.keyboard.KeyboardActionListener
+import helium314.keyboard.keyboard.internal.keyboard_parser.floris.KeyCode
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.common.ColorType
+import helium314.keyboard.latin.common.Constants
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.ToolbarKey
 import helium314.keyboard.latin.utils.createToolbarKey
+import kotlin.math.abs
 
 /**
  * The centre column of a split keyboard (split_hub), in the gap between the halves and aligned
- * to their four key rows, drawn like keys:
- * - rows 1-3: the suggestions (best on top) while typing; when there are none, editing actions
- *   (paste / undo, redo / select word, select all); in terminal fields, terminal keys
- *   (Esc Tab Ctrl Shift+Enter / arrows / | ~ / -)
- * - row 4: clipboard, emoji, voice
+ * to their four key rows. Rows 1-3 are one large key-shaped rectangle, a cursor pad:
+ * - drag: move the cursor, horizontally by characters, vertically by lines (arrow keys, so it
+ *   works in terminals too)
+ * - while typing it shows the suggestions in three lines, best on top; tap one to pick it
+ * - hold: paste; double tap (no suggestions): select the word
+ * Row 4: undo, clipboard, emoji, voice. In terminal fields: row 1 Esc Tab Ctrl Shift+Enter,
+ * rows 2-3 the cursor pad, row 4 | ~ / -.
  * Positioned by InputView ([setRows] gives the key rows' geometry). Suggestions come from the
  * hidden [SuggestionStripView], which also handles taps on the words and buttons.
  */
 class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewGroup(context, attrs) {
-    private val rows = List(4) { LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL } }
-    private val words = List(3) { TextView(context) }
-    private val actionButtons = ArrayList<View>()
-    private val overlay = FrameLayout(context) // dictation indicator over rows 1-3
-    private var terminalKeys: TerminalKeysView? = null
+    private val pad = CursorPad(context)
+    private val words = List(3) { TextView(context) } // not shown: carry text and tag, clicks go to the strip
+    private val bottomRow = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+    private val overlay = FrameLayout(context) // dictation indicator over the pad
+    private var terminalTop: TerminalKeysView? = null
+    private var terminalBottom: TerminalKeysView? = null
+    private var buttons: List<View> = emptyList()
     private var strip: SuggestionStripView? = null
     private var listener: KeyboardActionListener? = null
-    private var mode = Mode.NONE
+    private var terminal = false
     private var rowGap = 0
     private var cellGap = 0
 
-    private enum class Mode { NONE, ACTIONS, WORDS, TERMINAL }
-
     init {
-        rows.forEach { addView(it) }
+        addView(pad)
+        addView(bottomRow)
         addView(overlay)
-        val colors = Settings.getValues().mColors
-        for (word in words) {
-            word.gravity = Gravity.CENTER
-            word.maxLines = 1
-            word.ellipsize = android.text.TextUtils.TruncateAt.END
-            word.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.config_suggestion_text_size))
-            word.setPadding(cellPadding(), 0, cellPadding(), 0)
-            word.background = keyBackground()
-        }
         overlay.visibility = GONE
-        setColorsOf(colors)
     }
-
-    private fun setColorsOf(colors: helium314.keyboard.latin.common.Colors) {
-        words.forEach { it.setTextColor(colors.get(ColorType.KEY_TEXT)) }
-    }
-
-    private fun cellPadding() = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6f, resources.displayMetrics).toInt()
 
     private fun keyBackground() = KeyShapeDrawable(
         resources.getDimension(R.dimen.config_key_corner_radius_rounded),
@@ -84,13 +82,13 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         this.strip = strip
         this.listener = listener
         words.forEach { it.setOnClickListener(strip) }
-        actionButtons.clear()
-        actionButtons += listOf(ToolbarKey.PASTE, ToolbarKey.UNDO, ToolbarKey.REDO, ToolbarKey.SELECT_WORD, ToolbarKey.SELECT_ALL)
-            .map { button(it) }
-        fill(rows[3], listOf(ToolbarKey.CLIPBOARD, ToolbarKey.EMOJI, ToolbarKey.VOICE).map { button(it) })
-        terminalKeys = TerminalKeysView(context, TerminalKeysView.HUB, 0).also { it.listener = listener }
-        mode = Mode.NONE
-        setMode(Mode.ACTIONS)
+        pad.background = keyBackground()
+        buttons = listOf(ToolbarKey.UNDO, ToolbarKey.CLIPBOARD, ToolbarKey.EMOJI, ToolbarKey.VOICE).map { button(it) }
+        terminalTop?.let { removeView(it) }
+        terminalTop = TerminalKeysView(context, TerminalKeysView.HUB_TOP, cellGap).also { it.listener = listener }
+        terminalBottom = TerminalKeysView(context, TerminalKeysView.HUB_BOTTOM, cellGap).also { it.listener = listener }
+        terminal = !terminal
+        setTerminal(!terminal)
     }
 
     /** Geometry of the key rows: gap between rows and between cells. */
@@ -98,68 +96,53 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         if (rowGap == this.rowGap && cellGap == this.cellGap) return
         this.rowGap = rowGap
         this.cellGap = cellGap
-        rows.forEach { row -> for (i in 1 until row.childCount) (row.getChildAt(i).layoutParams as LinearLayout.LayoutParams).leftMargin = cellGap }
-        terminalKeys?.setGaps(rowGap, cellGap)
+        for (i in 1 until bottomRow.childCount) (bottomRow.getChildAt(i).layoutParams as LinearLayout.LayoutParams).leftMargin = cellGap
+        terminalTop?.setGaps(rowGap, cellGap)
+        terminalBottom?.setGaps(rowGap, cellGap)
         requestLayout()
     }
 
-    private fun fill(row: LinearLayout, cells: List<View>) {
-        row.removeAllViews()
+    private fun fillBottomRow(cells: List<View>) {
+        bottomRow.removeAllViews()
         for ((i, cell) in cells.withIndex()) {
             (cell.parent as? ViewGroup)?.removeView(cell)
-            row.addView(cell, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f).apply {
+            bottomRow.addView(cell, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f).apply {
                 if (i > 0) leftMargin = cellGap
             })
         }
     }
 
-    private fun setMode(newMode: Mode) {
-        if (newMode == mode) return
-        mode = newMode
-        val terminal = terminalKeys
-        if (terminal?.parent != null) (terminal.parent as ViewGroup).removeView(terminal)
-        when (newMode) {
-            Mode.WORDS -> for (i in 0..2) fill(rows[i], listOf(words[i]))
-            Mode.ACTIONS -> {
-                fill(rows[0], listOf(actionButtons[0]))
-                fill(rows[1], listOf(actionButtons[1], actionButtons[2]))
-                fill(rows[2], listOf(actionButtons[3], actionButtons[4]))
-            }
-            Mode.TERMINAL -> {
-                for (i in 0..2) rows[i].removeAllViews()
-                if (terminal != null) addView(terminal, 0)
-            }
-            Mode.NONE -> {}
-        }
-        requestLayout()
-    }
-
-    /** Copy the strip's words, the centre (best) one first; no words: editing actions instead. */
+    /** Copy the strip's words, the centre (best) one first, to show them on the pad. */
     fun setWords(centre: TextView?, others: List<TextView>) {
-        if (mode == Mode.TERMINAL) return
         val sources = listOfNotNull(centre) + others
-        if (sources.all { it.text.isNullOrEmpty() }) {
-            setMode(Mode.ACTIONS)
-            return
-        }
         for ((i, word) in words.withIndex()) {
             val source = sources.getOrNull(i)
             word.text = source?.text
             word.tag = source?.tag
-            word.isEnabled = !source?.text.isNullOrEmpty()
-            source?.let { word.setTextColor(it.textColors) }
+            word.isActivated = source?.isActivated == true
+            word.setTextColor(source?.textColors ?: word.textColors)
         }
-        setMode(Mode.WORDS)
+        pad.invalidate()
     }
 
-    /** Terminal fields: terminal keys instead of suggestions and actions. */
+    /** Terminal fields: Esc Tab Ctrl Shift+Enter above the pad, | ~ / - below it. */
     fun setTerminal(terminal: Boolean) {
-        if (terminal) setMode(Mode.TERMINAL)
-        else if (mode == Mode.TERMINAL) setMode(Mode.ACTIONS)
+        if (terminal == this.terminal) return
+        this.terminal = terminal
+        terminalTop?.let { if (it.parent != null) removeView(it) }
+        if (terminal) {
+            terminalTop?.let { addView(it) }
+            fillBottomRow(emptyList())
+            terminalBottom?.let { (it.parent as? ViewGroup)?.removeView(it); bottomRow.addView(it, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)) }
+        } else {
+            fillBottomRow(buttons)
+        }
+        pad.invalidate()
+        requestLayout()
     }
 
     fun refreshTerminalKeys() {
-        terminalKeys?.refresh()
+        terminalTop?.refresh()
     }
 
     fun showDictationView(view: View) {
@@ -177,7 +160,7 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         if (overlay.childCount == 0) overlay.visibility = GONE
     }
 
-    // four rows of equal height with rowGap between them; terminal keys and the overlay span rows 1-3
+    // four rows of equal height with rowGap between them
     private fun rowHeight(height: Int) = (height - 3 * rowGap) / 4
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -185,22 +168,136 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val rowHeight = rowHeight(height)
         val exact = { size: Int -> MeasureSpec.makeMeasureSpec(maxOf(0, size), MeasureSpec.EXACTLY) }
-        rows.forEach { it.measure(exact(width), exact(rowHeight)) }
-        val topThree = 3 * rowHeight + 2 * rowGap
-        overlay.measure(exact(width), exact(topThree))
-        terminalKeys?.takeIf { it.parent === this }?.measure(exact(width), exact(topThree))
+        val padRows = if (terminal) 2 else 3
+        pad.measure(exact(width), exact(padRows * rowHeight + (padRows - 1) * rowGap))
+        bottomRow.measure(exact(width), exact(rowHeight))
+        overlay.measure(exact(width), exact(3 * rowHeight + 2 * rowGap))
+        terminalTop?.takeIf { it.parent === this }?.measure(exact(width), exact(rowHeight))
         setMeasuredDimension(width, height)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val width = r - l
         val rowHeight = rowHeight(b - t)
-        for ((i, row) in rows.withIndex()) {
-            val top = i * (rowHeight + rowGap)
-            row.layout(0, top, width, top + rowHeight)
+        val row = { i: Int -> i * (rowHeight + rowGap) }
+        if (terminal) {
+            terminalTop?.takeIf { it.parent === this }?.layout(0, row(0), width, row(0) + rowHeight)
+            pad.layout(0, row(1), width, row(2) + rowHeight)
+        } else {
+            pad.layout(0, row(0), width, row(2) + rowHeight)
         }
-        val topThree = 3 * rowHeight + 2 * rowGap
-        overlay.layout(0, 0, width, topThree)
-        terminalKeys?.takeIf { it.parent === this }?.layout(0, 0, width, topThree)
+        bottomRow.layout(0, row(3), width, row(3) + rowHeight)
+        overlay.layout(0, 0, width, row(2) + rowHeight)
+    }
+
+    /** One key-shaped area: drag to move the cursor; shows and picks suggestions; hold to paste. */
+    private inner class CursorPad(context: Context) : View(context) {
+        private val dp = resources.displayMetrics.density
+        private val stepX = 10 * dp
+        private val stepY = 24 * dp
+        private val slop = ViewConfiguration.get(context).scaledTouchSlop.toFloat()
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
+        private var downX = 0f
+        private var downY = 0f
+        private var lastX = 0f
+        private var lastY = 0f
+        private var dragging = false
+        private var longPressed = false
+        private var lastTapTime = 0L
+        private val longPress = Runnable {
+            if (!dragging) {
+                longPressed = true
+                performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                send(KeyCode.CLIPBOARD_PASTE)
+            }
+        }
+
+        private fun hasWords() = !terminal && words.any { !it.text.isNullOrEmpty() }
+
+        override fun onDraw(canvas: Canvas) {
+            val colors = Settings.getValues().mColors
+            if (hasWords()) {
+                // three lines in the pad's thirds, like the rows they replace
+                val lineHeight = height / 3f
+                for ((i, word) in words.withIndex()) {
+                    val text = word.text
+                    if (text.isNullOrEmpty()) continue
+                    paint.textSize = resources.getDimension(R.dimen.config_suggestion_text_size)
+                    paint.typeface = if (word.isActivated) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+                    paint.color = word.currentTextColor
+                    val shown = TextUtils.ellipsize(text.toString(), android.text.TextPaint(paint), width - 12 * dp, TextUtils.TruncateAt.END)
+                    val y = lineHeight * i + lineHeight / 2 - (paint.descent() + paint.ascent()) / 2
+                    canvas.drawText(shown, 0, shown.length, width / 2f, y, paint)
+                }
+            } else {
+                paint.textSize = 12 * resources.displayMetrics.scaledDensity
+                paint.typeface = Typeface.DEFAULT
+                paint.color = colors.get(ColorType.KEY_HINT_TEXT)
+                paint.alpha = 0x90
+                val hint = if (terminal) "drag: arrows" else "drag: cursor · hold: paste"
+                canvas.drawText(hint, width / 2f, height / 2f - (paint.descent() + paint.ascent()) / 2, paint)
+            }
+        }
+
+        @SuppressLint("ClickableViewAccessibility")
+        override fun onTouchEvent(event: MotionEvent): Boolean {
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    downX = event.x; downY = event.y; lastX = event.x; lastY = event.y
+                    dragging = false; longPressed = false
+                    isPressed = true
+                    parent?.requestDisallowInterceptTouchEvent(true)
+                    postDelayed(longPress, ViewConfiguration.getLongPressTimeout().toLong())
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (!dragging && (abs(event.x - downX) > slop || abs(event.y - downY) > slop)) {
+                        dragging = true
+                        removeCallbacks(longPress)
+                    }
+                    if (dragging && !longPressed) {
+                        while (abs(event.x - lastX) >= stepX) {
+                            val right = event.x > lastX
+                            send(if (right) KeyCode.ARROW_RIGHT else KeyCode.ARROW_LEFT)
+                            lastX += if (right) stepX else -stepX
+                        }
+                        while (abs(event.y - lastY) >= stepY) {
+                            val down = event.y > lastY
+                            send(if (down) KeyCode.ARROW_DOWN else KeyCode.ARROW_UP)
+                            lastY += if (down) stepY else -stepY
+                        }
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    removeCallbacks(longPress)
+                    isPressed = false
+                    if (!dragging && !longPressed) onTap(event.y)
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    removeCallbacks(longPress)
+                    isPressed = false
+                }
+            }
+            return true
+        }
+
+        private fun onTap(y: Float) {
+            if (hasWords()) {
+                val word = words[(y / (height / 3f)).toInt().coerceIn(0, 2)]
+                if (!word.text.isNullOrEmpty()) word.performClick()
+                return
+            }
+            val now = SystemClock.uptimeMillis()
+            if (!terminal && now - lastTapTime < ViewConfiguration.getDoubleTapTimeout()) {
+                send(KeyCode.CLIPBOARD_SELECT_WORD)
+                lastTapTime = 0
+            } else {
+                lastTapTime = now
+            }
+        }
+
+        private fun send(code: Int) {
+            performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+            listener?.onCodeInput(code, Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE, false)
+        }
     }
 }

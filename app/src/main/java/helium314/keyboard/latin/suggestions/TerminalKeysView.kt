@@ -98,6 +98,10 @@ class TerminalKeysView(context: Context, rows: List<List<Key>>, keyGap: Int) : L
         /** one row, for the suggestion strip */
         val STRIP = listOf(listOf(ESC, TAB, CTRL, LEFT, DOWN, UP, RIGHT, ch('|'), ch('~'), ch('/'), SHIFT_ENTER))
 
+        /** the split hub's terminal rows above and below its cursor pad */
+        val HUB_TOP = listOf(listOf(ESC, TAB, CTRL, SHIFT_ENTER))
+        val HUB_BOTTOM = listOf(listOf(ch('|'), ch('~'), ch('/'), ch('-')))
+
         /** a grid, for the split hub */
         val HUB = listOf(
             listOf(ESC, TAB, CTRL, SHIFT_ENTER),
