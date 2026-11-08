@@ -90,6 +90,7 @@ object Defaults {
     const val PREF_SPLIT_HIDDEN_DUPLICATES = false
     const val PREF_HIDE_IME_NAV_BAR = false
     const val PREF_SPLIT_HUB = false
+    const val PREF_TERMINAL_APPS = "" // comma-separated package names
     const val PREF_DICTATION = true
     const val PREF_DICTATION_ENGINE = "google"
     const val PREF_DICTATION_COMMANDS = true

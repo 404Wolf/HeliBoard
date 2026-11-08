@@ -104,6 +104,7 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     public static final String PREF_SPLIT_HIDDEN_DUPLICATES = "split_hidden_duplicates";
     public static final String PREF_HIDE_IME_NAV_BAR = "hide_ime_nav_bar";
     public static final String PREF_SPLIT_HUB = "split_hub";
+    public static final String PREF_TERMINAL_APPS = "terminal_apps";
     public static final String PREF_DICTATION = "dictation";
     public static final String PREF_DICTATION_ENGINE = "dictation_engine";
     public static final String PREF_DICTATION_COMMANDS = "dictation_commands";

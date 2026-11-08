@@ -431,6 +431,11 @@ class KeyboardActionListenerImpl(private val latinIME: LatinIME, private val inp
     /** actual Android metaState like in KeyEvent */
     private var metaState = 0
 
+    override fun isMetaActive(keyCode: Int): Boolean {
+        val state = metaPressStates[keyCode] ?: return false
+        return state != MetaPressState.UNSET && state != MetaPressState.UNSET_ON_RELEASE
+    }
+
     /** keeps track of the state of meta keys by (HeliBoard) KeyCodes */
     private val metaPressStates = SparseArray<MetaPressState>(4)
 

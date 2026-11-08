@@ -777,6 +777,11 @@ public final class InputLogic {
                 paste(mLatinIME.getCurrentInputEditorInfo().packageName);
                 break;
             case KeyCode.SHIFT_ENTER:
+                if (sv.mIsTerminal) {
+                    // terminals tell Shift+Enter (e.g. a new line in an agent's prompt) from Enter by the key event
+                    sendDownUpKeyEventWithMetaState(KeyEvent.KEYCODE_ENTER, KeyEvent.META_SHIFT_ON);
+                    break;
+                }
                 // todo: try using sendDownUpKeyEventWithMetaState() and remove the key code maybe
                 final Event tmpEvent = Event.createSoftwareKeypressEvent(Constants.CODE_ENTER,
                         keyCode, 0, event.getX(), event.getY(), event.isKeyRepeat());
