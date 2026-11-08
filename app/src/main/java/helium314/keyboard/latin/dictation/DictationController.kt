@@ -135,9 +135,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         component = DictationEngine.resolve(ime, engine)
         if (component == null && !SpeechRecognizer.isRecognitionAvailable(ime) && !DictationEngine.anyAvailable(ime)) {
             // no recognition service at all: use the voice input method like before, if there is one
-            val richImm = RichInputMethodManager.getInstance()
-            if (richImm.isShortcutImeReady) richImm.switchToShortcutIme(ime)
-            else toast(R.string.dictation_unavailable)
+            if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
             return
         }
         val prefs = ime.prefs()
@@ -158,7 +156,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         connection.endBatchEdit()
 
         if (!createRecognizer()) {
-            toast(R.string.dictation_unavailable)
+            if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
             return
         }
         isActive = true
@@ -355,8 +353,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                 } else if (fallBackToSystemRecognizer()) {
                     restartListening()
                 } else {
-                    toast(R.string.dictation_unavailable)
-                    cancel()
+                    giveUp()
                 }
             }
             SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> {
@@ -375,8 +372,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                         consecutiveErrors = 0
                         restartListening()
                     } else {
-                        toast(R.string.dictation_unavailable)
-                        cancel()
+                        giveUp()
                     }
                 } else {
                     // a busy or confused service usually recovers with a new connection
@@ -389,16 +385,35 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     override fun onEvent(eventType: Int, params: Bundle?) {}
 
-    /** Switch from Google's service to the system default one, once per session. */
+    /**
+     * Switch to the system's recognition service (the selected default, else the first installed
+     * one), once per session, unless that is the one that just failed.
+     */
     private fun fallBackToSystemRecognizer(): Boolean {
-        if (triedSystemFallback || component == null) return false
+        if (triedSystemFallback) return false
         triedSystemFallback = true
-        if (!SpeechRecognizer.isRecognitionAvailable(ime)) return false
-        component = null
+        val system = DictationEngine.resolve(ime, DictationEngine.SYSTEM)
+        if (system == null && DictationEngine.defaultService(ime) == null) return false
+        if (system == component) return false // that's the one that failed
+        component = system
         engine = DictationEngine.SYSTEM
         preferOffline = false
         if (!createRecognizer()) return false
         toast(R.string.dictation_fallback_system)
+        return true
+    }
+
+    /** No recognizer works: end the session, then use the voice input method, else say so. */
+    private fun giveUp() {
+        cancel()
+        if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
+    }
+
+    private fun switchToVoiceIme(): Boolean {
+        val richImm = RichInputMethodManager.getInstance()
+        if (!richImm.isShortcutImeReady) return false
+        toast(R.string.dictation_fallback_voice_ime)
+        richImm.switchToShortcutIme(ime)
         return true
     }
 

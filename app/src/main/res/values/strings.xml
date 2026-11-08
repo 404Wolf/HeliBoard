@@ -92,6 +92,7 @@
     <string name="dictation_no_network">Dictation needs a network connection or an offline speech model</string>
     <string name="dictation_fallback_system">Using the system speech recognizer</string>
     <string name="dictation_unavailable">No speech recognition available</string>
+    <string name="dictation_fallback_voice_ime">No speech recognizer: switching to the voice input method</string>
     <string name="dictation_audio_error">Microphone not available</string>
     <string name="dictation_nothing_to_delete">Nothing to delete</string>
     <string name="dictation_permission_granted">Microphone allowed: tap the mic key again</string>

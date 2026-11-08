@@ -50,13 +50,26 @@ enum class DictationEngine(val prefValue: String) {
             false
         }
 
+        /** The service chosen in system settings (voice_recognition_service), if any is set and installed. */
+        fun defaultService(context: Context): ComponentName? {
+            val flat = try {
+                android.provider.Settings.Secure.getString(context.contentResolver, "voice_recognition_service")
+            } catch (e: Exception) {
+                null
+            }
+            val cn = flat?.takeIf { it.isNotEmpty() }?.let { ComponentName.unflattenFromString(it) } ?: return null
+            return cn.takeIf { it in recognitionServices(context) }
+        }
+
         /**
-         * The service for [engine], or null for the system default.
-         * Falls back to the system default when Google's service is not installed.
+         * The service for [engine], or null for the system default. Google falls back to the
+         * system service when the Google app is not installed. With no system default selected
+         * (createSpeechRecognizer would fail with "no selected voice recognition service"), the
+         * first installed recognition service is used explicitly.
          */
         fun resolve(context: Context, engine: DictationEngine): ComponentName? = when (engine) {
-            GOOGLE -> googleService(context)
-            SYSTEM -> null
+            GOOGLE -> googleService(context) ?: resolve(context, SYSTEM)
+            SYSTEM -> if (defaultService(context) != null) null else recognitionServices(context).firstOrNull()
         }
     }
 }
