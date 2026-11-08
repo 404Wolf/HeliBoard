@@ -65,6 +65,8 @@
     <dimen name="config_suggestion_chip_height">32dp</dimen>
     <dimen name="config_suggestion_chip_padding">14dp</dimen>
     <dimen name="config_suggestion_chip_outline">1.5dp</dimen>
+    <!-- split_hub: space between chips, trackpad and buttons -->
+    <dimen name="config_split_hub_gap">8dp</dimen>
     <dimen name="config_more_suggestions_row_height">40dp</dimen>
     <integer name="config_max_more_suggestions_row">6</integer>
     <fraction name="config_min_more_suggestions_width">90%</fraction>

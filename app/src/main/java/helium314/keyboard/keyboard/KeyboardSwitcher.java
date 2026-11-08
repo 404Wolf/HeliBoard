@@ -49,6 +49,7 @@ import helium314.keyboard.latin.RichInputMethodSubtype;
 import helium314.keyboard.latin.settings.Settings;
 import helium314.keyboard.latin.settings.SettingsKt;
 import helium314.keyboard.latin.settings.SettingsValues;
+import helium314.keyboard.latin.suggestions.SplitHubView;
 import helium314.keyboard.latin.suggestions.SuggestionStripView;
 import helium314.keyboard.latin.utils.CapsModeUtils;
 import helium314.keyboard.latin.utils.FloatingKeyboardUtils;
@@ -294,7 +295,10 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
             @NonNull final SettingsValues settingsValues,
             @NonNull final KeyboardSwitchState toggleState) {
         final int visibility = isImeSuppressedByHardwareKeyboard(settingsValues, toggleState) ? View.GONE : View.VISIBLE;
-        final int stripVisibility = mLatinIME.hasSuggestionStripView()? View.VISIBLE : View.GONE;
+        // split_hub: the suggestions move into the split gap, no strip above the keys
+        final boolean hub = settingsValues.mSplitHub && settingsValues.mIsSplitKeyboardEnabled
+                && !settingsValues.mIsFloatingKeyboard;
+        final int stripVisibility = mLatinIME.hasSuggestionStripView() && !hub ? View.VISIBLE : View.GONE;
         mStripContainer.setVisibility(stripVisibility);
         PointerTracker.switchTo(mKeyboardView);
         mKeyboardView.setVisibility(visibility);
@@ -754,6 +758,9 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardStripScrollView = mCurrentInputView.findViewById(R.id.clipboard_strip_scroll_view);
         mSuggestionStripView = mCurrentInputView.findViewById(R.id.suggestion_strip_view);
         mStripContainer = mCurrentInputView.findViewById(R.id.strip_container);
+        final SplitHubView hubView = mCurrentInputView.findViewById(R.id.split_hub);
+        hubView.attach(mSuggestionStripView, mLatinIME.mKeyboardActionListener);
+        mSuggestionStripView.setHub(hubView);
         mBackgroundGatheringIndicator = mCurrentInputView.findViewById(R.id.backgroundGatheringIndicator);
 
         prefs.registerOnSharedPreferenceChangeListener(mSuggestionStripView);

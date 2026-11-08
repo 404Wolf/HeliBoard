@@ -29,6 +29,12 @@
             android:layoutDirection="ltr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <!-- split_hub: suggestions, trackpad and buttons in the split gap, placed by InputView -->
+        <helium314.keyboard.latin.suggestions.SplitHubView
+            android:id="@+id/split_hub"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
         <include
             android:id="@+id/emoji_palettes_view"
             layout="@layout/emoji_palettes_view" />

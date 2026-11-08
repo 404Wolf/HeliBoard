@@ -32,6 +32,8 @@ import helium314.keyboard.keyboard.MainKeyboardView;
 import helium314.keyboard.latin.common.ColorType;
 import helium314.keyboard.latin.settings.Settings;
 import helium314.keyboard.latin.suggestions.MoreSuggestionsView;
+import helium314.keyboard.latin.settings.SettingsValues;
+import helium314.keyboard.latin.suggestions.SplitHubView;
 import helium314.keyboard.latin.suggestions.SuggestionStripView;
 import helium314.keyboard.latin.utils.FloatingKeyboardUtils;
 import kotlin.Unit;
@@ -59,6 +61,7 @@ public final class InputView extends FrameLayout {
     private View mStripToolbar;
     private final ViewTreeObserver.OnPreDrawListener mSplitGapUpdater = () -> {
         updateSplitCards();
+        updateHub();
         return true;
     };
     private KeyboardTopPaddingForwarder mKeyboardTopPaddingForwarder;
@@ -105,8 +108,8 @@ public final class InputView extends FrameLayout {
      * @return false if there is no such gap, e.g. because the main keyboard is not shown or not split
      */
     public boolean getSplitGap(@NonNull final Rect outRect) {
-        if (Settings.getValues().mIsFloatingKeyboard || !mMainKeyboardView.isShown())
-            return false;
+        if (Settings.getValues().mIsFloatingKeyboard || Settings.getValues().mSplitHub || !mMainKeyboardView.isShown())
+            return false; // with the hub the gap is part of the keyboard
         final Keyboard keyboard = mMainKeyboardView.getKeyboard();
         if (keyboard == null || keyboard.mSplitGapLeft < 0)
             return false;
@@ -162,6 +165,40 @@ public final class InputView extends FrameLayout {
             }
         }
         return false;
+    }
+
+    /** Places the split hub (split_hub) over the gap between the halves, or hides it. */
+    private void updateHub() {
+        final SplitHubView hub = findViewById(R.id.split_hub);
+        if (hub == null) return;
+        final SettingsValues sv = Settings.getValues();
+        final Keyboard keyboard = mMainKeyboardView.getKeyboard();
+        final boolean show = sv.mSplitHub && !sv.mIsFloatingKeyboard && mMainKeyboardView.isShown()
+                && keyboard != null && keyboard.mSplitGapLeft >= 0;
+        if (!show) {
+            if (hub.getVisibility() != GONE) hub.setVisibility(GONE);
+            return;
+        }
+        final int keysLeft = mMainKeyboardView.getLeft() + mMainKeyboardView.getPaddingLeft();
+        final int keysTop = mMainKeyboardView.getTop() + mMainKeyboardView.getPaddingTop() + keyboard.mTopPadding;
+        final int insetX = keyboard.mMostCommonKeyWidth / 8;
+        final int insetY = keyboard.mVerticalGap / 2;
+        final int left = keysLeft + keyboard.mSplitGapLeft + insetX;
+        final int width = keyboard.mSplitGapRight - keyboard.mSplitGapLeft - 2 * insetX;
+        final int top = keysTop + insetY;
+        final int height = keyboard.mBaseHeight - 2 * insetY;
+        final FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) hub.getLayoutParams();
+        if (lp.leftMargin != left || lp.topMargin != top || lp.width != width || lp.height != height) {
+            lp.leftMargin = left;
+            lp.topMargin = top;
+            lp.width = width;
+            lp.height = height;
+            hub.setLayoutParams(lp);
+        }
+        if (hub.getVisibility() != VISIBLE) {
+            hub.setVisibility(VISIBLE);
+            mSuggestionStripView.updateHub();
+        }
     }
 
     /** Rebuilds the card and clip paths for the keyboard frame if the split gap, the strip or the frame changed. */

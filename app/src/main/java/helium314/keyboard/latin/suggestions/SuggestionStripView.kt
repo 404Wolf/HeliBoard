@@ -260,8 +260,16 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         startIndexOfMoreSuggestions = layoutHelper.layoutAndReturnStartIndexOfMoreSuggestions(
             context, suggestedWords, suggestionsStrip, this
         )
+        updateHub()
         isExternalSuggestionVisible = false
         updateKeys()
+    }
+
+    /** Show the current words in the hub: the centre (best) one first. */
+    fun updateHub() {
+        val hub = hub ?: return
+        val centre = wordViews.getOrNull(1)
+        hub.setWords(centre, listOfNotNull(wordViews.getOrNull(0), wordViews.getOrNull(2)))
     }
 
     /** Slot widths of the strip for a split keyboard, and how far to move the side chips. */
@@ -331,7 +339,17 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private var dictationView: View? = null
 
     /** Show the dictation indicator over the whole strip (suggestions and toolbar). */
+    /** The split keyboard's centre hub, which shows the suggestions instead of this strip (split_hub). */
+    var hub: SplitHubView? = null
+
+    private fun hubActive() = hub?.isShown == true
+
     fun showDictationView(view: View) {
+        if (hubActive()) {
+            dictationView = view
+            hub!!.showDictationView(view)
+            return
+        }
         if (view.parent !== this) {
             (view.parent as? ViewGroup)?.removeView(view)
             addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -344,6 +362,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
 
     fun hideDictationView(view: View) {
         if (dictationView === view) dictationView = null
+        hub?.hideDictationView(view)
         removeView(view)
     }
 
