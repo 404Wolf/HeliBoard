@@ -99,6 +99,7 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     public static final String PREF_ENABLE_SPLIT_KEYBOARD_FOLDED = "split_keyboard_folded";
     public static final String PREF_ENABLE_SPLIT_KEYBOARD_FOLDED_LANDSCAPE = "split_keyboard_folded_landscape";
     public static final String PREF_SPLIT_SPACER_SCALE_PREFIX = "split_spacer_scale";
+    public static final String PREF_SPLIT_GAP_RESERVED_ROWS = "split_gap_reserved_rows";
     public static final String PREF_KEYBOARD_HEIGHT_SCALE_PREFIX = "keyboard_height_scale";
     public static final String PREF_BOTTOM_ROW_SCALE_PREFIX = "bottom_row_scale";
     public static final String PREF_BOTTOM_PADDING_SCALE_PREFIX = "bottom_padding_scale";

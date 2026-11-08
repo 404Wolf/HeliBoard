@@ -68,6 +68,8 @@
     <string name="enable_split_keyboard">Enable split keyboard</string>
     <!-- Option for setting distance for split keyboard in portrait mode -->
     <string name="split_spacer_scale">Split distance</string>
+    <!-- Option for the height of the band at the bottom of the split keyboard that apps don't extend into, in key rows -->
+    <string name="split_gap_reserved_rows">Rows kept free below apps in split gap</string>
     <!-- Option name for including other IMEs in the language key switch list -->
     <string name="language_switch_key_switch_input_method">Switch to other input methods</string>
     <!-- Option name for switching language / subtype only -->

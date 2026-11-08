@@ -85,6 +85,7 @@ object Defaults {
     const val PREF_ENABLE_SPLIT_KEYBOARD = false
     @JvmField
     val PREF_SPLIT_SPACER_SCALE = Array(4) { DEFAULT_SIZE_SCALE }
+    const val PREF_SPLIT_GAP_RESERVED_ROWS = 1f
     @JvmField
     val PREF_KEYBOARD_HEIGHT_SCALE = Array(4) { DEFAULT_SIZE_SCALE }
     @JvmField
