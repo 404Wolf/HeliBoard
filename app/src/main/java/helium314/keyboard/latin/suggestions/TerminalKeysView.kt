@@ -45,6 +45,11 @@ class TerminalKeysView(context: Context, rows: List<List<Key>>, keyGap: Int) : L
                 view.maxLines = 1
                 view.setTextColor(colors.get(ColorType.KEY_TEXT))
                 view.setTextSize(TypedValue.COMPLEX_UNIT_PX, res.getDimension(R.dimen.config_terminal_key_text_size))
+                view.includeFontPadding = false
+                view.setPadding(0, 0, 0, 0)
+                // narrow cells (four across the split hub): shrink "Ctrl" / "Esc" rather than cut them
+                if (android.os.Build.VERSION.SDK_INT >= 26)
+                    view.setAutoSizeTextTypeUniformWithConfiguration(8, 15, 1, TypedValue.COMPLEX_UNIT_SP)
                 view.background = KeyShapeDrawable(
                     res.getDimension(R.dimen.config_key_corner_radius_rounded),
                     res.getDimension(R.dimen.config_key_shade_height_rounded),
