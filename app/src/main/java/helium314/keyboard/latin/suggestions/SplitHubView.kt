@@ -230,12 +230,17 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
                     canvas.drawText(shown, 0, shown.length, width / 2f, y, paint)
                 }
             } else {
-                paint.textSize = 12 * resources.displayMetrics.scaledDensity
                 paint.typeface = Typeface.DEFAULT
                 paint.color = colors.get(ColorType.KEY_HINT_TEXT)
                 paint.alpha = 0x90
-                val hint = if (terminal) "drag: arrows" else "drag: cursor · hold: paste"
-                canvas.drawText(hint, width / 2f, height / 2f - (paint.descent() + paint.ascent()) / 2, paint)
+                val lines = if (terminal) listOf("drag: arrows") else listOf("drag: cursor", "hold: paste")
+                // as large as 12 sp, but always fitting the pad's width
+                paint.textSize = 12 * resources.displayMetrics.scaledDensity
+                val widest = lines.maxOf { paint.measureText(it) }
+                if (widest > width - 12 * dp) paint.textSize *= (width - 12 * dp) / widest
+                val lineHeight = paint.fontSpacing
+                val top = height / 2f - lineHeight * (lines.size - 1) / 2 - (paint.descent() + paint.ascent()) / 2
+                for ((i, line) in lines.withIndex()) canvas.drawText(line, width / 2f, top + i * lineHeight, paint)
             }
         }
 
