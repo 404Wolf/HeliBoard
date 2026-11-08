@@ -15,6 +15,8 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.inputmethodservice.InputMethodService;
 import android.media.AudioManager;
 import android.os.Build;
@@ -113,6 +115,7 @@ public class LatinIME extends InputMethodService implements
     private static final boolean TRACE = false;
 
     private static final int EXTENDED_TOUCHABLE_REGION_HEIGHT = 100;
+    private final Rect mSplitGapRect = new Rect();
     private static final int PERIOD_FOR_AUDIO_AND_HAPTIC_FEEDBACK_IN_KEY_REPEAT = 2;
     private static final int PENDING_IMS_CALLBACK_DURATION_MILLIS = 800;
     static final long DELAY_WAIT_FOR_DICTIONARY_LOAD_MILLIS = TimeUnit.SECONDS.toMillis(2);
@@ -1221,6 +1224,12 @@ public class LatinIME extends InputMethodService implements
             }
             outInsets.touchableInsets = InputMethodService.Insets.TOUCHABLE_INSETS_REGION;
             outInsets.touchableRegion.set(touchLeft, touchTop, touchRight, touchBottom);
+            if (!mKeyboardSwitcher.isShowingPopupKeysPanel() && hasSplitGap()) {
+                // let taps in the gap between the split keyboard halves pass through to the app
+                if (mSplitGapRect.bottom >= inputHeight)
+                    mSplitGapRect.bottom = touchBottom;
+                outInsets.touchableRegion.op(mSplitGapRect, Region.Op.DIFFERENCE);
+            }
         }
 
         // Has to be subtracted after calculating touchableRegion
@@ -1229,6 +1238,11 @@ public class LatinIME extends InputMethodService implements
         outInsets.contentTopInsets = visibleTopY;
         outInsets.visibleTopInsets = visibleTopY;
         mInsetsUpdater.setInsets(outInsets);
+    }
+
+    /** Updates {@link #mSplitGapRect} and returns whether the split keyboard has a see-through gap. */
+    private boolean hasSplitGap() {
+        return mInputView instanceof InputView inputView && inputView.getSplitGap(mSplitGapRect);
     }
 
     public void startShowingInputView(final boolean needsToLoadKeyboard) {
