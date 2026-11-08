@@ -186,6 +186,8 @@ public class Key implements Comparable<Key> {
 
     /** The current pressed state of this key */
     private boolean mPressed;
+    /** Hidden duplicate of a key across a split keyboard's gap: only drawn while pressed */
+    private boolean mHiddenDuplicate;
     /** Key is enabled and responds on press */
     private boolean mEnabled;
     /** Key is locked (appears permanently pressed) */
@@ -257,6 +259,7 @@ public class Key implements Comparable<Key> {
         mHashCode = key.mHashCode;
         // Key state.
         mPressed = key.mPressed;
+        mHiddenDuplicate = key.mHiddenDuplicate;
         mEnabled = key.mEnabled;
     }
 
@@ -287,6 +290,7 @@ public class Key implements Comparable<Key> {
         mHashCode = key.mHashCode;
         // Key state.
         mPressed = key.mPressed;
+        mHiddenDuplicate = key.mHiddenDuplicate;
         mEnabled = key.mEnabled;
     }
 
@@ -306,6 +310,7 @@ public class Key implements Comparable<Key> {
         mKeyVisualAttributes = keyParams.mKeyVisualAttributes;
         mOptionalAttributes = keyParams.mOptionalAttributes;
         mEnabled = keyParams.mEnabled;
+        mHiddenDuplicate = keyParams.mHiddenDuplicate;
 
         // stuff to create
 
@@ -355,6 +360,7 @@ public class Key implements Comparable<Key> {
         mHashCode = key.mHashCode;
         // Key state.
         mPressed = key.mPressed;
+        mHiddenDuplicate = key.mHiddenDuplicate;
         mEnabled = key.mEnabled;
     }
 
@@ -507,6 +513,14 @@ public class Key implements Comparable<Key> {
 
     public void markAsBottomEdge(final KeyboardParams params) {
         mHitBox.bottom = params.mOccupiedHeight + params.mBottomPadding;
+    }
+
+    public final boolean isPressed() {
+        return mPressed;
+    }
+
+    public final boolean isHiddenDuplicate() {
+        return mHiddenDuplicate;
     }
 
     public final boolean isSpacer() {
@@ -980,6 +994,8 @@ public class Key implements Comparable<Key> {
     public static class KeyParams {
         // params for building
         public boolean isSpacer;
+        /** see {@link Key#isHiddenDuplicate()} */
+        public boolean mHiddenDuplicate;
         private final KeyboardParams mKeyboardParams; // for reading gaps and keyboard width / height
         public float mWidth;
         public float mHeight; // also should allow negative values, indicating absolute height is defined
@@ -1291,6 +1307,7 @@ public class Key implements Comparable<Key> {
             mWidth = keyParams.mWidth;
             mHeight = keyParams.mHeight;
             isSpacer = keyParams.isSpacer;
+            mHiddenDuplicate = keyParams.mHiddenDuplicate;
             mKeyboardParams = keyParams.mKeyboardParams;
             mEnabled = keyParams.mEnabled;
 

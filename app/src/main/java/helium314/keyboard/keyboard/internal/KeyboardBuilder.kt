@@ -177,6 +177,8 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
                 rowSpacers.add(spacer)
             }
             widenInnerKeys(row, row.indexOf(spacer))
+            if (Settings.getValues().mSplitHiddenDuplicates)
+                addHiddenDuplicates(row, spacer)
             // re-calculate relative widths
             val relativeWidthSumNew = row.sumOf { it.mWidth }
             val widthFactor = relativeWidthSum / relativeWidthSumNew
@@ -211,6 +213,29 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
             inner.mWidth += extra
             others.forEach { it.mWidth *= (othersWidth - extra) / othersWidth }
         }
+    }
+
+    /**
+     *  Like the iPad's split keyboard: a narrow invisible key at the inner edge of each half that
+     *  types the other half's innermost letter (Y H B at the left half, T G V at the right), so a
+     *  thumb that overshoots the edge still gets the letter it was reaching for. Taken from the
+     *  gap, so the cards (and the touchable area) grow over these zones. Letter rows only.
+     */
+    private fun addHiddenDuplicates(row: ArrayList<KeyParams>, spacer: KeyParams) {
+        val i = row.indexOf(spacer)
+        if (i <= 0 || i >= row.lastIndex) return
+        val left = row[i - 1]
+        val right = row[i + 1]
+        if (left.isSpacer || right.isSpacer || left.mBackgroundType != Key.BACKGROUND_TYPE_NORMAL
+                || right.mBackgroundType != Key.BACKGROUND_TYPE_NORMAL)
+            return
+        val width = minOf(left.mWidth, right.mWidth) * HIDDEN_DUPLICATE_WIDTH
+        if (spacer.mWidth < 4 * width) return // keep a real gap
+        spacer.mWidth -= 2 * width
+        val ofRight = KeyParams(right).apply { mWidth = width; mHiddenDuplicate = true }
+        val ofLeft = KeyParams(left).apply { mWidth = width; mHiddenDuplicate = true }
+        row.add(i, ofRight) // left half: ..., t, [y], gap, [t], y, ...
+        row.add(i + 2, ofLeft)
     }
 
     /**
@@ -312,6 +337,8 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
     }
 
     companion object {
+        /** width of a hidden duplicate key, relative to the key it copies */
+        private const val HIDDEN_DUPLICATE_WIDTH = 0.5f
         private const val TAG = "Keyboard.Builder"
     }
 }

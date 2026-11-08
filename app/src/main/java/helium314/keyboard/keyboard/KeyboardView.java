@@ -333,6 +333,8 @@ public class KeyboardView extends View {
 
     private void onDrawKey(@NonNull final Key key, @NonNull final Canvas canvas,
             @NonNull final Paint paint) {
+        if (key.isHiddenDuplicate() && !key.isPressed())
+            return; // only shows while touched
         final int keyDrawX = key.getDrawX() + getPaddingLeft();
         final int keyDrawY = key.getY() + getPaddingTop();
         canvas.translate(keyDrawX, keyDrawY);
