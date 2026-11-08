@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewKt;
 
 import helium314.keyboard.accessibility.AccessibilityUtils;
+import helium314.keyboard.keyboard.KeyShapeDrawable;
 import helium314.keyboard.keyboard.Keyboard;
 import helium314.keyboard.keyboard.MainKeyboardView;
 import helium314.keyboard.latin.common.ColorType;
@@ -46,6 +48,10 @@ public final class InputView extends FrameLayout {
     private final Rect mSplitFrame = new Rect();
     private final Rect mTmpGap = new Rect();
     private final Path mSplitCardsPath = new Path();
+    // what the frame may draw into while split: the cards, plus the strip band with chips
+    private final Path mSplitClipPath = new Path();
+    // the frame's background while this view draws it inside the cards (split only)
+    private Drawable mFrameBackground;
     // whether the strip area above the split gap is see-through, see isStripOverSplitGapOpen
     private boolean mStripOverGapOpen;
     private SuggestionStripView mSuggestionStripView;
@@ -158,12 +164,18 @@ public final class InputView extends FrameLayout {
         return false;
     }
 
-    /** Rebuilds the clip path for the keyboard frame if the split gap, the strip or the frame changed. */
+    /** Rebuilds the card and clip paths for the keyboard frame if the split gap, the strip or the frame changed. */
     private void updateSplitCards() {
         if (!getSplitGap(mTmpGap))
             mTmpGap.setEmpty();
         final boolean stripOpen = !mTmpGap.isEmpty() && isStripIdle();
         final View frame = mMainKeyboardFrame;
+        if (!mTmpGap.isEmpty() && frame.getBackground() != null) {
+            // the frame background is drawn here, only inside the cards (see drawChild)
+            mFrameBackground = frame.getBackground();
+            frame.setBackground(null);
+            invalidate();
+        }
         if (mTmpGap.equals(mSplitGap) && stripOpen == mStripOverGapOpen
                 && frame.getLeft() == mSplitFrame.left && frame.getTop() == mSplitFrame.top
                 && frame.getRight() == mSplitFrame.right && frame.getBottom() == mSplitFrame.bottom)
@@ -173,32 +185,49 @@ public final class InputView extends FrameLayout {
         mStripOverGapOpen = stripOpen;
         mSplitFrame.set(frame.getLeft(), frame.getTop(), frame.getRight(), frame.getBottom());
         mSplitCardsPath.reset();
-        if (!mSplitGap.isEmpty())
-            buildSplitCardsPath(mSplitCardsPath, mSplitFrame, mSplitGap, stripOpen,
-                    SPLIT_CARD_CORNER_RADIUS_DP * getResources().getDisplayMetrics().density);
+        mSplitClipPath.reset();
+        if (mSplitGap.isEmpty()) {
+            restoreFrameBackground();
+        } else {
+            final boolean chips = SuggestionStripView.usesChips(Settings.getValues().mColors);
+            final float r = SPLIT_CARD_CORNER_RADIUS_DP * getResources().getDisplayMetrics().density;
+            buildSplitCardsPath(mSplitCardsPath, mSplitFrame, mSplitGap, stripOpen || chips, r);
+            mSplitClipPath.set(mSplitCardsPath);
+            if (chips && mSplitGap.top > mSplitFrame.top) // chips float over the app above the gap
+                mSplitClipPath.addRect(mSplitFrame.left, mSplitFrame.top, mSplitFrame.right, mSplitGap.top, Path.Direction.CW);
+        }
         invalidate();
         if (openChanged)
             requestLayout(); // the touchable region (LatinIME.onComputeInsets) depends on it
     }
 
+    private void restoreFrameBackground() {
+        if (mFrameBackground == null) return;
+        mMainKeyboardFrame.setBackground(mFrameBackground);
+        mFrameBackground = null;
+    }
+
     /**
-     * Each keyboard half is a rounded card, the gap between them stays see-through. While the
-     * strip (if any) shows something, it bridges the cards above the gap, with rounded inner
-     * corners where it meets the gap; while it is idle the gap reaches up to the top.
+     * Each keyboard half is a rounded card, the gap between them stays see-through. Unless
+     * [open], the strip bridges the cards above the gap, with rounded inner corners where it
+     * meets the gap; else the gap reaches up to the top.
      */
     private static void buildSplitCardsPath(final Path out, final Rect f, final Rect gap,
-            final boolean stripOpen, final float r) {
+            final boolean open, final float r) {
         final int keysTop = gap.top;
-        final boolean bridge = keysTop > f.top && !stripOpen;
-        out.addRoundRect(new RectF(f.left, f.top, gap.left, f.bottom), r, r, Path.Direction.CW);
-        out.addRoundRect(new RectF(gap.right, f.top, f.right, f.bottom), r, r, Path.Direction.CW);
+        final boolean bridge = keysTop > f.top && !open;
+        final Path card = new Path();
+        KeyShapeDrawable.Companion.smoothRoundRect(card, new RectF(f.left, f.top, gap.left, f.bottom), r);
+        out.addPath(card);
+        KeyShapeDrawable.Companion.smoothRoundRect(card, new RectF(gap.right, f.top, f.right, f.bottom), r);
+        out.addPath(card);
         if (gap.bottom < f.bottom) // rows below the gap span the whole width
             out.addRect(f.left, gap.bottom, f.right, f.bottom, Path.Direction.CW);
         if (!bridge)
             return;
         final Path bridgePath = new Path();
         // covers the inner top corners of both cards, plus concave fillets below it
-        bridgePath.addRect(gap.left - r, f.top, gap.right + r, keysTop + r, Path.Direction.CW);
+        bridgePath.addRect(gap.left - 2 * r, f.top, gap.right + 2 * r, keysTop + r, Path.Direction.CW);
         final Path hole = new Path();
         hole.addRoundRect(new RectF(gap.left, keysTop, gap.right, Math.max(gap.bottom, keysTop + 2 * r)),
                 new float[] { r, r, r, r, 0, 0, 0, 0 }, Path.Direction.CW);
@@ -210,9 +239,16 @@ public final class InputView extends FrameLayout {
     protected boolean drawChild(@NonNull final Canvas canvas, final View child, final long drawingTime) {
         if (child != mMainKeyboardFrame || mSplitGap.isEmpty())
             return super.drawChild(canvas, child, drawingTime);
-        // don't let the keyboard background (or anything else in the frame) paint the split gap
+        // keyboard background only inside the cards, the split gap stays see-through
+        if (mFrameBackground != null) {
+            canvas.save();
+            canvas.clipPath(mSplitCardsPath);
+            mFrameBackground.setBounds(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+            mFrameBackground.draw(canvas);
+            canvas.restore();
+        }
         canvas.save();
-        canvas.clipPath(mSplitCardsPath);
+        canvas.clipPath(mSplitClipPath);
         final boolean result = super.drawChild(canvas, child, drawingTime);
         canvas.restore();
         return result;

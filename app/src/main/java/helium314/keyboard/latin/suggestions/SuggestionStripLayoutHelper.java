@@ -39,6 +39,7 @@ import androidx.annotation.Nullable;
 import helium314.keyboard.accessibility.AccessibilityUtils;
 import helium314.keyboard.keyboard.KeyboardTypeface;
 import helium314.keyboard.latin.PunctuationSuggestions;
+import helium314.keyboard.keyboard.KeyboardTheme;
 import helium314.keyboard.latin.R;
 import helium314.keyboard.latin.SuggestedWords;
 import helium314.keyboard.latin.SuggestedWords.SuggestedWordInfo;
@@ -82,6 +83,10 @@ final class SuggestionStripLayoutHelper {
     private final float mAlphaObsoleted;
     private final float mCenterSuggestionWeight;
     private final int mCenterPositionInStrip;
+    /** chip style: no dividers, see {@link SuggestionChipDrawable} */
+    private boolean mChips;
+    /** widths of the strip's slots (left, centre, right) when they must line up with something, e.g. a split keyboard */
+    @Nullable private float[] mSlotWeights;
     private final int mTypedWordPositionWhenAutocorrect;
     private final Drawable mMoreSuggestionsHint;
     private static final String MORE_SUGGESTIONS_HINT = "…";
@@ -119,6 +124,7 @@ final class SuggestionStripLayoutHelper {
         mAlphaObsoleted = ResourceUtils.getFraction(a, R.styleable.SuggestionStripView_alphaObsoleted, 1.0f);
 
         final Colors colors = Settings.getValues().mColors;
+        mChips = KeyboardTheme.STYLE_ROUNDED.equals(colors.getThemeStyle()) && colors.getHasKeyBorders();
         mColorValidTypedWord = colors.get(ColorType.SUGGESTION_VALID_WORD);
         mColorTypedWord = colors.get(ColorType.SUGGESTION_TYPED_WORD);
         mColorAutoCorrect = colors.get(ColorType.SUGGESTION_AUTO_CORRECT);
@@ -150,6 +156,14 @@ final class SuggestionStripLayoutHelper {
                 R.dimen.config_more_suggestions_bottom_gap);
         mMoreSuggestionsRowHeight = res.getDimensionPixelSize(
                 R.dimen.config_more_suggestions_row_height);
+    }
+
+    /**
+     * Use these relative widths for the three slots of the strip instead of the default weights,
+     * e.g. so the centre slot sits over the gap of a split keyboard; null for the default.
+     */
+    public void setSlotWeights(@Nullable final float[] weights) {
+        mSlotWeights = weights != null && weights.length == mSuggestionsCountInStrip ? weights : null;
     }
 
     public int getMaxMoreSuggestionsRow() {
@@ -360,7 +374,7 @@ final class SuggestionStripLayoutHelper {
         @SuppressWarnings("unused")
         int x = 0;
         for (int positionInStrip = 0; positionInStrip < countInStrip; positionInStrip++) {
-            if (positionInStrip != 0) {
+            if (positionInStrip != 0 && !mChips) {
                 final View divider = mDividerViews.get(positionInStrip);
                 // Add divider if this isn't the left most suggestion in suggestions strip.
                 addDivider(stripView, divider);
@@ -442,12 +456,17 @@ final class SuggestionStripLayoutHelper {
 
     private int getSuggestionWidth(final int positionInStrip, final int maxWidth) {
         final int paddings = mPadding * mSuggestionsCountInStrip;
-        final int dividers = mDividerWidth * (mSuggestionsCountInStrip - 1);
+        final int dividers = mChips ? 0 : mDividerWidth * (mSuggestionsCountInStrip - 1);
         final int availableWidth = maxWidth - paddings - dividers;
         return (int)(availableWidth * getSuggestionWeight(positionInStrip));
     }
 
     private float getSuggestionWeight(final int positionInStrip) {
+        if (mSlotWeights != null) {
+            float sum = 0;
+            for (final float w : mSlotWeights) sum += w;
+            return mSlotWeights[positionInStrip] / sum;
+        }
         if (positionInStrip == mCenterPositionInStrip) {
             return mCenterSuggestionWeight;
         }
@@ -462,6 +481,7 @@ final class SuggestionStripLayoutHelper {
             final TextView wordView = mWordViews.get(positionInStrip);
             wordView.setText(null);
             wordView.setTag(null);
+            wordView.setActivated(false);
             // Make this inactive for touches in {@link #layoutWord(int,int)}.
             if (SuggestionStripView.DEBUG_SUGGESTIONS) {
                 mDebugInfoViews.get(positionInStrip).setText(null);
@@ -481,6 +501,10 @@ final class SuggestionStripLayoutHelper {
             // {@link SuggestionStripView#onClick(View)}.
             wordView.setTag(indexInSuggestedWords);
             wordView.setText(getStyledSuggestedWord(suggestedWords, indexInSuggestedWords));
+            // the chip of the word that space will commit gets an outline
+            wordView.setActivated((suggestedWords.mWillAutoCorrect && indexInSuggestedWords == SuggestedWords.INDEX_OF_AUTO_CORRECTION)
+                    || (suggestedWords.mTypedWordValid && indexInSuggestedWords == SuggestedWords.INDEX_OF_TYPED_WORD
+                        && positionInStrip == mCenterPositionInStrip));
             wordView.setTextColor(getSuggestionTextColor(suggestedWords, indexInSuggestedWords));
             KeyboardTypeface.applyToTextView(wordView);
             if (SuggestionStripView.DEBUG_SUGGESTIONS) {
@@ -495,7 +519,7 @@ final class SuggestionStripLayoutHelper {
             final PunctuationSuggestions punctuationSuggestions, final ViewGroup stripView) {
         final int countInStrip = Math.min(punctuationSuggestions.size(), PUNCTUATIONS_IN_STRIP);
         for (int positionInStrip = 0; positionInStrip < countInStrip; positionInStrip++) {
-            if (positionInStrip != 0) {
+            if (positionInStrip != 0 && !mChips) {
                 // Add divider if this isn't the left most suggestion in suggestions strip.
                 addDivider(stripView, mDividerViews.get(positionInStrip));
             }

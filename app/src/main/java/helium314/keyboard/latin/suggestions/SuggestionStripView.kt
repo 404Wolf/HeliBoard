@@ -31,6 +31,7 @@ import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import helium314.keyboard.event.HapticEvent
 import helium314.keyboard.keyboard.KeyboardSwitcher
+import helium314.keyboard.keyboard.KeyboardTheme
 import helium314.keyboard.keyboard.internal.KeyboardIconsSet
 import helium314.keyboard.keyboard.internal.keyboard_parser.floris.KeyCode
 import helium314.keyboard.latin.AudioAndHapticFeedbackManager
@@ -84,6 +85,11 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     }
 
     private val moreSuggestionsContainer: View
+    /**
+     * Rounded style with key borders: suggestions and toolbar buttons are separate chips on a
+     * transparent strip instead of a bar (see [SuggestionChipDrawable]).
+     */
+    private val chips = usesChips(Settings.getValues().mColors)
     private val wordViews = ArrayList<TextView>()
     private val debugInfoViews = ArrayList<TextView>()
     private val dividerViews = ArrayList<View>()
@@ -94,13 +100,15 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         moreSuggestionsContainer = inflater.inflate(R.layout.more_suggestions, null)
 
         val colors = Settings.getValues().mColors
-        colors.setBackground(this, ColorType.STRIP_BACKGROUND)
+        if (chips) setBackgroundColor(Color.TRANSPARENT)
+        else colors.setBackground(this, ColorType.STRIP_BACKGROUND)
         repeat(SuggestedWords.MAX_SUGGESTIONS) {
             val word = TextView(context, null, R.attr.suggestionWordStyle)
             word.contentDescription = resources.getString(R.string.spoken_empty_suggestion)
             word.setOnClickListener(this)
             word.setOnLongClickListener(this)
-            colors.setBackground(word, ColorType.STRIP_BACKGROUND)
+            if (chips) word.background = chipBackground(word, colors)
+            else colors.setBackground(word, ColorType.STRIP_BACKGROUND)
             wordViews.add(word)
             val divider = inflater.inflate(R.layout.suggestion_divider, null)
             dividerViews.add(divider)
@@ -142,6 +150,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         colors.setBackground(toolbarExpandKey, ColorType.STRIP_BACKGROUND) // necessary because background is re-used for defaultToolbarBackground
         colors.setColor(toolbarExpandKey, ColorType.TOOL_BAR_EXPAND_KEY)
         colors.setColor(toolbarExpandKey.background, ColorType.TOOL_BAR_EXPAND_KEY_BACKGROUND)
+        if (chips) toolbarExpandKey.background = chipBackground(null, colors)
 
         // background indicator for pinned keys
         val color = colors.get(ColorType.TOOL_BAR_KEY_ENABLED_BACKGROUND) or -0x1000000 // ignore alpha (in Java this is more readable 0xFF000000)
@@ -245,11 +254,31 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         clear()
         setRtl(isRtlLanguage)
         suggestedWords = suggestions
+        layoutHelper.setSlotWeights(splitSlotWeights())
         startIndexOfMoreSuggestions = layoutHelper.layoutAndReturnStartIndexOfMoreSuggestions(
             context, suggestedWords, suggestionsStrip, this
         )
         isExternalSuggestionVisible = false
         updateKeys()
+    }
+
+    /**
+     * With chips on a split keyboard: slot widths so the centre suggestion sits over the gap and
+     * the others over the halves; null otherwise.
+     */
+    private fun splitSlotWeights(): FloatArray? {
+        if (!chips) return null
+        val keyboardView = KeyboardSwitcher.getInstance().mainKeyboardView ?: return null
+        val keyboard = keyboardView.keyboard ?: return null
+        if (keyboard.mSplitGapLeft < 0 || !keyboardView.isShown || suggestionsStrip.width == 0) return null
+        val keyboardLocation = IntArray(2).also { keyboardView.getLocationInWindow(it) }
+        val stripLocation = IntArray(2).also { suggestionsStrip.getLocationInWindow(it) }
+        val keysLeft = keyboardLocation[0] + keyboardView.paddingLeft - stripLocation[0]
+        val gapLeft = (keysLeft + keyboard.mSplitGapLeft).toFloat()
+        val gapRight = (keysLeft + keyboard.mSplitGapRight).toFloat()
+        val width = suggestionsStrip.width.toFloat()
+        if (gapLeft <= 0 || gapRight >= width) return null
+        return floatArrayOf(gapLeft, gapRight - gapLeft, width - gapRight)
     }
 
     fun setExternalSuggestionView(view: View?, addCloseButton: Boolean) {
@@ -565,10 +594,28 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         view.setOnLongClickListener(this)
         (view.layoutParams as LinearLayout.LayoutParams).weight = 1f
         colors.setColor(view, ColorType.TOOL_BAR_KEY)
-        colors.setBackground(view, ColorType.STRIP_BACKGROUND)
+        if (chips) view.background = chipBackground(null, colors)
+        else colors.setBackground(view, ColorType.STRIP_BACKGROUND)
+    }
+
+    /** A pill around [word]'s text, or a round button if [word] is null, in the key colour. */
+    private fun chipBackground(word: TextView?, colors: Colors): Drawable {
+        val d = SuggestionChipDrawable(
+            word,
+            resources.getDimension(R.dimen.config_suggestion_chip_height),
+            resources.getDimension(R.dimen.config_suggestion_chip_padding),
+            colors.get(ColorType.ACTION_KEY_BACKGROUND),
+            resources.getDimension(R.dimen.config_suggestion_chip_outline),
+        )
+        colors.setColor(d, ColorType.KEY_BACKGROUND)
+        return d
     }
 
     companion object {
+        /** Whether suggestions are chips on a transparent strip (Rounded style with key borders). */
+        @JvmStatic
+        fun usesChips(colors: Colors) = colors.themeStyle == KeyboardTheme.STYLE_ROUNDED && colors.hasKeyBorders
+
         @JvmField
         var DEBUG_SUGGESTIONS = false
         private const val DEBUG_INFO_TEXT_SIZE_IN_DIP = 6.5f
