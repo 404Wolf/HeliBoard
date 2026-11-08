@@ -40,7 +40,8 @@ class SuggestionChipDrawable(
             if (text.isNullOrEmpty()) return
             val textWidth = textView.layout?.let { l -> (0 until l.lineCount).maxOfOrNull { l.getLineWidth(it) } }
                 ?: textView.paint.measureText(text, 0, text.length)
-            (textWidth * textView.textScaleX + 2 * padding).coerceIn(h * 1.4f, b.width().toFloat())
+            val maxWidth = b.width().toFloat()
+            (textWidth * textView.textScaleX + 2 * padding).coerceAtLeast(h * 1.4f).coerceAtMost(maxWidth)
         }
         val cx = b.exactCenterX()
         val cy = b.exactCenterY()
