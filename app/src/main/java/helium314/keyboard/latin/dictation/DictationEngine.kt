@@ -20,6 +20,8 @@ enum class DictationEngine(val prefValue: String) {
 
     companion object {
         const val GOOGLE_PACKAGE = "com.google.android.googlequicksearchbox"
+        private val GOOGLE_SERVICE =
+            ComponentName(GOOGLE_PACKAGE, "com.google.android.voicesearch.serviceapi.GoogleRecognitionService")
         private const val TAG = "DictationEngine"
 
         fun fromPref(value: String?) = entries.firstOrNull { it.prefValue == value } ?: GOOGLE
@@ -39,9 +41,20 @@ enum class DictationEngine(val prefValue: String) {
             emptyList()
         }
 
-        /** Google's recognition service, if the Google app is installed and provides one. */
+        private fun exists(context: Context, cn: ComponentName): Boolean = try {
+            context.packageManager.getServiceInfo(cn, 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+        /**
+         * Google's recognition service, if the Google app is installed and provides one. Looked up
+         * by name: package visibility filters it out of queryIntentServices.
+         */
         fun googleService(context: Context): ComponentName? =
-            recognitionServices(context).firstOrNull { it.packageName == GOOGLE_PACKAGE }
+            GOOGLE_SERVICE.takeIf { exists(context, it) }
+                ?: recognitionServices(context).firstOrNull { it.packageName == GOOGLE_PACKAGE }
 
         /** Whether any recognition service is available, so the mic key can dictate. */
         fun anyAvailable(context: Context): Boolean = try {
@@ -58,7 +71,7 @@ enum class DictationEngine(val prefValue: String) {
                 null
             }
             val cn = flat?.takeIf { it.isNotEmpty() }?.let { ComponentName.unflattenFromString(it) } ?: return null
-            return cn.takeIf { it in recognitionServices(context) }
+            return cn.takeIf { exists(context, it) }
         }
 
         /**

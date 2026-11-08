@@ -156,5 +156,7 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
+        <!-- Google's recognition service, looked up by name -->
+        <package android:name="com.google.android.googlequicksearchbox" />
     </queries>
 </manifest>
