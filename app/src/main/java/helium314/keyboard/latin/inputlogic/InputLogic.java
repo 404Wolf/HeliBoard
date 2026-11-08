@@ -934,7 +934,11 @@ public final class InputLogic {
      */
     private void handleNonFunctionalEvent(final Event event, final InputTransaction inputTransaction, final LatinIME.UIHandler handler) {
         inputTransaction.setDidAffectContents();
-        if (event.getCodePoint() == Constants.CODE_ENTER) {
+        if (event.getCodePoint() == Constants.CODE_ENTER && inputTransaction.getSettingsValues().mIsTerminal) {
+            // terminals: a real Enter key event, not an editor action (no action is set, which
+            // means "unspecified", not "none") or a committed newline
+            sendDownUpKeyEventWithMetaState(KeyEvent.KEYCODE_ENTER, 0);
+        } else if (event.getCodePoint() == Constants.CODE_ENTER) {
             final EditorInfo editorInfo = getCurrentInputEditorInfo();
             final int imeOptionsActionId = InputTypeUtils.getImeOptionsActionIdFromEditorInfo(editorInfo);
             if (InputTypeUtils.IME_ACTION_CUSTOM_LABEL == imeOptionsActionId) {
