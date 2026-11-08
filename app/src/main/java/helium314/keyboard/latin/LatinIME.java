@@ -64,6 +64,8 @@ import helium314.keyboard.latin.common.CoordinateUtils;
 import helium314.keyboard.latin.common.InputPointers;
 import helium314.keyboard.latin.common.ViewOutlineProviderUtilsKt;
 import helium314.keyboard.latin.define.DebugFlags;
+import helium314.keyboard.latin.dictation.DictationController;
+import helium314.keyboard.latin.dictation.DictationEngine;
 import helium314.keyboard.latin.inputlogic.InputLogic;
 import helium314.keyboard.latin.personalization.PersonalizationHelper;
 import helium314.keyboard.latin.settings.Settings;
@@ -138,6 +140,7 @@ public class LatinIME extends InputMethodService implements
             DictionaryFacilitatorProvider.getDictionaryFacilitator(false);
     private final DictionaryFacilitator mOriginalDictionaryFacilitator = mDictionaryFacilitator;
     final InputLogic mInputLogic = new InputLogic(this, this, mDictionaryFacilitator);
+    private final DictationController mDictation = new DictationController(this, mInputLogic);
 
     // TODO: Move these {@link View}s to {@link KeyboardSwitcher}.
     private View mInputView;
@@ -695,6 +698,7 @@ public class LatinIME extends InputMethodService implements
 
     @Override
     public void onDestroy() {
+        mDictation.onDestroy();
         mClipboardHistoryManager.onDestroy();
         mDictionaryFacilitator.closeDictionaries();
         mSettings.onDestroy();
@@ -1025,6 +1029,7 @@ public class LatinIME extends InputMethodService implements
     }
 
     void onFinishInputInternal() {
+        mDictation.cancel();
         super.onFinishInput();
         Log.i(TAG, "onFinishInput");
 
@@ -1036,6 +1041,7 @@ public class LatinIME extends InputMethodService implements
     }
 
     void onFinishInputViewInternal(final boolean finishingInput) {
+        mDictation.cancel();
         super.onFinishInputView(finishingInput);
         Log.i(TAG, "onFinishInputView");
         cleanupInternalStateForFinishInput();
@@ -1059,6 +1065,9 @@ public class LatinIME extends InputMethodService implements
                                   final int composingSpanStart, final int composingSpanEnd) {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
                 composingSpanStart, composingSpanEnd);
+        if (mDictation.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
+                composingSpanStart, composingSpanEnd))
+            return; // dictation's own composing text / commit
         if (DebugFlags.DEBUG_ENABLED) {
             Log.i(TAG, "onUpdateSelection: oss=" + oldSelStart + ", ose=" + oldSelEnd
                     + ", nss=" + newSelStart + ", nse=" + newSelEnd
@@ -1354,6 +1363,31 @@ public class LatinIME extends InputMethodService implements
         return true;
     }
 
+    private static boolean stopsDictation(@NonNull final Event event) {
+        // text, delete, enter, cursor moves; not modifiers or layout switches
+        final int keyCode = event.getKeyCode();
+        return event.getCodePoint() > 0 || keyCode > 0 || keyCode == KeyCode.DELETE
+                || keyCode == KeyCode.ARROW_LEFT || keyCode == KeyCode.ARROW_RIGHT
+                || keyCode == KeyCode.ARROW_UP || keyCode == KeyCode.ARROW_DOWN
+                || keyCode == KeyCode.CLIPBOARD_PASTE || keyCode == KeyCode.UNDO || keyCode == KeyCode.REDO;
+    }
+
+    /** Long-press on the mic key: choose the dictation engine. Returns false if dictation is off. */
+    public boolean showDictationEnginePicker() {
+        if (!DictationEngine.Companion.isDictationEnabled(this)) return false;
+        mDictation.showEnginePicker();
+        return true;
+    }
+
+    @Nullable
+    public SuggestionStripView getSuggestionStripViewForDictation() {
+        return mSuggestionStripView;
+    }
+
+    public void updateShiftStateAfterDictation() {
+        mKeyboardSwitcher.requestUpdatingShiftState(getCurrentAutoCapsState(), getCurrentRecapitalizeState());
+    }
+
     public int getCurrentAutoCapsState() {
         return mInputLogic.getCurrentAutoCapsState(mSettings.getCurrent());
     }
@@ -1437,7 +1471,13 @@ public class LatinIME extends InputMethodService implements
     // completely replace #onCodeInput.
     public void onEvent(@NonNull final Event event) {
         if (KeyCode.VOICE_INPUT == event.getKeyCode()) {
+            if (DictationEngine.Companion.isDictationEnabled(this)) {
+                mDictation.toggle();
+                return;
+            }
             mRichImm.switchToShortcutIme(this);
+        } else if (mDictation.isActive() && !mDictation.isDispatchingKey() && stopsDictation(event)) {
+            mDictation.cancel(); // typing while dictating: keep what was said, then type
         }
         final InputTransaction completeInputTransaction =
                 mInputLogic.onCodeInput(mSettings.getCurrent(), event,
@@ -1449,6 +1489,7 @@ public class LatinIME extends InputMethodService implements
 
     public void onTextInput(@Nullable String rawText) {
         if (rawText == null) return;
+        mDictation.cancel();
         // TODO: have the keyboard pass the correct key code when we need it.
         Event event = Event.createSoftwareTextEvent(rawText, KeyCode.MULTIPLE_CODE_POINTS, null);
         InputTransaction completeInputTransaction = mInputLogic.onTextInput(mSettings.getCurrent(),

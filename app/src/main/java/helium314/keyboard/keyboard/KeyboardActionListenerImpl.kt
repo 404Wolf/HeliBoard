@@ -106,6 +106,10 @@ class KeyboardActionListenerImpl(private val latinIME: LatinIME, private val inp
     override fun onCodeInput(primaryCode: Int, x: Int, y: Int, isKeyRepeat: Boolean) {
         when (primaryCode) {
             KeyCode.TOGGLE_AUTOCORRECT -> return settings.toggleAutoCorrect()
+            KeyCode.DICTATION_ENGINE -> {
+                latinIME.showDictationEnginePicker()
+                return
+            }
             KeyCode.TOGGLE_INCOGNITO_MODE -> {
                 settings.toggleAlwaysIncognitoMode()
                 BackgroundGatheringCache.clear()
@@ -180,6 +184,7 @@ class KeyboardActionListenerImpl(private val latinIME: LatinIME, private val inp
 
     override fun onCustomRequest(request: KeyboardActionListener.CustomAction) = when (request) {
         KeyboardActionListener.CustomAction.SHOW_INPUT_METHOD_PICKER -> latinIME.showInputPickerDialog()
+        KeyboardActionListener.CustomAction.SHOW_DICTATION_ENGINE_PICKER -> latinIME.showDictationEnginePicker()
         KeyboardActionListener.CustomAction.TOUCHPAD_ON -> {
             keyboardSwitcher.mainKeyboardView?.alpha = 0.5f
             true

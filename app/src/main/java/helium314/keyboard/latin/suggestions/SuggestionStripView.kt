@@ -278,6 +278,25 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         if (Settings.getValues().mAutoHideToolbar) setToolbarVisibility(false)
     }
 
+    private var dictationView: View? = null
+
+    /** Show the dictation indicator over the whole strip (suggestions and toolbar). */
+    fun showDictationView(view: View) {
+        if (view.parent !== this) {
+            (view.parent as? ViewGroup)?.removeView(view)
+            addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+        dictationView = view
+        dismissMoreSuggestionsPanel()
+        view.isVisible = true
+        view.bringToFront()
+    }
+
+    fun hideDictationView(view: View) {
+        if (dictationView === view) dictationView = null
+        removeView(view)
+    }
+
     fun setMoreSuggestionsHeight(remainingHeight: Int) {
         layoutHelper.setMoreSuggestionsHeight(remainingHeight)
     }
@@ -318,6 +337,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     }
 
     override fun onInterceptTouchEvent(motionEvent: MotionEvent): Boolean {
+        if (dictationView?.isVisible == true) return false
         // Detecting sliding up finger to show MoreSuggestionsView.
         return moreSuggestionsView.shouldInterceptTouchEvent(motionEvent)
     }

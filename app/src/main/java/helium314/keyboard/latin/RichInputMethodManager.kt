@@ -15,6 +15,7 @@ import helium314.keyboard.compat.locale
 import helium314.keyboard.latin.common.Constants
 import helium314.keyboard.latin.common.LocaleUtils.getBestMatch
 import helium314.keyboard.latin.settings.Settings
+import helium314.keyboard.latin.dictation.DictationEngine
 import helium314.keyboard.latin.utils.LanguageOnSpacebarUtils
 import helium314.keyboard.latin.utils.Log
 import helium314.keyboard.latin.utils.ScriptUtils.script
@@ -55,6 +56,12 @@ class RichInputMethodManager private constructor() {
     private var shortcuts = listOf<Shortcut>()
 
     val isShortcutImeReady get() = shortcuts.isNotEmpty()
+
+    private var isDictationAvailable = false
+
+    /** Whether the mic key does something: in-keyboard dictation, or switching to a voice input method. */
+    val isVoiceInputReady get() =
+        (isDictationAvailable && DictationEngine.isDictationEnabled(context)) || isShortcutImeReady
 
     fun getEnabledInputMethodSubtypes(imi: InputMethodInfo, allowsImplicitlySelectedSubtypes: Boolean) =
         inputMethodInfoCache.getEnabledInputMethodSubtypeList(imi, allowsImplicitlySelectedSubtypes)
@@ -150,6 +157,7 @@ class RichInputMethodManager private constructor() {
         LanguageOnSpacebarUtils.onSubtypeChanged(richSubtype, implicitlyEnabledSubtype, systemLocale)
         LanguageOnSpacebarUtils.setEnabledSubtypes(SubtypeSettings.getEnabledSubtypes(true))
 
+        isDictationAvailable = DictationEngine.anyAvailable(context)
         // TODO: Update an icon for shortcut IME
         shortcuts = inputMethodManager.shortcutInputMethodsAndSubtypes.entries.flatMap { (imi, subtypes) ->
             subtypes.map { Shortcut(imi, it) }
@@ -214,6 +222,7 @@ class RichInputMethodManager private constructor() {
         imm = ctx.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         context = ctx
         inputMethodInfoCache = InputMethodInfoCache(imm, ctx.packageName)
+        isDictationAvailable = DictationEngine.anyAvailable(ctx)
 
         // Initialize the current input method subtype and the shortcut IME.
         refreshSubtypeCaches()

@@ -1184,6 +1184,13 @@ public final class PointerTracker implements PointerTrackerQueue.Element,
             sListener.onLongPressAlphaSymbolForNumpad();
             return;
         }
+        if (code == KeyCode.VOICE_INPUT && key.getPopupKeys() == null
+                && sListener.onCustomRequest(KeyboardActionListener.CustomAction.SHOW_DICTATION_ENGINE_PICKER)) {
+            // long-press on the mic key: choose the dictation engine
+            cancelKeyTracking();
+            sListener.onReleaseKey(code, false);
+            return;
+        }
 
         setReleasedKeyGraphics(key, false);
         final PopupKeysPanel popupKeysPanel = sDrawingProxy.showPopupKeysKeyboard(key, this);

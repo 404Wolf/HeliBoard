@@ -128,7 +128,7 @@ public interface KeyboardActionListener {
     KeyboardActionListener EMPTY_LISTENER = new Adapter();
 
     enum SwipeAction { NONE, MOVE_CURSOR, SWITCH_LANGUAGE, TOGGLE_NUMPAD, TOGGLE_DPAD, HIDE_KEYBOARD, TOUCHPAD_MODE }
-    enum CustomAction { SHOW_INPUT_METHOD_PICKER, TOUCHPAD_ON, TOUCHPAD_OFF, PERFORM_HAPTIC }
+    enum CustomAction { SHOW_INPUT_METHOD_PICKER, SHOW_DICTATION_ENGINE_PICKER, TOUCHPAD_ON, TOUCHPAD_OFF, PERFORM_HAPTIC }
 
     class Adapter implements KeyboardActionListener {
         @Override
