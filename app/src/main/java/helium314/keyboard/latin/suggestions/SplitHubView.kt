@@ -32,23 +32,23 @@ import kotlin.math.abs
 
 /**
  * The centre column of a split keyboard (split_hub), in the gap between the halves and aligned
- * to their four key rows. Rows 1-3 are one large key-shaped rectangle, a cursor pad:
+ * to their four key rows. Rows 1-2 are one large key-shaped rectangle, a cursor pad:
  * - drag: move the cursor, horizontally by characters, vertically by lines (arrow keys, so it
  *   works in terminals too)
  * - while typing it shows the suggestions in three lines, best on top; tap one to pick it
  * - hold: paste; double tap (no suggestions): select the word
- * Row 4: undo, clipboard, emoji, voice. In terminal fields: row 1 Esc Tab Ctrl Shift+Enter,
- * rows 2-3 the cursor pad, row 4 | ~ / -.
+ * Rows 3-4: undo, clipboard / emoji, voice, two per row so each is about 9 mm wide; in terminal
+ * fields Esc, Tab / Ctrl, Shift+Enter (| ~ / - are on the symbols layer).
  * Positioned by InputView ([setRows] gives the key rows' geometry). Suggestions come from the
  * hidden [SuggestionStripView], which also handles taps on the words and buttons.
  */
 class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewGroup(context, attrs) {
     private val pad = CursorPad(context)
     private val words = List(3) { TextView(context) } // not shown: carry text and tag, clicks go to the strip
-    private val bottomRow = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+    // rows 3-4: a 2x2 block of buttons (normal) or terminal keys
+    private val buttonBlock = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
     private val overlay = FrameLayout(context) // dictation indicator over the pad
-    private var terminalTop: TerminalKeysView? = null
-    private var terminalBottom: TerminalKeysView? = null
+    private var terminalBlock: TerminalKeysView? = null
     private var buttons: List<View> = emptyList()
     private var strip: SuggestionStripView? = null
     private var listener: KeyboardActionListener? = null
@@ -58,7 +58,7 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     init {
         addView(pad)
-        addView(bottomRow)
+        addView(buttonBlock)
         addView(overlay)
         overlay.visibility = GONE
     }
@@ -84,9 +84,9 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         words.forEach { it.setOnClickListener(strip) }
         pad.background = keyBackground()
         buttons = listOf(ToolbarKey.UNDO, ToolbarKey.CLIPBOARD, ToolbarKey.EMOJI, ToolbarKey.VOICE).map { button(it) }
-        terminalTop?.let { removeView(it) }
-        terminalTop = TerminalKeysView(context, TerminalKeysView.HUB_TOP, cellGap).also { it.listener = listener }
-        terminalBottom = TerminalKeysView(context, TerminalKeysView.HUB_BOTTOM, cellGap).also { it.listener = listener }
+        fillButtonBlock()
+        terminalBlock?.let { removeView(it) }
+        terminalBlock = TerminalKeysView(context, TerminalKeysView.HUB_BLOCK, cellGap).also { it.listener = listener }
         terminal = !terminal
         setTerminal(!terminal)
     }
@@ -96,18 +96,25 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         if (rowGap == this.rowGap && cellGap == this.cellGap) return
         this.rowGap = rowGap
         this.cellGap = cellGap
-        for (i in 1 until bottomRow.childCount) (bottomRow.getChildAt(i).layoutParams as LinearLayout.LayoutParams).leftMargin = cellGap
-        terminalTop?.setGaps(rowGap, cellGap)
-        terminalBottom?.setGaps(rowGap, cellGap)
+        fillButtonBlock()
+        terminalBlock?.setGaps(rowGap, cellGap)
         requestLayout()
     }
 
-    private fun fillBottomRow(cells: List<View>) {
-        bottomRow.removeAllViews()
-        for ((i, cell) in cells.withIndex()) {
-            (cell.parent as? ViewGroup)?.removeView(cell)
-            bottomRow.addView(cell, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f).apply {
-                if (i > 0) leftMargin = cellGap
+    /** Undo, clipboard / emoji, voice: two per row, so each is wide enough to hit (about 9 mm). */
+    private fun fillButtonBlock() {
+        buttonBlock.removeAllViews()
+        for (r in 0..1) {
+            val row = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+            for (c in 0..1) {
+                val cell = buttons.getOrNull(r * 2 + c) ?: continue
+                (cell.parent as? ViewGroup)?.removeView(cell)
+                row.addView(cell, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f).apply {
+                    if (c > 0) leftMargin = cellGap
+                })
+            }
+            buttonBlock.addView(row, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f).apply {
+                if (r > 0) topMargin = rowGap
             })
         }
     }
@@ -125,24 +132,19 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         pad.invalidate()
     }
 
-    /** Terminal fields: Esc Tab Ctrl Shift+Enter above the pad, | ~ / - below it. */
+    /** Terminal fields: Esc Tab / Ctrl Shift+Enter in place of the buttons; the pad sends arrows. */
     fun setTerminal(terminal: Boolean) {
         if (terminal == this.terminal) return
         this.terminal = terminal
-        terminalTop?.let { if (it.parent != null) removeView(it) }
-        if (terminal) {
-            terminalTop?.let { addView(it) }
-            fillBottomRow(emptyList())
-            terminalBottom?.let { (it.parent as? ViewGroup)?.removeView(it); bottomRow.addView(it, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)) }
-        } else {
-            fillBottomRow(buttons)
-        }
+        terminalBlock?.let { if (it.parent != null) removeView(it) }
+        if (terminal) terminalBlock?.let { addView(it) }
+        buttonBlock.visibility = if (terminal) GONE else VISIBLE
         pad.invalidate()
         requestLayout()
     }
 
     fun refreshTerminalKeys() {
-        terminalTop?.refresh()
+        terminalBlock?.refresh()
     }
 
     fun showDictationView(view: View) {
@@ -166,28 +168,25 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
         val height = MeasureSpec.getSize(heightMeasureSpec)
-        val rowHeight = rowHeight(height)
+        val twoRows = 2 * rowHeight(height) + rowGap
         val exact = { size: Int -> MeasureSpec.makeMeasureSpec(maxOf(0, size), MeasureSpec.EXACTLY) }
-        val padRows = if (terminal) 2 else 3
-        pad.measure(exact(width), exact(padRows * rowHeight + (padRows - 1) * rowGap))
-        bottomRow.measure(exact(width), exact(rowHeight))
-        overlay.measure(exact(width), exact(3 * rowHeight + 2 * rowGap))
-        terminalTop?.takeIf { it.parent === this }?.measure(exact(width), exact(rowHeight))
+        pad.measure(exact(width), exact(twoRows))
+        buttonBlock.measure(exact(width), exact(twoRows))
+        overlay.measure(exact(width), exact(twoRows))
+        terminalBlock?.takeIf { it.parent === this }?.measure(exact(width), exact(twoRows))
         setMeasuredDimension(width, height)
     }
 
+    // rows 1-2: the cursor pad; rows 3-4: the 2x2 block
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val width = r - l
         val rowHeight = rowHeight(b - t)
-        val row = { i: Int -> i * (rowHeight + rowGap) }
-        if (terminal) {
-            terminalTop?.takeIf { it.parent === this }?.layout(0, row(0), width, row(0) + rowHeight)
-            pad.layout(0, row(1), width, row(2) + rowHeight)
-        } else {
-            pad.layout(0, row(0), width, row(2) + rowHeight)
-        }
-        bottomRow.layout(0, row(3), width, row(3) + rowHeight)
-        overlay.layout(0, 0, width, row(2) + rowHeight)
+        val twoRows = 2 * rowHeight + rowGap
+        val blockTop = twoRows + rowGap
+        pad.layout(0, 0, width, twoRows)
+        overlay.layout(0, 0, width, twoRows)
+        buttonBlock.layout(0, blockTop, width, blockTop + twoRows)
+        terminalBlock?.takeIf { it.parent === this }?.layout(0, blockTop, width, blockTop + twoRows)
     }
 
     /** One key-shaped area: drag to move the cursor; shows and picks suggestions; hold to paste. */
