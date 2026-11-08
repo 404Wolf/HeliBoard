@@ -48,7 +48,7 @@ class SuggestionChipDrawable(
         fill.color = tint?.getColorForState(state, tint!!.defaultColor) ?: 0xff303030.toInt()
         fill.colorFilter = if (tint == null) filter else null
         canvas.drawRoundRect(rect, h / 2, h / 2, fill)
-        if (state.contains(android.R.attr.state_activated)) {
+        if (textView != null && state.contains(android.R.attr.state_activated)) { // toolbar buttons use activated for toggles
             stroke.color = accent
             stroke.strokeWidth = outline
             rect.inset(outline / 2, outline / 2)
