@@ -133,8 +133,9 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         }
         engine = DictationEngine.selected(ime)
         component = DictationEngine.resolve(ime, engine)
-        if (component == null && !SpeechRecognizer.isRecognitionAvailable(ime) && !DictationEngine.anyAvailable(ime)) {
-            // no recognition service at all: use the voice input method like before, if there is one
+        if (!DictationEngine.usable(ime, component)) {
+            // no Google service and no system default selected (createSpeechRecognizer would fail
+            // with "no selected voice recognition service"): use the voice input method, if any
             if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
             return
         }
@@ -385,16 +386,12 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     override fun onEvent(eventType: Int, params: Bundle?) {}
 
-    /**
-     * Switch to the system's recognition service (the selected default, else the first installed
-     * one), once per session, unless that is the one that just failed.
-     */
+    /** Switch to the system's default recognition service, once per session, unless that is the one that just failed. */
     private fun fallBackToSystemRecognizer(): Boolean {
         if (triedSystemFallback) return false
         triedSystemFallback = true
         val system = DictationEngine.resolve(ime, DictationEngine.SYSTEM)
-        if (system == null && DictationEngine.defaultService(ime) == null) return false
-        if (system == component) return false // that's the one that failed
+        if (!DictationEngine.usable(ime, system) || system == component) return false // none, or the one that failed
         component = system
         engine = DictationEngine.SYSTEM
         preferOffline = false

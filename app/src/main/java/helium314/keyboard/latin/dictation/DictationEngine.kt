@@ -62,14 +62,18 @@ enum class DictationEngine(val prefValue: String) {
         }
 
         /**
-         * The service for [engine], or null for the system default. Google falls back to the
-         * system service when the Google app is not installed. With no system default selected
-         * (createSpeechRecognizer would fail with "no selected voice recognition service"), the
-         * first installed recognition service is used explicitly.
+         * The service for [engine], or null for the system default (Settings > voice input).
+         * Google falls back to the system default when the Google app's service is missing.
+         * Other installed services are not picked on their own: assistants (e.g. Claude's)
+         * register recognition services that are not meant for dictation.
          */
         fun resolve(context: Context, engine: DictationEngine): ComponentName? = when (engine) {
-            GOOGLE -> googleService(context) ?: resolve(context, SYSTEM)
-            SYSTEM -> if (defaultService(context) != null) null else recognitionServices(context).firstOrNull()
+            GOOGLE -> googleService(context)
+            SYSTEM -> null
         }
+
+        /** Whether [component] (null = the system default) can be used at all. */
+        fun usable(context: Context, component: ComponentName?): Boolean =
+            component != null || defaultService(context) != null
     }
 }
