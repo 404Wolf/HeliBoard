@@ -24,6 +24,8 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
 import helium314.keyboard.keyboard.KeyboardTheme.Companion.STYLE_HOLO
 import helium314.keyboard.keyboard.KeyboardTheme.Companion.STYLE_MATERIAL
+import helium314.keyboard.keyboard.KeyboardTheme.Companion.STYLE_ROUNDED
+import helium314.keyboard.keyboard.KeyShapeDrawable
 import helium314.keyboard.latin.common.ColorType.*
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.utils.adjustLuminosityAndKeepAlpha
@@ -60,7 +62,7 @@ interface Colors {
 
     /** returns a colored drawable selected from [attr], which must contain using R.styleable.KeyboardView_* */
     fun selectAndColorDrawable(attr: TypedArray, color: ColorType): Drawable {
-        val drawable = when (color) {
+        val drawable = keyShapeDrawable(attr, color) ?: when (color) {
             KEY_BACKGROUND, MORE_SUGGESTIONS_WORD_BACKGROUND, ACTION_KEY_POPUP_KEYS_BACKGROUND, POPUP_KEYS_BACKGROUND ->
                 attr.getDrawable(R.styleable.KeyboardView_keyBackground)
             FUNCTIONAL_KEY_BACKGROUND -> attr.getDrawable(R.styleable.KeyboardView_functionalKeyBackground)
@@ -79,6 +81,19 @@ interface Colors {
 
         setColor(drawable, color)
         return drawable
+    }
+
+    /** Rounded style with key borders: keys are drawn as [KeyShapeDrawable] instead of the XML shapes. */
+    private fun keyShapeDrawable(attr: TypedArray, color: ColorType): Drawable? {
+        if (themeStyle != STYLE_ROUNDED || !hasKeyBorders) return null
+        if (color != KEY_BACKGROUND && color != FUNCTIONAL_KEY_BACKGROUND
+                && color != SPACE_BAR_BACKGROUND && color != ACTION_KEY_BACKGROUND)
+            return null
+        val res = attr.resources
+        return KeyShapeDrawable(
+            res.getDimension(R.dimen.config_key_corner_radius_rounded),
+            res.getDimension(R.dimen.config_key_shade_height_rounded)
+        )
     }
 }
 

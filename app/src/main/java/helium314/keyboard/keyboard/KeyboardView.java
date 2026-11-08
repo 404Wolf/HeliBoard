@@ -190,6 +190,9 @@ public class KeyboardView extends View {
         int scaledKeySize = (int) (scale * mKeyScaleForText);
         mKeyDrawParams.updateParams(scaledKeySize, mKeyVisualAttributes);
         mKeyDrawParams.updateParams(scaledKeySize, keyboard.mKeyVisualAttributes);
+        if (mKeyDrawParams.mTypeface == Typeface.DEFAULT && STYLE_ROUNDED.equals(mColors.getThemeStyle()))
+            // medium weight reads better than regular at thumb distance on a dark background
+            mKeyDrawParams.mTypeface = Typeface.create("sans-serif-medium", Typeface.NORMAL);
         invalidateAllKeys();
         requestLayout();
         mFontSizeMultiplier = mKeyboard.mId.getElement().isEmojiLayout()
