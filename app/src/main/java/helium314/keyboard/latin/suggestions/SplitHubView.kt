@@ -228,19 +228,8 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
                     val y = lineHeight * i + lineHeight / 2 - (paint.descent() + paint.ascent()) / 2
                     canvas.drawText(shown, 0, shown.length, width / 2f, y, paint)
                 }
-            } else {
-                paint.typeface = Typeface.DEFAULT
-                paint.color = colors.get(ColorType.KEY_HINT_TEXT)
-                paint.alpha = 0x90
-                val lines = if (terminal) listOf("drag: arrows") else listOf("drag: cursor", "hold: paste")
-                // as large as 12 sp, but always fitting the pad's width
-                paint.textSize = 12 * resources.displayMetrics.scaledDensity
-                val widest = lines.maxOf { paint.measureText(it) }
-                if (widest > width - 12 * dp) paint.textSize *= (width - 12 * dp) / widest
-                val lineHeight = paint.fontSpacing
-                val top = height / 2f - lineHeight * (lines.size - 1) / 2 - (paint.descent() + paint.ascent()) / 2
-                for ((i, line) in lines.withIndex()) canvas.drawText(line, width / 2f, top + i * lineHeight, paint)
             }
+            // idle: an empty pad, no hint text (drag still moves the cursor, hold still pastes)
         }
 
         @SuppressLint("ClickableViewAccessibility")
