@@ -1235,7 +1235,19 @@ public class LatinIME extends InputMethodService implements
         // Has to be subtracted after calculating touchableRegion
         visibleTopY -= getEmojiSearchActivityHeight();
 
-        outInsets.contentTopInsets = visibleTopY;
+        int contentTopY = visibleTopY;
+        if (visibleKeyboardView.isShown() && hasSplitGap()) {
+            // Let the app lay out behind the see-through split gap, but keep a band at the bottom
+            // (one key row by default) free, so e.g. input bars end up visible in the gap.
+            // visibleTopInsets stays at the keyboard top, so panning still keeps the cursor above the keys.
+            final MainKeyboardView keyboardView = mKeyboardSwitcher.getMainKeyboardView();
+            final Keyboard keyboard = keyboardView.getKeyboard();
+            final int keyboardBottom = mSplitGapRect.top + keyboardView.getHeight();
+            final int reservedHeight = keyboard == null ? 0
+                    : (int) (mSettings.getCurrent().mSplitGapReservedRows * keyboard.mMostCommonKeyHeight);
+            contentTopY = Math.max(visibleTopY, keyboardBottom - reservedHeight);
+        }
+        outInsets.contentTopInsets = contentTopY;
         outInsets.visibleTopInsets = visibleTopY;
         mInsetsUpdater.setInsets(outInsets);
     }
