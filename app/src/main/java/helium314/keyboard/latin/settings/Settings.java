@@ -102,6 +102,7 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     public static final String PREF_SPLIT_GAP_RESERVED_ROWS = "split_gap_reserved_rows";
     public static final String PREF_SPLIT_INNER_KEY_SCALE = "split_inner_key_scale";
     public static final String PREF_SPLIT_HIDDEN_DUPLICATES = "split_hidden_duplicates";
+    public static final String PREF_HIDE_IME_NAV_BAR = "hide_ime_nav_bar";
     public static final String PREF_DICTATION = "dictation";
     public static final String PREF_DICTATION_ENGINE = "dictation_engine";
     public static final String PREF_DICTATION_COMMANDS = "dictation_commands";

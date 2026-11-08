@@ -88,6 +88,7 @@ object Defaults {
     const val PREF_SPLIT_GAP_RESERVED_ROWS = 1f
     const val PREF_SPLIT_INNER_KEY_SCALE = 1f
     const val PREF_SPLIT_HIDDEN_DUPLICATES = false
+    const val PREF_HIDE_IME_NAV_BAR = false
     const val PREF_DICTATION = true
     const val PREF_DICTATION_ENGINE = "google"
     const val PREF_DICTATION_COMMANDS = true

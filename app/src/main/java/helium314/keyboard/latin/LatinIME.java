@@ -791,6 +791,7 @@ public class LatinIME extends InputMethodService implements
 
     @Override
     public void onStartInputView(final EditorInfo editorInfo, final boolean restarting) {
+        applyImeNavBarVisibility();
         mHandler.onStartInputView(editorInfo, restarting);
         mStatsUtilsManager.onStartInputView();
     }
@@ -1860,6 +1861,31 @@ public class LatinIME extends InputMethodService implements
         SettingsValues settingsValues = mSettings.getCurrent();
         p.println(settingsValues.dump());
         p.println(mDictionaryFacilitator.dump(this));
+    }
+
+    /**
+     * With hide_ime_nav_bar (Android 16+), hide the navigation bar the system draws below the
+     * keyboard in gesture navigation (the hide-keyboard chevron and the IME switcher): it costs a
+     * row of height. The keyboard switches IMEs on long-press space, hides with the back gesture
+     * (and swipes on space / the strip if enabled), and keeps its own bottom padding.
+     */
+    private void applyImeNavBarVisibility() {
+        if (Build.VERSION.SDK_INT < 36)
+            return;
+        final Window window = getWindow().getWindow();
+        final android.view.WindowInsetsController controller = window == null ? null : window.getInsetsController();
+        if (controller == null)
+            return;
+        if (mSettings.getCurrent().mHideImeNavBar)
+            controller.hide(android.view.WindowInsets.Type.captionBar());
+        else
+            controller.show(android.view.WindowInsets.Type.captionBar());
+    }
+
+    @Override
+    public void onCustomImeSwitcherButtonRequestedVisible(final boolean visible) {
+        // the switcher is long-press on space (and the language key, if enabled), always available
+        Log.i(TAG, "custom IME switcher button requested visible: " + visible);
     }
 
     // slightly modified from Simple Keyboard: https://github.com/rkkr/simple-keyboard/blob/master/app/src/main/java/rkr/simplekeyboard/inputmethod/latin/LatinIME.java
