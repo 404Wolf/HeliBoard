@@ -118,6 +118,7 @@ public class SettingsValues {
     public final boolean mIsSplitKeyboardEnabled;
     public final float mSplitKeyboardSpacerRelativeWidth;
     public final float mSplitGapReservedRows;
+    public final float mSplitInnerKeyScale;
     public final boolean mQuickPinToolbarKeys;
     public final boolean mAddToPersonalDictionary;
     public final boolean mUseContactsDictionary;
@@ -247,6 +248,7 @@ public class SettingsValues {
                 ? Math.min(Math.max((displayWidthDp - 600) / 600f + 0.15f, 0.15f), 0.35f) * Settings.readSplitSpacerScale(prefs, isLandscape, isFolded)
                 : 0f;
         mSplitGapReservedRows = Math.max(0f, prefs.getFloat(Settings.PREF_SPLIT_GAP_RESERVED_ROWS, Defaults.PREF_SPLIT_GAP_RESERVED_ROWS));
+        mSplitInnerKeyScale = Math.min(1.5f, Math.max(1f, prefs.getFloat(Settings.PREF_SPLIT_INNER_KEY_SCALE, Defaults.PREF_SPLIT_INNER_KEY_SCALE)));
         mQuickPinToolbarKeys = mToolbarMode == ToolbarMode.EXPANDABLE && prefs.getBoolean(Settings.PREF_QUICK_PIN_TOOLBAR_KEYS, Defaults.PREF_QUICK_PIN_TOOLBAR_KEYS);
 
         // Compute other readable settings

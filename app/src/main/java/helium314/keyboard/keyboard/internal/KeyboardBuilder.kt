@@ -176,6 +176,7 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
                 row.add(insertIndex, spacer)
                 rowSpacers.add(spacer)
             }
+            widenInnerKeys(row, row.indexOf(spacer))
             // re-calculate relative widths
             val relativeWidthSumNew = row.sumOf { it.mWidth }
             val widthFactor = relativeWidthSum / relativeWidthSumNew
@@ -188,6 +189,28 @@ open class KeyboardBuilder<KP : KeyboardParams>(protected val mContext: Context,
             }
         }
         setSplitGap(rowSpacers)
+    }
+
+    /**
+     *  Make the letter keys next to the split gap wider (split_inner_key_scale), taking the width
+     *  from the other keys of the same half. The inner columns are the farthest reach for the
+     *  thumbs, where touches spread most, so they get the bigger targets. Half widths stay the same.
+     */
+    private fun widenInnerKeys(row: List<KeyParams>, spacerIndex: Int) {
+        val scale = Settings.getValues().mSplitInnerKeyScale
+        if (scale <= 1f || spacerIndex <= 0 || spacerIndex >= row.lastIndex) return
+        for (left in listOf(true, false)) {
+            val half = if (left) row.subList(0, spacerIndex) else row.subList(spacerIndex + 1, row.size)
+            val keys = half.filter { !it.isSpacer }
+            val inner = (if (left) keys.lastOrNull() else keys.firstOrNull()) ?: continue
+            if (inner.mBackgroundType != Key.BACKGROUND_TYPE_NORMAL) continue
+            val others = keys.filter { it !== inner }
+            val othersWidth = others.sumOf { it.mWidth }
+            val extra = inner.mWidth * (scale - 1f)
+            if (others.isEmpty() || othersWidth <= extra * 2) continue
+            inner.mWidth += extra
+            others.forEach { it.mWidth *= (othersWidth - extra) / othersWidth }
+        }
     }
 
     /**
