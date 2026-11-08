@@ -8,15 +8,21 @@ package helium314.keyboard.latin;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewKt;
 
 import helium314.keyboard.accessibility.AccessibilityUtils;
+import helium314.keyboard.keyboard.Keyboard;
 import helium314.keyboard.keyboard.MainKeyboardView;
 import helium314.keyboard.latin.common.ColorType;
 import helium314.keyboard.latin.settings.Settings;
@@ -27,8 +33,20 @@ import kotlin.Unit;
 
 
 public final class InputView extends FrameLayout {
+    private static final float SPLIT_CARD_CORNER_RADIUS_DP = 12f;
+
     private final Rect mInputViewRect = new Rect();
     private MainKeyboardView mMainKeyboardView;
+    private View mMainKeyboardFrame;
+    // see-through gap between split keyboard halves, empty if there is none
+    private final Rect mSplitGap = new Rect();
+    private final Rect mSplitFrame = new Rect();
+    private final Rect mTmpGap = new Rect();
+    private final Path mSplitCardsPath = new Path();
+    private final ViewTreeObserver.OnPreDrawListener mSplitGapUpdater = () -> {
+        updateSplitCards();
+        return true;
+    };
     private KeyboardTopPaddingForwarder mKeyboardTopPaddingForwarder;
     private MoreSuggestionsViewCanceler mMoreSuggestionsViewCanceler;
     private MotionEventForwarder<?, ?> mActiveForwarder;
@@ -43,11 +61,88 @@ public final class InputView extends FrameLayout {
         final SuggestionStripView suggestionStripView =
                 findViewById(R.id.suggestion_strip_view);
         mMainKeyboardView = findViewById(R.id.keyboard_view);
+        mMainKeyboardFrame = findViewById(R.id.main_keyboard_frame);
         mKeyboardTopPaddingForwarder = new KeyboardTopPaddingForwarder(
                 mMainKeyboardView, suggestionStripView);
         mMoreSuggestionsViewCanceler = new MoreSuggestionsViewCanceler(
                 mMainKeyboardView, suggestionStripView);
         ViewKt.doOnNextLayout(this, this::onNextLayout);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        getViewTreeObserver().addOnPreDrawListener(mSplitGapUpdater);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        getViewTreeObserver().removeOnPreDrawListener(mSplitGapUpdater);
+        super.onDetachedFromWindow();
+    }
+
+    /**
+     * Computes the see-through gap between the halves of a split keyboard in this view's
+     * coordinates. It reaches from the top of the keys down to the bottom of this view, or to
+     * the top of the first row that spans both halves.
+     * @return false if there is no such gap, e.g. because the main keyboard is not shown or not split
+     */
+    public boolean getSplitGap(@NonNull final Rect outRect) {
+        if (Settings.getValues().mIsFloatingKeyboard || !mMainKeyboardView.isShown())
+            return false;
+        final Keyboard keyboard = mMainKeyboardView.getKeyboard();
+        if (keyboard == null || keyboard.mSplitGapLeft < 0)
+            return false;
+        outRect.set(0, 0, mMainKeyboardView.getWidth(), mMainKeyboardView.getHeight());
+        offsetDescendantRectToMyCoords(mMainKeyboardView, outRect);
+        final int keyboardLeft = outRect.left + mMainKeyboardView.getPaddingLeft();
+        final int top = outRect.top;
+        final int bottom = keyboard.mSplitGapBottom >= keyboard.mOccupiedHeight
+                ? getHeight()
+                : top + mMainKeyboardView.getPaddingTop() + keyboard.mSplitGapBottom;
+        outRect.set(keyboardLeft + keyboard.mSplitGapLeft, top, keyboardLeft + keyboard.mSplitGapRight, bottom);
+        return !outRect.isEmpty();
+    }
+
+    /** Rebuilds the clip path for the keyboard frame if the split gap or the frame changed. */
+    private void updateSplitCards() {
+        if (!getSplitGap(mTmpGap))
+            mTmpGap.setEmpty();
+        final View frame = mMainKeyboardFrame;
+        if (mTmpGap.equals(mSplitGap) && frame.getLeft() == mSplitFrame.left && frame.getTop() == mSplitFrame.top
+                && frame.getRight() == mSplitFrame.right && frame.getBottom() == mSplitFrame.bottom)
+            return;
+        mSplitGap.set(mTmpGap);
+        mSplitFrame.set(frame.getLeft(), frame.getTop(), frame.getRight(), frame.getBottom());
+        mSplitCardsPath.reset();
+        if (!mSplitGap.isEmpty()) {
+            // strip / toolbar (if any) stays a full width bar, each keyboard half gets its own rounded card
+            final float radius = SPLIT_CARD_CORNER_RADIUS_DP * getResources().getDisplayMetrics().density;
+            final Rect f = mSplitFrame;
+            final int keysTop = mSplitGap.top;
+            final boolean hasBarAbove = keysTop > f.top;
+            if (hasBarAbove)
+                mSplitCardsPath.addRect(f.left, f.top, f.right, keysTop, Path.Direction.CW);
+            final float topRadius = hasBarAbove ? 0f : radius;
+            final float[] radii = { topRadius, topRadius, topRadius, topRadius, radius, radius, radius, radius };
+            mSplitCardsPath.addRoundRect(new RectF(f.left, keysTop, mSplitGap.left, f.bottom), radii, Path.Direction.CW);
+            mSplitCardsPath.addRoundRect(new RectF(mSplitGap.right, keysTop, f.right, f.bottom), radii, Path.Direction.CW);
+            if (mSplitGap.bottom < f.bottom) // rows below the gap span the whole width
+                mSplitCardsPath.addRect(f.left, mSplitGap.bottom, f.right, f.bottom, Path.Direction.CW);
+        }
+        invalidate();
+    }
+
+    @Override
+    protected boolean drawChild(@NonNull final Canvas canvas, final View child, final long drawingTime) {
+        if (child != mMainKeyboardFrame || mSplitGap.isEmpty())
+            return super.drawChild(canvas, child, drawingTime);
+        // don't let the keyboard background (or anything else in the frame) paint the split gap
+        canvas.save();
+        canvas.clipPath(mSplitCardsPath);
+        final boolean result = super.drawChild(canvas, child, drawingTime);
+        canvas.restore();
+        return result;
     }
 
     public void setKeyboardTopPadding(final int keyboardTopPadding) {
