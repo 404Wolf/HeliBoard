@@ -38,7 +38,7 @@ import kotlin.math.abs
  * - while typing it shows the suggestions in three lines, best on top; tap one to pick it
  * - hold: paste; double tap (no suggestions): select the word
  * Rows 3-4: undo, clipboard / emoji, voice, two per row so each is about 9 mm wide; in terminal
- * fields Esc, Tab / Ctrl, Shift+Enter (| ~ / - are on the symbols layer).
+ * fields Esc, Tab, Ctrl / Shift+Enter, mic (| ~ / - are on the symbols layer).
  * Positioned by InputView ([setRows] gives the key rows' geometry). Suggestions come from the
  * hidden [SuggestionStripView], which also handles taps on the words and buttons.
  */
@@ -132,7 +132,7 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         pad.invalidate()
     }
 
-    /** Terminal fields: Esc Tab / Ctrl Shift+Enter in place of the buttons; the pad sends arrows. */
+    /** Terminal fields: Esc Tab Ctrl / Shift+Enter mic in place of the buttons; the pad sends arrows. */
     fun setTerminal(terminal: Boolean) {
         if (terminal == this.terminal) return
         this.terminal = terminal
