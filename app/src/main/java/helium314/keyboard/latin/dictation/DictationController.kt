@@ -42,8 +42,11 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     private var recognizer: SpeechRecognizer? = null
     private var engine = DictationEngine.GOOGLE
-    private var component: ComponentName? = null
-    private var triedSystemFallback = false
+    private var candidates: List<DictationEngine.Recognizer> = emptyList()
+    private var candidateIndex = 0
+    private val current get() = candidates.getOrNull(candidateIndex)
+    /** Whether the current recognizer has worked (got ready or delivered text) this session. */
+    private var recognizerWorked = false
     private var preferOffline = false
     private var sendLanguage = true
     private var consecutiveErrors = 0
@@ -132,11 +135,11 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             return
         }
         engine = DictationEngine.selected(ime)
-        component = DictationEngine.resolve(ime, engine)
-        if (!DictationEngine.usable(ime, component)) {
-            // no Google service and no system default selected (createSpeechRecognizer would fail
-            // with "no selected voice recognition service"): use the voice input method, if any
-            if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
+        // in-keyboard recognizers only: never a recognition activity or another input method
+        candidates = DictationEngine.candidates(ime, engine)
+        candidateIndex = 0
+        if (candidates.isEmpty()) {
+            toast(R.string.dictation_unavailable)
             return
         }
         val prefs = ime.prefs()
@@ -144,7 +147,6 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         autoSend = prefs.getBoolean(Settings.PREF_DICTATION_AUTO_SEND, Defaults.PREF_DICTATION_AUTO_SEND)
         val timeout = prefs.getInt(Settings.PREF_DICTATION_SILENCE_TIMEOUT, Defaults.PREF_DICTATION_SILENCE_TIMEOUT)
         silenceTimeoutMs = if (timeout > 60 || timeout <= 0) Long.MAX_VALUE else timeout * 1000L
-        triedSystemFallback = false
         preferOffline = false
         sendLanguage = true
         consecutiveErrors = 0
@@ -156,11 +158,14 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         inputLogic.commitTyped(Settings.getValues(), LastComposedWord.NOT_A_SEPARATOR)
         connection.endBatchEdit()
 
-        if (!createRecognizer()) {
-            if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
-            return
+        while (!createRecognizer()) {
+            if (++candidateIndex >= candidates.size) {
+                toast(R.string.dictation_unavailable)
+                return
+            }
         }
         isActive = true
+        ime.suggestionStripViewForDictation?.setDictationActive(true)
         showIndicator()
         lastActivity = SystemClock.uptimeMillis()
         handler.postDelayed(watchdog, WATCHDOG_INTERVAL_MS)
@@ -169,9 +174,15 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     private fun createRecognizer(): Boolean {
         destroyRecognizer()
+        recognizerWorked = false
         recognizer = try {
-            if (component != null) SpeechRecognizer.createSpeechRecognizer(ime, component)
-            else SpeechRecognizer.createSpeechRecognizer(ime)
+            when (val c = current) {
+                is DictationEngine.Recognizer.Service -> SpeechRecognizer.createSpeechRecognizer(ime, c.component)
+                DictationEngine.Recognizer.OnDevice ->
+                    if (android.os.Build.VERSION.SDK_INT >= 33) SpeechRecognizer.createOnDeviceSpeechRecognizer(ime) else null
+                DictationEngine.Recognizer.Default -> SpeechRecognizer.createSpeechRecognizer(ime)
+                null -> null
+            }
         } catch (e: Exception) {
             Log.w(TAG, "can't create speech recognizer", e)
             null
@@ -214,6 +225,9 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         try {
             r.startListening(intent)
             indicator?.setState(DictationIndicatorView.State.STARTING)
+            // a service that can't be bound may never answer: don't wait for it forever
+            handler.removeCallbacks(startTimeout)
+            if (!recognizerWorked) handler.postDelayed(startTimeout, START_TIMEOUT_MS)
         } catch (e: Exception) {
             Log.w(TAG, "startListening failed", e)
             onError(SpeechRecognizer.ERROR_CLIENT)
@@ -223,6 +237,13 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private fun restartListening(delayMs: Long = RESTART_DELAY_MS) {
         handler.removeCallbacks(restart)
         handler.postDelayed(restart, delayMs)
+    }
+
+    private val startTimeout = Runnable {
+        if (isActive && !stopping && !recognizerWorked) {
+            Log.i(TAG, "${current} did not start listening in time")
+            onError(SpeechRecognizer.ERROR_CLIENT)
+        }
     }
 
     private val restart = Runnable { if (isActive && !stopping) startListening() }
@@ -276,12 +297,16 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         composing = ""
         contextBefore = null
         hideIndicator()
+        ime.suggestionStripViewForDictation?.setDictationActive(false)
         ime.updateShiftStateAfterDictation()
     }
 
     // ---- RecognitionListener ----
 
     override fun onReadyForSpeech(params: Bundle?) {
+        recognizerWorked = true
+        consecutiveErrors = 0
+        handler.removeCallbacks(startTimeout)
         indicator?.setState(if (preferOffline) DictationIndicatorView.State.LISTENING_OFFLINE else DictationIndicatorView.State.LISTENING)
     }
 
@@ -300,6 +325,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     override fun onPartialResults(partialResults: Bundle?) {
         if (!isActive) return
         val text = firstResult(partialResults) ?: return
+        recognizerWorked = true
         lastActivity = SystemClock.uptimeMillis()
         consecutiveErrors = 0
         showPartial(text)
@@ -321,9 +347,16 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     override fun onError(error: Int) {
         if (!isActive) return
-        Log.i(TAG, "recognizer error $error (engine $engine, offline $preferOffline)")
+        Log.i(TAG, "recognizer error $error (${current}, offline $preferOffline)")
         if (stopping) {
             finalizeStop()
+            return
+        }
+        if (!recognizerWorked && error != SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS && error != SpeechRecognizer.ERROR_AUDIO
+                && error != SpeechRecognizer.ERROR_NO_MATCH && error != SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
+            // this recognizer never got going (e.g. its service can't be bound): try the next one now
+            finishComposing()
+            if (fallBackToNextRecognizer()) restartListening() else giveUp()
             return
         }
         when (error) {
@@ -339,7 +372,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                     preferOffline = true
                     toast(R.string.dictation_offline)
                     restartListening()
-                } else if (fallBackToSystemRecognizer()) {
+                } else if (fallBackToNextRecognizer()) {
                     restartListening()
                 } else {
                     toast(R.string.dictation_no_network)
@@ -351,7 +384,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                 if (sendLanguage) {
                     sendLanguage = false
                     restartListening()
-                } else if (fallBackToSystemRecognizer()) {
+                } else if (fallBackToNextRecognizer()) {
                     restartListening()
                 } else {
                     giveUp()
@@ -369,7 +402,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                 finishComposing()
                 consecutiveErrors++
                 if (consecutiveErrors > MAX_RETRIES) {
-                    if (fallBackToSystemRecognizer()) {
+                    if (fallBackToNextRecognizer()) {
                         consecutiveErrors = 0
                         restartListening()
                     } else {
@@ -386,32 +419,24 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     override fun onEvent(eventType: Int, params: Bundle?) {}
 
-    /** Switch to the system's default recognition service, once per session, unless that is the one that just failed. */
-    private fun fallBackToSystemRecognizer(): Boolean {
-        if (triedSystemFallback) return false
-        triedSystemFallback = true
-        val system = DictationEngine.resolve(ime, DictationEngine.SYSTEM)
-        if (!DictationEngine.usable(ime, system) || system == component) return false // none, or the one that failed
-        component = system
-        engine = DictationEngine.SYSTEM
-        preferOffline = false
-        if (!createRecognizer()) return false
-        toast(R.string.dictation_fallback_system)
-        return true
+    /** Move on to the next candidate recognizer that can be created; false when none is left. */
+    private fun fallBackToNextRecognizer(): Boolean {
+        while (++candidateIndex < candidates.size) {
+            preferOffline = false
+            sendLanguage = true
+            consecutiveErrors = 0
+            if (createRecognizer()) {
+                Log.i(TAG, "falling back to ${current}")
+                return true
+            }
+        }
+        return false
     }
 
-    /** No recognizer works: end the session, then use the voice input method, else say so. */
+    /** No recognizer works: end the session and say so (no input method switch, no activity). */
     private fun giveUp() {
         cancel()
-        if (!switchToVoiceIme()) toast(R.string.dictation_unavailable)
-    }
-
-    private fun switchToVoiceIme(): Boolean {
-        val richImm = RichInputMethodManager.getInstance()
-        if (!richImm.isShortcutImeReady) return false
-        toast(R.string.dictation_fallback_voice_ime)
-        richImm.switchToShortcutIme(ime)
-        return true
+        toast(R.string.dictation_unavailable)
     }
 
     private fun firstResult(bundle: Bundle?): String? =
@@ -560,8 +585,8 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     }
 
     private fun updateIndicatorEngine() {
-        indicator?.engineLabel = when {
-            component?.packageName == DictationEngine.GOOGLE_PACKAGE -> ime.getString(R.string.dictation_engine_google)
+        indicator?.engineLabel = when ((current as? DictationEngine.Recognizer.Service)?.component?.packageName) {
+            DictationEngine.GOOGLE_PACKAGE -> ime.getString(R.string.dictation_engine_google)
             else -> ime.getString(R.string.dictation_engine_system)
         }
     }
@@ -580,6 +605,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         private const val CONTEXT_LENGTH = 64
         private const val RESTART_DELAY_MS = 50L
         private const val FINISH_TIMEOUT_MS = 2000L
+        private const val START_TIMEOUT_MS = 3000L
         private const val WATCHDOG_INTERVAL_MS = 500L
         private const val MAX_RETRIES = 3
         private const val TOLERATE_SELECTION_CHANGES_MS = 1500L

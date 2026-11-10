@@ -4,6 +4,7 @@ package helium314.keyboard.latin.dictation
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.speech.RecognitionService
 import android.speech.SpeechRecognizer
 import helium314.keyboard.latin.settings.Defaults
@@ -17,6 +18,16 @@ enum class DictationEngine(val prefValue: String) {
     GOOGLE("google"),
     /** Whatever the system's default recognition service is (Settings > voice input). */
     SYSTEM("system");
+
+    /** One way to get a [SpeechRecognizer], tried in order by [candidates]. */
+    sealed interface Recognizer {
+        /** An explicit recognition service. */
+        data class Service(val component: ComponentName) : Recognizer
+        /** The system's on-device recognizer (Android 13+). */
+        data object OnDevice : Recognizer
+        /** The service chosen in system settings (voice_recognition_service). */
+        data object Default : Recognizer
+    }
 
     companion object {
         const val GOOGLE_PACKAGE = "com.google.android.googlequicksearchbox"
@@ -83,6 +94,39 @@ enum class DictationEngine(val prefValue: String) {
         fun resolve(context: Context, engine: DictationEngine): ComponentName? = when (engine) {
             GOOGLE -> googleService(context)
             SYSTEM -> null
+        }
+
+        private fun packageInstalled(context: Context, pkg: String): Boolean = try {
+            context.packageManager.getPackageInfo(pkg, 0)
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+        private fun onDeviceAvailable(context: Context): Boolean = Build.VERSION.SDK_INT >= 33 && try {
+            SpeechRecognizer.isOnDeviceRecognitionAvailable(context)
+        } catch (e: Exception) {
+            false
+        }
+
+        /**
+         * Recognizers to try for [engine], best first; the controller moves on to the next one when
+         * one can't be created or fails before it ever listened. Only in-keyboard SpeechRecognizer
+         * sessions: never a recognition activity or another input method.
+         * Google's service is tried even when the package manager doesn't list it (some builds
+         * hide it from queries but still bind it); it fails fast if it really isn't there.
+         */
+        fun candidates(context: Context, engine: DictationEngine): List<Recognizer> {
+            val google = (googleService(context) ?: GOOGLE_SERVICE.takeIf { packageInstalled(context, GOOGLE_PACKAGE) })
+                ?.let { Recognizer.Service(it) }
+            val defaultComponent = defaultService(context)
+            val default = Recognizer.Default.takeIf { defaultComponent != null }
+            val onDevice = Recognizer.OnDevice.takeIf { onDeviceAvailable(context) }
+            return when (engine) {
+                // the default is only worth a try when it is not Google's service again
+                GOOGLE -> listOfNotNull(google, onDevice, default?.takeIf { defaultComponent != google?.component })
+                SYSTEM -> listOfNotNull(default, onDevice, google?.takeIf { it.component != defaultComponent })
+            }
         }
 
         /** Whether [component] (null = the system default) can be used at all. */

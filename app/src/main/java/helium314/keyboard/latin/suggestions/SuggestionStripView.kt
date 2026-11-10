@@ -63,6 +63,7 @@ import kotlin.math.abs
 import kotlin.math.min
 import androidx.core.view.isGone
 import helium314.keyboard.latin.utils.onClickToolbarKey
+import helium314.keyboard.latin.dictation.MicKeyState
 import helium314.keyboard.latin.utils.onLongClickToolbarKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -375,20 +376,24 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
 
     private fun hubActive() = hub?.isShown == true
 
+    /**
+     * The listening indicator: in the split hub over the cursor pad (which has nothing else to do
+     * while dictating). The strip is left as it is, so its keys (terminal keys, the mic to stop)
+     * stay usable; the red mic keys ([setDictationActive]) show that dictation is on.
+     */
     fun showDictationView(view: View) {
         if (hubActive()) {
             dictationView = view
             hub!!.showDictationView(view)
-            return
         }
-        if (view.parent !== this) {
-            (view.parent as? ViewGroup)?.removeView(view)
-            addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-        dictationView = view
-        dismissMoreSuggestionsPanel()
-        view.isVisible = true
-        view.bringToFront()
+    }
+
+    /** Dictation started or ended: mark the mic keys (toolbar, pinned, terminal row, hub). */
+    fun setDictationActive(active: Boolean) {
+        MicKeyState.applyTo(toolbar, active)
+        MicKeyState.applyTo(pinnedKeys, active)
+        MicKeyState.applyTo(terminalRow, active)
+        MicKeyState.applyTo(hub, active)
     }
 
     fun hideDictationView(view: View) {
