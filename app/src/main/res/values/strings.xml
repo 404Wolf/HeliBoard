@@ -77,6 +77,8 @@
     <string name="dictation_engine">Speech recognition</string>
     <string name="dictation_engine_google">Google (live)</string>
     <string name="dictation_engine_system">System default</string>
+    <string name="dictation_engine_vosk">On-device (Vosk)</string>
+    <string name="dictation_engine_no_model">no speech model in this build</string>
     <string name="dictation_engine_not_installed">not installed, uses system default</string>
     <string name="dictation_commands">Voice commands</string>
     <string name="dictation_commands_summary">English: \"new line\", \"new paragraph\", \"period\", \"comma\", \"question mark\", \"delete that\", \"undo\", \"send\", \"stop listening\"</string>

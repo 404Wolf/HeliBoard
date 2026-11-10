@@ -40,7 +40,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private val connection get() = inputLogic.mConnection
     private val handler = Handler(Looper.getMainLooper())
 
-    private var recognizer: SpeechRecognizer? = null
+    private var recognizer: DictationRecognizer? = null
     private var engine = DictationEngine.GOOGLE
     private var candidates: List<DictationEngine.Recognizer> = emptyList()
     private var candidateIndex = 0
@@ -127,6 +127,12 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     fun onDestroy() = cancel()
 
+    /** Keyboard shown: load the on-device model in the background, so the first mic tap is quick. */
+    fun onStartInputView() {
+        if (DictationEngine.isDictationEnabled(ime) && DictationEngine.selected(ime) == DictationEngine.VOSK)
+            VoskModel.preload(ime)
+    }
+
     // ---- session ----
 
     private fun start() {
@@ -177,17 +183,20 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         recognizerWorked = false
         recognizer = try {
             when (val c = current) {
-                is DictationEngine.Recognizer.Service -> SpeechRecognizer.createSpeechRecognizer(ime, c.component)
+                is DictationEngine.Recognizer.Service ->
+                    SystemDictationRecognizer(SpeechRecognizer.createSpeechRecognizer(ime, c.component))
                 DictationEngine.Recognizer.OnDevice ->
-                    if (android.os.Build.VERSION.SDK_INT >= 33) SpeechRecognizer.createOnDeviceSpeechRecognizer(ime) else null
-                DictationEngine.Recognizer.Default -> SpeechRecognizer.createSpeechRecognizer(ime)
+                    if (android.os.Build.VERSION.SDK_INT >= 33) SystemDictationRecognizer(SpeechRecognizer.createOnDeviceSpeechRecognizer(ime))
+                    else null
+                DictationEngine.Recognizer.Default -> SystemDictationRecognizer(SpeechRecognizer.createSpeechRecognizer(ime))
+                DictationEngine.Recognizer.Vosk -> VoskRecognizer(ime)
                 null -> null
             }
         } catch (e: Exception) {
             Log.w(TAG, "can't create speech recognizer", e)
             null
         }
-        recognizer?.setRecognitionListener(this)
+        recognizer?.setListener(this)
         updateIndicatorEngine()
         return recognizer != null
     }
@@ -196,7 +205,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         val r = recognizer ?: return
         recognizer = null
         try {
-            r.setRecognitionListener(null)
+            r.setListener(null)
             r.cancel()
             r.destroy()
         } catch (e: Exception) {
@@ -227,7 +236,8 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             indicator?.setState(DictationIndicatorView.State.STARTING)
             // a service that can't be bound may never answer: don't wait for it forever
             handler.removeCallbacks(startTimeout)
-            if (!recognizerWorked) handler.postDelayed(startTimeout, START_TIMEOUT_MS)
+            // (not for the keyboard's own engine: the first start loads its model, which takes a while)
+            if (!recognizerWorked && current != DictationEngine.Recognizer.Vosk) handler.postDelayed(startTimeout, START_TIMEOUT_MS)
         } catch (e: Exception) {
             Log.w(TAG, "startListening failed", e)
             onError(SpeechRecognizer.ERROR_CLIENT)
@@ -585,8 +595,11 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     }
 
     private fun updateIndicatorEngine() {
-        indicator?.engineLabel = when ((current as? DictationEngine.Recognizer.Service)?.component?.packageName) {
-            DictationEngine.GOOGLE_PACKAGE -> ime.getString(R.string.dictation_engine_google)
+        val c = current
+        indicator?.engineLabel = when {
+            c == DictationEngine.Recognizer.Vosk -> ime.getString(R.string.dictation_engine_vosk)
+            (c as? DictationEngine.Recognizer.Service)?.component?.packageName == DictationEngine.GOOGLE_PACKAGE ->
+                ime.getString(R.string.dictation_engine_google)
             else -> ime.getString(R.string.dictation_engine_system)
         }
     }

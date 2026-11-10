@@ -9,6 +9,10 @@ plugins {
 }
 
 android {
+    // On-device dictation (Vosk) needs a speech model in the assets under vosk-model/:
+    // -PvoskAssetsDir=<dir containing vosk-model/> (the nix build passes vosk-model-small-en-us).
+    // Without it the app builds and dictation uses recognition services only.
+    (project.findProperty("voskAssetsDir") as String?)?.let { sourceSets["main"].assets.srcDir(it) }
     compileSdk = 36
 
     defaultConfig {
@@ -128,6 +132,9 @@ dependencies {
     // androidx
     implementation("androidx.core:core-ktx:1.17.0") // 1.18.0 requires minSdk 23
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+    // on-device dictation (Apache-2.0); the model goes in the assets, see voskModelDir below
+    implementation("com.alphacephei:vosk-android:0.3.75@aar")
+    implementation("net.java.dev.jna:jna:5.18.1@aar")
     implementation("androidx.autofill:autofill:1.3.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
 

@@ -181,6 +181,7 @@ fun createPreferencesSettings(context: Context) = listOf(
             listOf(
                 stringResource(R.string.dictation_engine_google) to DictationEngine.GOOGLE.prefValue,
                 stringResource(R.string.dictation_engine_system) to DictationEngine.SYSTEM.prefValue,
+                stringResource(R.string.dictation_engine_vosk) to DictationEngine.VOSK.prefValue,
             ),
             Defaults.PREF_DICTATION_ENGINE
         )

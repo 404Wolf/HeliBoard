@@ -17,7 +17,9 @@ enum class DictationEngine(val prefValue: String) {
     /** Google's recognition service (Google app): streams partial results while you speak. */
     GOOGLE("google"),
     /** Whatever the system's default recognition service is (Settings > voice input). */
-    SYSTEM("system");
+    SYSTEM("system"),
+    /** The keyboard's own on-device recognizer (Vosk): no other app, no network. */
+    VOSK("vosk");
 
     /** One way to get a [SpeechRecognizer], tried in order by [candidates]. */
     sealed interface Recognizer {
@@ -25,6 +27,8 @@ enum class DictationEngine(val prefValue: String) {
         data class Service(val component: ComponentName) : Recognizer
         /** The system's on-device recognizer (Android 13+). */
         data object OnDevice : Recognizer
+        /** The keyboard's own Vosk recognizer ([VoskRecognizer]). */
+        data object Vosk : Recognizer
         /** The service chosen in system settings (voice_recognition_service). */
         data object Default : Recognizer
     }
@@ -69,7 +73,7 @@ enum class DictationEngine(val prefValue: String) {
 
         /** Whether any recognition service is available, so the mic key can dictate. */
         fun anyAvailable(context: Context): Boolean = try {
-            recognitionServices(context).isNotEmpty() || SpeechRecognizer.isRecognitionAvailable(context)
+            VoskModel.available(context) || recognitionServices(context).isNotEmpty() || SpeechRecognizer.isRecognitionAvailable(context)
         } catch (e: Exception) {
             false
         }
@@ -93,14 +97,7 @@ enum class DictationEngine(val prefValue: String) {
          */
         fun resolve(context: Context, engine: DictationEngine): ComponentName? = when (engine) {
             GOOGLE -> googleService(context)
-            SYSTEM -> null
-        }
-
-        private fun packageInstalled(context: Context, pkg: String): Boolean = try {
-            context.packageManager.getPackageInfo(pkg, 0)
-            true
-        } catch (e: Exception) {
-            false
+            SYSTEM, VOSK -> null
         }
 
         private fun onDeviceAvailable(context: Context): Boolean = Build.VERSION.SDK_INT >= 33 && try {
@@ -113,19 +110,20 @@ enum class DictationEngine(val prefValue: String) {
          * Recognizers to try for [engine], best first; the controller moves on to the next one when
          * one can't be created or fails before it ever listened. Only in-keyboard SpeechRecognizer
          * sessions: never a recognition activity or another input method.
-         * Google's service is tried even when the package manager doesn't list it (some builds
-         * hide it from queries but still bind it); it fails fast if it really isn't there.
+         * The keyboard's own engine is last for the others, so dictation works without any
+         * recognition service (e.g. GrapheneOS without a usable Google app).
          */
         fun candidates(context: Context, engine: DictationEngine): List<Recognizer> {
-            val google = (googleService(context) ?: GOOGLE_SERVICE.takeIf { packageInstalled(context, GOOGLE_PACKAGE) })
-                ?.let { Recognizer.Service(it) }
+            val google = googleService(context)?.let { Recognizer.Service(it) }
+            val vosk = Recognizer.Vosk.takeIf { VoskModel.available(context) }
             val defaultComponent = defaultService(context)
             val default = Recognizer.Default.takeIf { defaultComponent != null }
             val onDevice = Recognizer.OnDevice.takeIf { onDeviceAvailable(context) }
             return when (engine) {
                 // the default is only worth a try when it is not Google's service again
-                GOOGLE -> listOfNotNull(google, onDevice, default?.takeIf { defaultComponent != google?.component })
-                SYSTEM -> listOfNotNull(default, onDevice, google?.takeIf { it.component != defaultComponent })
+                GOOGLE -> listOfNotNull(google, onDevice, default?.takeIf { defaultComponent != google?.component }, vosk)
+                SYSTEM -> listOfNotNull(default, onDevice, google?.takeIf { it.component != defaultComponent }, vosk)
+                VOSK -> listOfNotNull(vosk, google, onDevice, default?.takeIf { defaultComponent != google?.component })
             }
         }
 

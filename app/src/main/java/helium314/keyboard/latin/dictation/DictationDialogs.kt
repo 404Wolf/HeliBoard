@@ -24,6 +24,8 @@ fun createEnginePickerDialog(context: Context, windowToken: IBinder, onChosen: (
             DictationEngine.GOOGLE -> context.getString(R.string.dictation_engine_google) +
                     if (googleInstalled) "" else " (" + context.getString(R.string.dictation_engine_not_installed) + ")"
             DictationEngine.SYSTEM -> context.getString(R.string.dictation_engine_system)
+            DictationEngine.VOSK -> context.getString(R.string.dictation_engine_vosk) +
+                    if (VoskModel.available(context)) "" else " (" + context.getString(R.string.dictation_engine_no_model) + ")"
         }
     }.toTypedArray()
     val dialog = AlertDialog.Builder(getPlatformDialogThemeContext(context))
