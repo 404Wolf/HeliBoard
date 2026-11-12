@@ -27,6 +27,8 @@ import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.Log
 import helium314.keyboard.latin.utils.prefs
+import helium314.keyboard.latin.dictation.desktop.PendingClip
+import helium314.keyboard.latin.dictation.desktop.PendingDictations
 
 /**
  * In-keyboard dictation with [SpeechRecognizer]: partial results stream into the editor as
@@ -36,7 +38,8 @@ import helium314.keyboard.latin.utils.prefs
  *
  * All methods must be called on the main thread.
  */
-class DictationController(private val ime: LatinIME, private val inputLogic: InputLogic) : RecognitionListener {
+class DictationController(private val ime: LatinIME, private val inputLogic: InputLogic) : RecognitionListener,
+    PendingDictations.Listener, WhisperRecognizer.Events {
     private val connection get() = inputLogic.mConnection
     private val handler = Handler(Looper.getMainLooper())
 
@@ -91,7 +94,10 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     /** Long-press on the mic key: choose the recognition engine. */
     fun showEnginePicker() {
         val token = KeyboardSwitcher.getInstance().mainKeyboardView?.windowToken ?: return
-        createEnginePickerDialog(ime, token) { chosen ->
+        createEnginePickerDialog(ime, token, onInsert = { clip, text ->
+            insert(text)
+            WhisperRecognizer.pending(ime).delivered(clip.id)
+        }) { chosen ->
             ime.prefs().edit().putString(Settings.PREF_DICTATION_ENGINE, chosen.prefValue).apply()
             if (isActive) { // restart with the new engine
                 cancel()
@@ -100,7 +106,10 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         }.show()
     }
 
-    /** Stop right away, keeping text already in the editor (keyboard hidden, input finished, typing). */
+    /**
+     * Stop right away, keeping text already in the editor (keyboard hidden, input finished, typing).
+     * A recording the desktop has not heard is kept for later ([WhisperRecognizer.cancel]).
+     */
     fun cancel() {
         if (!isActive) return
         handler.removeCallbacksAndMessages(null)
@@ -125,12 +134,78 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         return false
     }
 
-    fun onDestroy() = cancel()
+    fun onDestroy() {
+        cancel()
+        if (DictationEngine.serverUri(ime) != null) WhisperRecognizer.pending(ime).setListener(null)
+    }
 
-    /** Keyboard shown: load the on-device model in the background, so the first mic tap is quick. */
+    /** Keyboard shown: dictations the desktop transcribed later may belong in this field. */
     fun onStartInputView() {
-        if (DictationEngine.isDictationEnabled(ime) && DictationEngine.selected(ime) == DictationEngine.VOSK)
-            VoskModel.preload(ime)
+        if (!DictationEngine.isDictationEnabled(ime) || DictationEngine.serverUri(ime) == null) return
+        toldElsewhere = false
+        WhisperRecognizer.pending(ime).setListener(this) // offers the held texts again
+    }
+
+    /** The field the keyboard types into: a dictation recorded for later goes back to it. */
+    private fun fieldKey(): String {
+        val info = ime.currentInputEditorInfo
+        return "${info?.packageName}/${info?.fieldId}"
+    }
+
+    private var toldElsewhere = false
+
+    // ---- WhisperRecognizer.Events and PendingDictations.Listener ----
+
+    override fun onOffline(source: WhisperRecognizer) {
+        if (!isActive || recognizer !== source) return
+        withdrawComposing()
+        indicator?.setState(DictationIndicatorView.State.DESKTOP_OFFLINE)
+    }
+
+    override fun onPending(source: WhisperRecognizer, clip: PendingClip) {
+        if (isActive && recognizer === source) withdrawComposing()
+        KeyboardSwitcher.getInstance().showToast(
+            ime.getString(R.string.dictation_waiting, duration(clip.durationMs)), true)
+    }
+
+    /** Text the desktop transcribed later: typed at the cursor if its field is the one open. */
+    override fun onTranscribed(clip: PendingClip, text: String) {
+        val pending = WhisperRecognizer.pending(ime)
+        if (text.isBlank()) {
+            pending.delivered(clip.id)
+            return
+        }
+        if (isActive || !ime.isInputViewShown || clip.target != fieldKey()) {
+            if (!toldElsewhere && ime.isInputViewShown) toast(R.string.dictation_ready_elsewhere)
+            toldElsewhere = true
+            return
+        }
+        insert(text)
+        pending.delivered(clip.id)
+    }
+
+    override fun onChanged() {}
+
+    /** Puts [text] at the cursor, spaced and capitalized like dictation. */
+    private fun insert(text: String) {
+        val formatted = DictationFormatter.format(textBefore(), text.trim(), autoCap(), autoSpace())
+        connection.beginBatchEdit()
+        inputLogic.commitTyped(Settings.getValues(), LastComposedWord.NOT_A_SEPARATOR)
+        if (formatted.deleteBefore > 0) connection.deleteTextBeforeCursor(formatted.deleteBefore)
+        connection.commitText(formatted.text, 1)
+        connection.endBatchEdit()
+        ime.updateShiftStateAfterDictation()
+    }
+
+    /** The live partial is void: the whole recording will come back as one text. */
+    private fun withdrawComposing() {
+        if (composing.isEmpty()) return
+        connection.beginBatchEdit()
+        connection.setComposingText("", 1)
+        connection.finishComposingText()
+        connection.endBatchEdit()
+        composing = ""
+        contextBefore = null
     }
 
     // ---- session ----
@@ -189,7 +264,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
                     if (android.os.Build.VERSION.SDK_INT >= 33) SystemDictationRecognizer(SpeechRecognizer.createOnDeviceSpeechRecognizer(ime))
                     else null
                 DictationEngine.Recognizer.Default -> SystemDictationRecognizer(SpeechRecognizer.createSpeechRecognizer(ime))
-                DictationEngine.Recognizer.Vosk -> VoskRecognizer(ime)
+                is DictationEngine.Recognizer.Whisper -> WhisperRecognizer(ime, c.uri, fieldKey(), this)
                 null -> null
             }
         } catch (e: Exception) {
@@ -237,7 +312,8 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             // a service that can't be bound may never answer: don't wait for it forever
             handler.removeCallbacks(startTimeout)
             // (not for the keyboard's own engine: the first start loads its model, which takes a while)
-            if (!recognizerWorked && current != DictationEngine.Recognizer.Vosk) handler.postDelayed(startTimeout, START_TIMEOUT_MS)
+            // (not for Whisper: it records offline when the desktop is away)
+            if (!recognizerWorked && current !is DictationEngine.Recognizer.Whisper) handler.postDelayed(startTimeout, START_TIMEOUT_MS)
         } catch (e: Exception) {
             Log.w(TAG, "startListening failed", e)
             onError(SpeechRecognizer.ERROR_CLIENT)
@@ -261,7 +337,9 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private val watchdog: Runnable = object : Runnable {
         override fun run() {
             if (!isActive) return
-            if (!stopping && SystemClock.uptimeMillis() - lastActivity > silenceTimeoutMs) {
+            // Whisper sessions end only on a tap, like Herdr's (and partials keep coming in silence)
+            if (!stopping && current !is DictationEngine.Recognizer.Whisper
+                    && SystemClock.uptimeMillis() - lastActivity > silenceTimeoutMs) {
                 stop(StopReason.SILENCE)
             }
             handler.postDelayed(this, WATCHDOG_INTERVAL_MS)
@@ -272,14 +350,15 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private fun stop(reason: StopReason) {
         if (!isActive) return
         stopReason = reason
-        if (stopping) { // second tap: stop now
-            finalizeStop()
+        val whisper = current is DictationEngine.Recognizer.Whisper
+        if (stopping) { // second tap: stop now (Whisper: wait, the audio would be lost)
+            if (!whisper) finalizeStop()
             return
         }
         stopping = true
         handler.removeCallbacks(restart)
         indicator?.setState(DictationIndicatorView.State.FINISHING)
-        if (composing.isEmpty()) {
+        if (composing.isEmpty() && !whisper) { // Whisper may have heard words it has not shown yet
             finalizeStop()
             return
         }
@@ -289,7 +368,8 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             finalizeStop()
             return
         }
-        handler.postDelayed(::finalizeStop, FINISH_TIMEOUT_MS)
+        // Whisper gives up on the desktop after its own timeout and keeps the recording
+        handler.postDelayed(::finalizeStop, if (whisper) WHISPER_FINISH_TIMEOUT_MS else FINISH_TIMEOUT_MS)
     }
 
     private fun finalizeStop() {
@@ -597,7 +677,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private fun updateIndicatorEngine() {
         val c = current
         indicator?.engineLabel = when {
-            c == DictationEngine.Recognizer.Vosk -> ime.getString(R.string.dictation_engine_vosk)
+            c is DictationEngine.Recognizer.Whisper -> ime.getString(R.string.dictation_engine_whisper)
             (c as? DictationEngine.Recognizer.Service)?.component?.packageName == DictationEngine.GOOGLE_PACKAGE ->
                 ime.getString(R.string.dictation_engine_google)
             else -> ime.getString(R.string.dictation_engine_system)
@@ -618,6 +698,13 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         private const val CONTEXT_LENGTH = 64
         private const val RESTART_DELAY_MS = 50L
         private const val FINISH_TIMEOUT_MS = 2000L
+        private const val WHISPER_FINISH_TIMEOUT_MS = 25_000L
+
+        /** 0:12 */
+        fun duration(ms: Long): String {
+            val s = ms / 1000
+            return "%d:%02d".format(s / 60, s % 60)
+        }
         private const val START_TIMEOUT_MS = 3000L
         private const val WATCHDOG_INTERVAL_MS = 500L
         private const val MAX_RETRIES = 3

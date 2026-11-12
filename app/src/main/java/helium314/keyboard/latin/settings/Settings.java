@@ -107,6 +107,8 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
     public static final String PREF_TERMINAL_APPS = "terminal_apps";
     public static final String PREF_DICTATION = "dictation";
     public static final String PREF_DICTATION_ENGINE = "dictation_engine";
+    /** The desktop's dictation server, e.g. ws://100.x.y.z:8770/v1/dictate (engine "whisper"). */
+    public static final String PREF_DICTATION_SERVER_URL = "dictation_server_url";
     public static final String PREF_DICTATION_COMMANDS = "dictation_commands";
     public static final String PREF_DICTATION_AUTO_SEND = "dictation_auto_send";
     public static final String PREF_DICTATION_SILENCE_TIMEOUT = "dictation_silence_timeout";

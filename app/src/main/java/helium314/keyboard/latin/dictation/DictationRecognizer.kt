@@ -7,7 +7,7 @@ import android.speech.SpeechRecognizer
 
 /**
  * What [DictationController] needs from a recognizer: Android's [SpeechRecognizer] (a recognition
- * service) or the keyboard's own on-device engine ([VoskRecognizer]). Results arrive through
+ * service) or the desktop's Whisper ([WhisperRecognizer]). Results arrive through
  * Android's [RecognitionListener] either way, on the main thread.
  */
 interface DictationRecognizer {

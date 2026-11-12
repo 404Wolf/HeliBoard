@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.speech.RecognitionService
 import android.speech.SpeechRecognizer
+import helium314.keyboard.latin.dictation.desktop.ServerDictationEngine
 import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.Log
@@ -18,8 +19,11 @@ enum class DictationEngine(val prefValue: String) {
     GOOGLE("google"),
     /** Whatever the system's default recognition service is (Settings > voice input). */
     SYSTEM("system"),
-    /** The keyboard's own on-device recognizer (Vosk): no other app, no network. */
-    VOSK("vosk");
+    /**
+     * Whisper on your desktop, over the tailnet (Herdr's dictation server, [PREF_DICTATION_SERVER_URL]).
+     * While the desktop is away it records, and transcribes once it is back ([WhisperRecognizer]).
+     */
+    WHISPER("whisper");
 
     /** One way to get a [SpeechRecognizer], tried in order by [candidates]. */
     sealed interface Recognizer {
@@ -27,8 +31,8 @@ enum class DictationEngine(val prefValue: String) {
         data class Service(val component: ComponentName) : Recognizer
         /** The system's on-device recognizer (Android 13+). */
         data object OnDevice : Recognizer
-        /** The keyboard's own Vosk recognizer ([VoskRecognizer]). */
-        data object Vosk : Recognizer
+        /** The desktop's Whisper server ([WhisperRecognizer]). */
+        data class Whisper(val uri: java.net.URI) : Recognizer
         /** The service chosen in system settings (voice_recognition_service). */
         data object Default : Recognizer
     }
@@ -39,7 +43,12 @@ enum class DictationEngine(val prefValue: String) {
             ComponentName(GOOGLE_PACKAGE, "com.google.android.voicesearch.serviceapi.GoogleRecognitionService")
         private const val TAG = "DictationEngine"
 
-        fun fromPref(value: String?) = entries.firstOrNull { it.prefValue == value } ?: GOOGLE
+        fun fromPref(value: String?) = entries.firstOrNull { it.prefValue == value } ?: WHISPER
+
+        /** The desktop's dictation server: a ws:// or wss:// URL, or null when not set. */
+        fun serverUri(context: Context): java.net.URI? = ServerDictationEngine.parseUrl(
+            context.prefs().getString(Settings.PREF_DICTATION_SERVER_URL, Defaults.PREF_DICTATION_SERVER_URL)
+        )
 
         fun selected(context: Context) = fromPref(
             context.prefs().getString(Settings.PREF_DICTATION_ENGINE, Defaults.PREF_DICTATION_ENGINE)
@@ -73,7 +82,7 @@ enum class DictationEngine(val prefValue: String) {
 
         /** Whether any recognition service is available, so the mic key can dictate. */
         fun anyAvailable(context: Context): Boolean = try {
-            VoskModel.available(context) || recognitionServices(context).isNotEmpty() || SpeechRecognizer.isRecognitionAvailable(context)
+            serverUri(context) != null || recognitionServices(context).isNotEmpty() || SpeechRecognizer.isRecognitionAvailable(context)
         } catch (e: Exception) {
             false
         }
@@ -97,7 +106,7 @@ enum class DictationEngine(val prefValue: String) {
          */
         fun resolve(context: Context, engine: DictationEngine): ComponentName? = when (engine) {
             GOOGLE -> googleService(context)
-            SYSTEM, VOSK -> null
+            SYSTEM, WHISPER -> null
         }
 
         private fun onDeviceAvailable(context: Context): Boolean = Build.VERSION.SDK_INT >= 33 && try {
@@ -110,20 +119,19 @@ enum class DictationEngine(val prefValue: String) {
          * Recognizers to try for [engine], best first; the controller moves on to the next one when
          * one can't be created or fails before it ever listened. Only in-keyboard SpeechRecognizer
          * sessions: never a recognition activity or another input method.
-         * The keyboard's own engine is last for the others, so dictation works without any
-         * recognition service (e.g. GrapheneOS without a usable Google app).
+         * Whisper never falls back to another recognizer: while the desktop is away it records
+         * for later instead, so the text is always the desktop's.
          */
         fun candidates(context: Context, engine: DictationEngine): List<Recognizer> {
             val google = googleService(context)?.let { Recognizer.Service(it) }
-            val vosk = Recognizer.Vosk.takeIf { VoskModel.available(context) }
             val defaultComponent = defaultService(context)
             val default = Recognizer.Default.takeIf { defaultComponent != null }
             val onDevice = Recognizer.OnDevice.takeIf { onDeviceAvailable(context) }
             return when (engine) {
                 // the default is only worth a try when it is not Google's service again
-                GOOGLE -> listOfNotNull(google, onDevice, default?.takeIf { defaultComponent != google?.component }, vosk)
-                SYSTEM -> listOfNotNull(default, onDevice, google?.takeIf { it.component != defaultComponent }, vosk)
-                VOSK -> listOfNotNull(vosk, google, onDevice, default?.takeIf { defaultComponent != google?.component })
+                GOOGLE -> listOfNotNull(google, onDevice, default?.takeIf { defaultComponent != google?.component })
+                SYSTEM -> listOfNotNull(default, onDevice, google?.takeIf { it.component != defaultComponent })
+                WHISPER -> listOfNotNull(serverUri(context)?.let { Recognizer.Whisper(it) })
             }
         }
 

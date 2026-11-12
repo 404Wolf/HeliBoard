@@ -15,6 +15,8 @@ import helium314.keyboard.latin.AudioAndHapticFeedbackManager
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.database.ClipboardDao
 import helium314.keyboard.latin.dictation.DictationEngine
+import helium314.keyboard.latin.dictation.desktop.ServerDictationEngine
+import helium314.keyboard.settings.preferences.TextInputPreference
 import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.Log
@@ -80,6 +82,7 @@ fun PreferencesScreen(
         R.string.settings_category_dictation,
         Settings.PREF_DICTATION,
         if (dictationEnabled) Settings.PREF_DICTATION_ENGINE else null,
+        if (dictationEnabled) Settings.PREF_DICTATION_SERVER_URL else null,
         if (dictationEnabled) Settings.PREF_DICTATION_COMMANDS else null,
         if (dictationEnabled) Settings.PREF_DICTATION_SILENCE_TIMEOUT else null,
         if (dictationEnabled) Settings.PREF_DICTATION_AUTO_SEND else null,
@@ -179,12 +182,17 @@ fun createPreferencesSettings(context: Context) = listOf(
         ListPreference(
             it,
             listOf(
+                stringResource(R.string.dictation_engine_whisper) to DictationEngine.WHISPER.prefValue,
                 stringResource(R.string.dictation_engine_google) to DictationEngine.GOOGLE.prefValue,
                 stringResource(R.string.dictation_engine_system) to DictationEngine.SYSTEM.prefValue,
-                stringResource(R.string.dictation_engine_vosk) to DictationEngine.VOSK.prefValue,
             ),
             Defaults.PREF_DICTATION_ENGINE
         )
+    },
+    Setting(context, Settings.PREF_DICTATION_SERVER_URL, R.string.dictation_server_url) { setting ->
+        TextInputPreference(setting, Defaults.PREF_DICTATION_SERVER_URL, stringResource(R.string.dictation_server_url_info)) {
+            it.isEmpty() || ServerDictationEngine.parseUrl(it) != null
+        }
     },
     Setting(context, Settings.PREF_DICTATION_COMMANDS, R.string.dictation_commands, R.string.dictation_commands_summary) {
         SwitchPreference(it, Defaults.PREF_DICTATION_COMMANDS)

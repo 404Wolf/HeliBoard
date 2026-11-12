@@ -13,26 +13,43 @@ import android.os.IBinder
 import android.view.WindowManager
 import android.widget.Toast
 import helium314.keyboard.latin.R
+import helium314.keyboard.latin.dictation.desktop.PendingClip
 import helium314.keyboard.latin.utils.getPlatformDialogThemeContext
 
-/** Dialog shown from the keyboard to pick the dictation engine (long-press on the mic key). */
-fun createEnginePickerDialog(context: Context, windowToken: IBinder, onChosen: (DictationEngine) -> Unit): AlertDialog {
+/**
+ * Dialog shown from the keyboard on a long-press of the mic key: dictations the desktop transcribed
+ * later (insert one here) and recordings still waiting for it (discard one), then the engines.
+ */
+fun createEnginePickerDialog(
+    context: Context, windowToken: IBinder, onInsert: (PendingClip, String) -> Unit, onChosen: (DictationEngine) -> Unit,
+): AlertDialog {
     val selected = DictationEngine.selected(context)
     val googleInstalled = DictationEngine.googleService(context) != null
-    val items = DictationEngine.entries.map {
+    val serverSet = DictationEngine.serverUri(context) != null
+    val pending = if (serverSet) WhisperRecognizer.pending(context) else null
+    val actions = mutableListOf<Pair<String, () -> Unit>>()
+    pending?.ready()?.forEach { clip ->
+        val text = pending.text(clip.id) ?: return@forEach
+        if (text.isNotBlank()) actions += context.getString(R.string.dictation_insert, text.take(40)) to { onInsert(clip, text) }
+    }
+    pending?.waiting()?.forEach { clip ->
+        actions += context.getString(R.string.dictation_discard, DictationController.duration(clip.durationMs)) to { pending.drop(clip.id) }
+    }
+    val engines = DictationEngine.entries.map {
         when (it) {
+            DictationEngine.WHISPER -> context.getString(R.string.dictation_engine_whisper) +
+                    if (serverSet) "" else " (" + context.getString(R.string.dictation_engine_no_server) + ")"
             DictationEngine.GOOGLE -> context.getString(R.string.dictation_engine_google) +
                     if (googleInstalled) "" else " (" + context.getString(R.string.dictation_engine_not_installed) + ")"
             DictationEngine.SYSTEM -> context.getString(R.string.dictation_engine_system)
-            DictationEngine.VOSK -> context.getString(R.string.dictation_engine_vosk) +
-                    if (VoskModel.available(context)) "" else " (" + context.getString(R.string.dictation_engine_no_model) + ")"
         }
-    }.toTypedArray()
+    }
+    val items = (actions.map { it.first } + engines).toTypedArray()
     val dialog = AlertDialog.Builder(getPlatformDialogThemeContext(context))
         .setTitle(R.string.dictation_engine)
-        .setSingleChoiceItems(items, selected.ordinal) { di, i ->
+        .setSingleChoiceItems(items, actions.size + selected.ordinal) { di, i ->
             di.dismiss()
-            onChosen(DictationEngine.entries[i])
+            if (i < actions.size) actions[i].second() else onChosen(DictationEngine.entries[i - actions.size])
         }
         .create()
     val window = dialog.window

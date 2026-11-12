@@ -29,7 +29,7 @@ import kotlin.math.sin
  */
 @SuppressLint("ViewConstructor")
 class DictationIndicatorView(context: Context) : View(context) {
-    enum class State { STARTING, LISTENING, LISTENING_OFFLINE, FINISHING }
+    enum class State { STARTING, LISTENING, LISTENING_OFFLINE, DESKTOP_OFFLINE, FINISHING }
 
     var onTap: () -> Unit = {}
     var onLongPress: () -> Unit = {}
@@ -132,7 +132,7 @@ class DictationIndicatorView(context: Context) : View(context) {
         val baseR = 5 * density
         val dotR = baseR + current * 4 * density
         val cx = pad + 9 * density
-        val active = state == State.LISTENING || state == State.LISTENING_OFFLINE
+        val active = state == State.LISTENING || state == State.LISTENING_OFFLINE || state == State.DESKTOP_OFFLINE
         accentPaint.alpha = if (active) 0xFF else 0x80
         canvas.drawCircle(cx, cy, dotR, accentPaint)
         ringPaint.alpha = ((if (active) 0x90 else 0x40) * (1 - breathe)).toInt()
@@ -143,6 +143,7 @@ class DictationIndicatorView(context: Context) : View(context) {
             State.STARTING -> R.string.dictation_starting
             State.LISTENING -> R.string.dictation_listening
             State.LISTENING_OFFLINE -> R.string.dictation_listening_offline
+            State.DESKTOP_OFFLINE -> R.string.dictation_desktop_offline
             State.FINISHING -> R.string.dictation_finishing
         })
         val textX = cx + 18 * density

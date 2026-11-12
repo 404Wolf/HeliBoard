@@ -92,7 +92,8 @@ object Defaults {
     const val PREF_SPLIT_HUB = false
     const val PREF_TERMINAL_APPS = "" // comma-separated package names
     const val PREF_DICTATION = true
-    const val PREF_DICTATION_ENGINE = "google"
+    const val PREF_DICTATION_ENGINE = "whisper"
+    const val PREF_DICTATION_SERVER_URL = ""
     const val PREF_DICTATION_COMMANDS = true
     const val PREF_DICTATION_AUTO_SEND = false
     const val PREF_DICTATION_SILENCE_TIMEOUT = 10 // seconds, > 60 means no limit
