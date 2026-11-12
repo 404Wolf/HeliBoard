@@ -55,6 +55,17 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
                     android:resource="@xml/spellchecker" />
         </service>
 
+        <!-- the desktop's Whisper as the phone's speech recognizer (voice_recognition_service) -->
+        <service android:name="helium314.keyboard.latin.dictation.WhisperRecognitionService"
+                 android:label="@string/whisper_recognizer"
+                 android:exported="true">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="android.speech" android:resource="@xml/recognition_service" />
+        </service>
+
         <!-- Activities -->
         <activity android:name="helium314.keyboard.settings.SettingsActivity"
                 android:theme="@style/platformActivityTheme"
@@ -99,6 +110,17 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
         <activity android:name="helium314.keyboard.latin.dictation.DictationPermissionActivity" android:exported="false"
             android:theme="@style/TransparentActivityTheme" android:excludeFromRecents="true"
             android:taskAffinity="" />
+
+        <!-- other apps' mic buttons (RecognizerIntent.ACTION_RECOGNIZE_SPEECH) on the desktop's Whisper -->
+        <activity android:name="helium314.keyboard.latin.dictation.RecognizeSpeechActivity" android:exported="true"
+            android:label="@string/whisper_recognizer"
+            android:theme="@style/RecognizeSpeechTheme" android:excludeFromRecents="true"
+            android:taskAffinity="" android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!-- Broadcast receivers -->
         <receiver android:name="SystemBroadcastReceiver"

@@ -32,6 +32,7 @@ fun createToolbarKey(context: Context, key: ToolbarKey): ImageButton {
     button.contentDescription = key.name.lowercase().getStringResourceOrName("", context)
     setToolbarButtonActivatedState(button)
     button.setImageDrawable(KeyboardIconsSet.instance.getNewDrawable(key.name, context))
+    if (key == VOICE) helium314.keyboard.latin.dictation.MicKeyState.register(button)
     return button
 }
 

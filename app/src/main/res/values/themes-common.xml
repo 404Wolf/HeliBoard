@@ -117,4 +117,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <!-- Over the app that asked for speech, dimmed like a dialog -->
+    <style name="RecognizeSpeechTheme" parent="TransparentActivityTheme">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+    </style>
 </resources>

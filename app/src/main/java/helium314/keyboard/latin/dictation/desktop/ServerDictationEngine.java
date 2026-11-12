@@ -35,17 +35,40 @@ public final class ServerDictationEngine implements DictationEngine {
     static final int READY_TIMEOUT_MS = 4000;
     static final int FINAL_TIMEOUT_MS = 20000;
 
+    /** The microphone's loudness, about every 100 ms on the mic thread. */
+    public interface LevelListener {
+        /** RMS of the last chunk in dB below full scale: 0 is the loudest, silence about -90. */
+        void onLevel(float dbfs);
+    }
+
     private final Context context;
+    /** Opens the microphone: the app's own, or one attributed to the app being served. */
+    private final Context micContext;
     private final URI uri;
     private final PendingDictations pending;
     private final Handler main = new Handler(Looper.getMainLooper());
     /** Main thread only. */
     private Session session;
+    private volatile LevelListener levels;
 
     public ServerDictationEngine(Context context, URI uri, PendingDictations pending) {
+        this(context, null, uri, pending);
+    }
+
+    /**
+     * {@code micContext}, when not null, records on behalf of another app (a recognition service's
+     * caller, see {@code ContextParams.Builder#setNextAttributionSource}).
+     */
+    public ServerDictationEngine(Context context, Context micContext, URI uri, PendingDictations pending) {
         this.context = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        this.micContext = micContext;
         this.uri = uri;
         this.pending = pending;
+    }
+
+    /** Hears the microphone's level from the next chunk on; null to stop. */
+    public void setLevelListener(LevelListener l) {
+        levels = l;
     }
 
     /**
@@ -223,12 +246,14 @@ public final class ServerDictationEngine implements DictationEngine {
         private void record() {
             ArrayDeque<byte[]> unsent = new ArrayDeque<>();
             boolean opened = false;
-            try (Microphone mic = Microphone.open()) {
+            try (Microphone mic = Microphone.open(micContext)) {
                 opened = true;
                 while (!stopping) {
                     byte[] chunk = new byte[CHUNK_BYTES];
                     int n = mic.read(chunk, () -> stopping);
                     if (n == 0) continue;
+                    LevelListener l = levels;
+                    if (l != null) l.onLevel(Microphone.dbfs(chunk, n));
                     if (!recording.write(chunk, n)) {
                         // A storage or session limit: end the session as if tapped.
                         post(this::finish);

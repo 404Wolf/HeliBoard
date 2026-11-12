@@ -13,6 +13,7 @@ import helium314.keyboard.keyboard.KeyShapeDrawable
 import helium314.keyboard.keyboard.KeyboardActionListener
 import helium314.keyboard.keyboard.internal.KeyboardIconsSet
 import helium314.keyboard.keyboard.internal.keyboard_parser.floris.KeyCode
+import helium314.keyboard.latin.dictation.MicKeyState
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.common.ColorType
 import helium314.keyboard.latin.common.Constants
@@ -96,6 +97,7 @@ class TerminalKeysView(context: Context, rows: List<List<Key>>, keyGap: Int) : L
         val pad = (6 * resources.displayMetrics.density).toInt()
         view.setPadding(pad, pad, pad, pad)
         view.setImageDrawable(KeyboardIconsSet.instance.getNewDrawable(toolbarKey.name, context))
+        if (toolbarKey == ToolbarKey.VOICE) MicKeyState.register(view)
         view.contentDescription = toolbarKey.name.lowercase().getStringResourceOrName("", context)
         Settings.getValues().mColors.setColor(view, ColorType.TOOL_BAR_KEY)
         view.background = keyBackground(tint)

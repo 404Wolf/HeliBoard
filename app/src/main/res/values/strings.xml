@@ -82,8 +82,8 @@
     <string name="dictation_server_url">Desktop dictation server</string>
     <string name="dictation_server_url_info">ws:// address of the desktop\'s dictation server, e.g. ws://100.64.0.1:8770/v1/dictate</string>
     <string name="dictation_desktop_offline">Desktop offline, recording</string>
-    <string name="dictation_waiting">%s waiting for desktop</string>
-    <string name="dictation_ready_elsewhere">Dictation transcribed: long-press the mic to insert it here</string>
+    <string name="dictation_desktop_offline_for">Desktop offline, recording %s</string>
+    <string name="whisper_recognizer">Desktop Whisper</string>
     <string name="dictation_insert">Insert dictation: %s</string>
     <string name="dictation_discard">Discard waiting %s</string>
     <string name="dictation_not_saved">Desktop offline and the recording could not be saved</string>

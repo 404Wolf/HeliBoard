@@ -142,8 +142,8 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     /** Keyboard shown: dictations the desktop transcribed later may belong in this field. */
     fun onStartInputView() {
         if (!DictationEngine.isDictationEnabled(ime) || DictationEngine.serverUri(ime) == null) return
-        toldElsewhere = false
         WhisperRecognizer.pending(ime).setListener(this) // offers the held texts again
+        WhisperRecognizer.showBadge(ime)
     }
 
     /** The field the keyboard types into: a dictation recorded for later goes back to it. */
@@ -151,8 +151,6 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         val info = ime.currentInputEditorInfo
         return "${info?.packageName}/${info?.fieldId}"
     }
-
-    private var toldElsewhere = false
 
     // ---- WhisperRecognizer.Events and PendingDictations.Listener ----
 
@@ -164,8 +162,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
 
     override fun onPending(source: WhisperRecognizer, clip: PendingClip) {
         if (isActive && recognizer === source) withdrawComposing()
-        KeyboardSwitcher.getInstance().showToast(
-            ime.getString(R.string.dictation_waiting, duration(clip.durationMs)), true)
+        WhisperRecognizer.showBadge(ime) // no pop-up: the mic keys show it is waiting
     }
 
     /** Text the desktop transcribed later: typed at the cursor if its field is the one open. */
@@ -175,16 +172,13 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             pending.delivered(clip.id)
             return
         }
-        if (isActive || !ime.isInputViewShown || clip.target != fieldKey()) {
-            if (!toldElsewhere && ime.isInputViewShown) toast(R.string.dictation_ready_elsewhere)
-            toldElsewhere = true
-            return
-        }
+        // Not for this field: the mic keys' badge shows it is ready (long-press the mic to insert).
+        if (isActive || !ime.isInputViewShown || clip.target != fieldKey()) return
         insert(text)
         pending.delivered(clip.id)
     }
 
-    override fun onChanged() {}
+    override fun onChanged() = WhisperRecognizer.showBadge(ime)
 
     /** Puts [text] at the cursor, spaced and capitalized like dictation. */
     private fun insert(text: String) {

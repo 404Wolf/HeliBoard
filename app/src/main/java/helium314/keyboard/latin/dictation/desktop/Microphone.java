@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 package helium314.keyboard.latin.dictation.desktop;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Build;
 import java.io.Closeable;
 
 /** The microphone as 16 kHz mono PCM16, read in 100 ms chunks on the caller's thread. */
@@ -30,16 +32,43 @@ final class Microphone implements Closeable {
         this.record = record;
     }
 
-    /** Opens and starts recording; the caller must hold RECORD_AUDIO. */
-    static Microphone open() throws Failure {
+    /**
+     * Opens and starts recording; the caller must hold RECORD_AUDIO. With {@code context} (Android
+     * 12+), the recording is attributed through it, e.g. to the app a recognition service serves;
+     * if that is refused, the app records as itself.
+     */
+    static Microphone open(Context context) throws Failure {
+        if (context != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            try {
+                return start(() -> new AudioRecord.Builder()
+                        .setContext(context)
+                        .setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
+                        .setAudioFormat(new AudioFormat.Builder()
+                                .setSampleRate(RATE)
+                                .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
+                                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                                .build())
+                        .setBufferSizeInBytes(bufferBytes())
+                        .build());
+            } catch (Failure ignored) {
+                // Recorded as the app itself below.
+            }
+        }
+        return start(() -> new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, RATE,
+                AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferBytes()));
+    }
+
+    private static int bufferBytes() {
+        int min = AudioRecord.getMinBufferSize(RATE, AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        return Math.max(min, CHUNK_BYTES * 4);
+    }
+
+    private static Microphone start(java.util.function.Supplier<AudioRecord> make) throws Failure {
         AudioRecord record;
         try {
-            int min = AudioRecord.getMinBufferSize(RATE, AudioFormat.CHANNEL_IN_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
-            record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, RATE,
-                    AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
-                    Math.max(min, CHUNK_BYTES * 4));
-        } catch (IllegalArgumentException | SecurityException e) {
+            record = make.get();
+        } catch (IllegalArgumentException | UnsupportedOperationException | SecurityException e) {
             throw new Failure("The microphone could not be opened", e);
         }
         if (record.getState() != AudioRecord.STATE_INITIALIZED) {
@@ -67,6 +96,19 @@ final class Microphone implements Closeable {
             n += r;
         }
         return n;
+    }
+
+    /** RMS of the first {@code len} bytes of little-endian PCM16, in dB below full scale. */
+    static float dbfs(byte[] pcm, int len) {
+        int samples = len / 2;
+        if (samples == 0) return -90f;
+        double sum = 0;
+        for (int i = 0; i + 1 < len; i += 2) {
+            int v = (short) ((pcm[i] & 0xff) | (pcm[i + 1] << 8));
+            sum += (double) v * v;
+        }
+        double rms = Math.sqrt(sum / samples) / 32768.0;
+        return rms < 1e-6 ? -90f : (float) Math.max(-90.0, 20 * Math.log10(rms));
     }
 
     @Override

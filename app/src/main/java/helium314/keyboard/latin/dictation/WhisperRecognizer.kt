@@ -115,5 +115,15 @@ class WhisperRecognizer(
         /** The process's waiting recordings; none are ever transcribed without a server set. */
         fun pending(context: Context): PendingDictations =
             PendingDictations.shared(context, DictationEngine.serverUri(context))
+
+        /** Main thread: the mic keys' dot for what [pending] holds ([MicKeyState.Badge]). */
+        fun showBadge(context: Context) {
+            val pending = pending(context)
+            MicKeyState.setBadge(when {
+                pending.ready().isNotEmpty() -> MicKeyState.Badge.READY
+                pending.waiting().isNotEmpty() -> MicKeyState.Badge.WAITING
+                else -> MicKeyState.Badge.NONE
+            })
+        }
     }
 }

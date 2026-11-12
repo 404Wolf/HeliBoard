@@ -29,6 +29,8 @@ class App : Application() {
         scope.launch { // do some uncritical work in background for faster startup
             SupportedEmojis.load(this@App)
             LayoutUtilsCustom.removeMissingLayouts(this@App)
+            // The on-device Vosk model (about 70 MB) unpacked by older versions; dictation is the desktop's now.
+            java.io.File(filesDir, "vosk-model").takeIf { it.exists() }?.deleteRecursively()
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
             @Suppress("DEPRECATION")
             Log.i(
