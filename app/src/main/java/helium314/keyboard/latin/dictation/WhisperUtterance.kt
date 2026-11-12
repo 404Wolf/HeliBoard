@@ -13,11 +13,12 @@ import helium314.keyboard.latin.dictation.desktop.DictationEngine as Engine
 
 /**
  * One utterance on the desktop's Whisper for another app ([WhisperRecognitionService],
- * [RecognizeSpeechActivity]): unlike the keyboard's own dictation, which runs until tapped, it
- * ends by itself after a pause, the way apps expect a speech recognizer to.
+ * [RecognizeSpeechActivity]). With [silenceMs] it ends by itself after a pause, the way apps
+ * using a [android.speech.SpeechRecognizer] expect; without, it runs until [stop] (a tap), like
+ * the keyboard's own dictation. Either way it gives up with no text if nothing is said at first.
  *
- * The end of speech is found from the microphone's level (so it also works while the desktop is
- * away): the quietest level seen is the room's noise, and speech is anything clearly above it.
+ * Speech is found from the microphone's level (so it also works while the desktop is away): the
+ * quietest level seen is the room's noise, and speech is anything clearly above it.
  * While the desktop is away the session records as the keyboard does, and on stop the recording
  * waits in the keyboard's queue ([Events.onSaved]); its text is offered later by the keyboard.
  *
@@ -30,8 +31,8 @@ class WhisperUtterance(
     uri: URI,
     /** Who asked, kept with a recording made while the desktop is away. */
     private val target: String,
-    /** Silence after speech that ends the utterance. */
-    private val silenceMs: Long,
+    /** Silence after speech that ends the utterance; null: only [stop] ends it. */
+    private val silenceMs: Long?,
     private val events: Events,
 ) {
     interface Events {
@@ -143,13 +144,13 @@ class WhisperUtterance(
         if (level > floor + SPEECH_ABOVE_FLOOR_DB && level > SPEECH_MIN_DBFS) speech()
         val now = SystemClock.uptimeMillis()
         when {
-            heard && now - lastSpeechAt > silenceMs -> stop()
+            silenceMs != null && heard && now - lastSpeechAt > silenceMs -> stop()
             !heard && now - startedAt > NO_SPEECH_MS -> {
                 // Nothing said: neither text nor a recording to keep.
                 cancel()
                 events.onResult("")
             }
-            now - startedAt > MAX_MS -> stop()
+            silenceMs != null && now - startedAt > MAX_MS -> stop()
         }
     }
 

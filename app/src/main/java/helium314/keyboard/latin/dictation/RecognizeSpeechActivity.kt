@@ -23,8 +23,8 @@ import helium314.keyboard.latin.settings.Settings
 
 /**
  * [RecognizerIntent.ACTION_RECOGNIZE_SPEECH] (most apps' mic buttons) on the desktop's Whisper:
- * a small panel at the bottom with the text so far; it ends by itself after a pause or on a tap
- * on it, and is dropped with back or a tap outside.
+ * a small panel at the bottom with the text so far. It listens until a tap on it (no stop on a
+ * pause), and is dropped with back or a tap outside, or when nothing is said at first.
  *
  * While the desktop is away it records; the app gets [RecognizerIntent.RESULT_NETWORK_ERROR]
  * and the recording waits in the keyboard's queue (the mic key's badge), to be inserted later.
@@ -50,8 +50,7 @@ class RecognizeSpeechActivity : Activity() {
         if (uri == null) return end(RecognizerIntent.RESULT_CLIENT_ERROR)
         val caller = callingActivity?.packageName ?: callingPackage ?: "app"
         status.text = intent.getStringExtra(RecognizerIntent.EXTRA_PROMPT) ?: getString(R.string.dictation_listening)
-        utterance = WhisperUtterance(this, null, uri, "recognizer/$caller",
-            WhisperUtterance.silenceMs(intent.extras), object : WhisperUtterance.Events {
+        utterance = WhisperUtterance(this, null, uri, "recognizer/$caller", null, object : WhisperUtterance.Events {
                 override fun onReady() {}
                 override fun onSpeechStart() {}
                 override fun onLevel(dbfs: Float) {}
