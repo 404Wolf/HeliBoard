@@ -141,6 +141,21 @@ public final class InputAttributes {
         return InputType.TYPE_NULL == mInputType;
     }
 
+    /**
+     * Whether the field looks like a terminal's own key input rather than a text box: no
+     * suggestions, and multi-line (Herdr's terminal) or a visible-password variation (Termux's
+     * char-based input). TYPE_NULL is handled by {@link #isTypeNull}. Only used for apps listed
+     * in terminal_apps, so a message box there (suggestions, autocorrect, IME action) stays normal.
+     */
+    public boolean isTerminalLike() {
+        if ((mInputType & InputType.TYPE_MASK_CLASS) != InputType.TYPE_CLASS_TEXT
+                || (mInputType & InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS) == 0)
+            return false;
+        final int variation = mInputType & InputType.TYPE_MASK_VARIATION;
+        return (mInputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0
+                || variation == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+    }
+
     public boolean isSameInputType(final EditorInfo editorInfo) {
         return editorInfo.inputType == mInputType && mEditorInfo != null
                 && (mEditorInfo.imeOptions & EditorInfo.IME_FLAG_FORCE_ASCII) == (editorInfo.imeOptions & EditorInfo.IME_FLAG_FORCE_ASCII);

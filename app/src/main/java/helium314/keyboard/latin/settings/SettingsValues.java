@@ -123,7 +123,8 @@ public class SettingsValues {
     public final boolean mSplitHiddenDuplicates;
     public final boolean mHideImeNavBar;
     public final boolean mSplitHub;
-    /** a terminal: TYPE_NULL fields and apps listed in terminal_apps; no suggestions, autocorrect,
+    /** a terminal: TYPE_NULL fields, and the terminal's own input in apps listed in terminal_apps
+     *  ({@link InputAttributes#isTerminalLike}; their other fields, e.g. a message box, stay normal); no suggestions, autocorrect,
      *  auto-caps or learning, and terminal keys (Esc, Tab, Ctrl, arrows...) instead of suggestions */
     public final boolean mIsTerminal;
     public final boolean mQuickPinToolbarKeys;
@@ -193,8 +194,9 @@ public class SettingsValues {
 
         // (no package: the placeholder attributes used before any field is focused, also TYPE_NULL)
         mIsTerminal = inputAttributes.mTargetApplicationPackageName != null && (inputAttributes.isTypeNull()
-                || Arrays.asList(prefs.getString(Settings.PREF_TERMINAL_APPS, Defaults.PREF_TERMINAL_APPS).split(","))
-                        .contains(inputAttributes.mTargetApplicationPackageName));
+                || (inputAttributes.isTerminalLike()
+                        && Arrays.asList(prefs.getString(Settings.PREF_TERMINAL_APPS, Defaults.PREF_TERMINAL_APPS).split(","))
+                                .contains(inputAttributes.mTargetApplicationPackageName)));
 
         // Get the settings preferences
         mIsLocked = IsLockedCompatKt.isDeviceLocked(context);
