@@ -131,6 +131,11 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         buttons.firstOrNull { it.tag == ToolbarKey.VOICE }?.visibility = if (show) VISIBLE else GONE
     }
 
+    /** The terminal block's mic: hidden only where the app asks for no microphone key. */
+    fun setTerminalVoiceKeyVisible(show: Boolean) {
+        terminalBlock?.setVoiceKeyVisible(show)
+    }
+
     /** Copy the strip's words, the centre (best) one first, to show them on the pad. */
     fun setWords(centre: TextView?, others: List<TextView>) {
         val sources = listOfNotNull(centre) + others

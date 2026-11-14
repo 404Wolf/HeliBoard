@@ -37,6 +37,12 @@ public final class InputAttributes {
     final public boolean mApplicationSpecifiedCompletionOn;
     final public boolean mShouldInsertSpacesAutomatically;
     final public boolean mShouldShowVoiceInputKey;
+    /**
+     * The app asked for no microphone key (privateImeOptions "<package>.noMicrophoneKey"),
+     * e.g. because it has its own dictation; set for every input class, unlike
+     * {@link #mShouldShowVoiceInputKey}, so terminal fields can honour it too.
+     */
+    final public boolean mNoMicrophoneKeyRequested;
     final public boolean mNoLearning;
     /**
      * Whether the floating gesture preview should be disabled. If true, this should override the
@@ -53,6 +59,7 @@ public final class InputAttributes {
             final String packageNameForPrivateImeOptions) {
         mEditorInfo = editorInfo;
         mPackageNameForPrivateImeOptions = packageNameForPrivateImeOptions;
+        mNoMicrophoneKeyRequested = hasNoMicrophoneKeyOption();
         mTargetApplicationPackageName = null != editorInfo ? editorInfo.packageName : null;
         mInputType = AppWorkarounds.INSTANCE.adjustInputType(null != editorInfo ? editorInfo.inputType : 0, mTargetApplicationPackageName);
         final int inputClass = mInputType & InputType.TYPE_MASK_CLASS;
@@ -100,7 +107,7 @@ public final class InputAttributes {
 
         final boolean noMicrophone = mIsPasswordField
                 || InputTypeUtils.isEmailVariation(variation)
-                || hasNoMicrophoneKeyOption()
+                || mNoMicrophoneKeyRequested
                 || !RichInputMethodManager.isInitialized() // avoid crash when only using spell checker
                 || !RichInputMethodManager.getInstance().isVoiceInputReady();
         mShouldShowVoiceInputKey = !noMicrophone;

@@ -286,6 +286,10 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private fun applyTerminalMode() {
         val terminal = Settings.getValues().mIsTerminal
         hub?.setTerminal(terminal)
+        // the terminal keys' mic, unless the app has its own (asks for no microphone key)
+        val terminalMic = !Settings.getValues().mInputAttributes.mNoMicrophoneKeyRequested
+        terminalRow.setVoiceKeyVisible(terminalMic)
+        hub?.setTerminalVoiceKeyVisible(terminalMic)
         val showRow = terminal && !toolbarContainer.isVisible
         terminalRow.isVisible = showRow
         if (showRow) suggestionsStrip.isVisible = false
