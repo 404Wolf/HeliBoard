@@ -4,7 +4,6 @@ package helium314.keyboard.latin.dictation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.SystemClock
@@ -12,6 +11,8 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import helium314.keyboard.event.HapticEvent
+import helium314.keyboard.keyboard.KeyShapeDrawable
+import helium314.keyboard.keyboard.KeyboardTheme
 import helium314.keyboard.keyboard.internal.keyboard_parser.floris.KeyCode
 import helium314.keyboard.latin.AudioAndHapticFeedbackManager
 import helium314.keyboard.latin.R
@@ -25,7 +26,8 @@ import kotlin.math.sin
 /**
  * Compact listening indicator covering the suggestion strip while dictating: a pulsing dot and a
  * scrolling level meter (from the recognizer's RMS dB) in the theme's accent colour, with a status
- * label. Tap to stop, long-press to choose the engine.
+ * label. Tap to stop, long-press to choose the engine. It is drawn as one of the keyboard's own
+ * keys (a functional key's shape, corner radius and colour), so it fits the rounded look.
  */
 @SuppressLint("ViewConstructor")
 class DictationIndicatorView(context: Context) : View(context) {
@@ -41,12 +43,14 @@ class DictationIndicatorView(context: Context) : View(context) {
 
     private val accent: Int
     private val textColor: Int
-    private val background: Int
     init {
         val colors = Settings.getValues().mColors
         accent = colors.get(ColorType.GESTURE_TRAIL) or OPAQUE
         textColor = colors.get(ColorType.KEY_TEXT) or OPAQUE
-        background = colors.get(ColorType.STRIP_BACKGROUND).let { if (Color.alpha(it) < 0xFF) Color.BLACK else it }
+        // the keys' corner radius in the rounded style, square in the others, as the keys are
+        val radius = if (colors.themeStyle == KeyboardTheme.STYLE_ROUNDED)
+            resources.getDimension(R.dimen.config_key_corner_radius_rounded) else 0f
+        background = KeyShapeDrawable(radius, 0f).also { colors.setColor(it, ColorType.FUNCTIONAL_KEY_BACKGROUND) }
         contentDescription = context.getString(R.string.dictation_listening)
         isClickable = true
         isLongClickable = true
@@ -121,7 +125,6 @@ class DictationIndicatorView(context: Context) : View(context) {
             lastShift = now
         }
 
-        canvas.drawColor(background)
         val h = height.toFloat()
         val w = width.toFloat()
         val cy = h / 2
