@@ -35,4 +35,20 @@ class DictationIndicatorFillTest {
         val translucentKey = 0x80ff0000.toInt()
         assertEquals(0xFF, Color.alpha(DictationIndicatorView.fill(translucentKey, darkBackground, lightText)))
     }
+
+    @Test fun onATransparentKeyboardTheBoxGivesTheKeyTextTheBetterContrast() {
+        // light grey text: black under it reads (9.7:1); white would not (2.2:1)
+        assertEquals(Color.BLACK, DictationIndicatorView.fill(null, Color.TRANSPARENT, 0xffb0b0b0.toInt()))
+        assertEquals(Color.BLACK, DictationIndicatorView.fill(null, Color.TRANSPARENT, Color.WHITE))
+        assertEquals(Color.WHITE, DictationIndicatorView.fill(null, Color.TRANSPARENT, Color.BLACK))
+        assertEquals(Color.WHITE, DictationIndicatorView.fill(null, Color.TRANSPARENT, 0xff37474f.toInt()))
+        // mid grey: whichever is higher, never below the other
+        for (text in listOf(0xff777777.toInt(), 0xff808080.toInt(), 0xff9e9e9e.toInt(), 0xff5c6bc0.toInt())) {
+            val box = DictationIndicatorView.fill(null, Color.TRANSPARENT, text)
+            val other = if (box == Color.BLACK) Color.WHITE else Color.BLACK
+            kotlin.test.assertTrue(DictationIndicatorView.contrast(text, box) >= DictationIndicatorView.contrast(text, other))
+        }
+        // a translucent text colour is judged as drawn
+        assertEquals(Color.BLACK, DictationIndicatorView.fill(null, Color.TRANSPARENT, 0xccb0b0b0.toInt()))
+    }
 }

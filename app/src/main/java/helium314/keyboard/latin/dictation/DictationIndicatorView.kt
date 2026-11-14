@@ -21,7 +21,6 @@ import helium314.keyboard.latin.R
 import helium314.keyboard.latin.common.ColorType
 import helium314.keyboard.latin.common.Colors
 import helium314.keyboard.latin.settings.Settings
-import helium314.keyboard.latin.utils.isBrightColor
 import kotlin.math.PI
 import kotlin.math.max
 import kotlin.math.min
@@ -188,7 +187,7 @@ class DictationIndicatorView(
          * keyboard's own background, as the keys then have none (their colour is transparent).
          * Made opaque so the strip's words and icons never show through: laid over the keyboard
          * background when that is opaque, else (a transparent theme, a background image) over
-         * black or white, whichever the key text reads on.
+         * black or white, whichever gives the key text the higher contrast.
          */
         fun fill(colors: Colors): Int = fill(
             if (colors.hasKeyBorders) colors.get(ColorType.FUNCTIONAL_KEY_BACKGROUND) else null,
@@ -197,10 +196,16 @@ class DictationIndicatorView(
         )
 
         internal fun fill(key: Int?, background: Int, text: Int): Int {
-            val base = if (Color.alpha(background) == 0xFF) background
-                else if (isBrightColor(text)) Color.BLACK else Color.WHITE
-            return ColorUtils.compositeColors(key ?: background, base)
+            val wanted = key ?: background
+            if (Color.alpha(background) == 0xFF) return ColorUtils.compositeColors(wanted, background)
+            return listOf(Color.BLACK, Color.WHITE)
+                .map { ColorUtils.compositeColors(wanted, it) }
+                .maxBy { contrast(text, it) }
         }
+
+        /** WCAG contrast of [text] (as drawn, over the box) against the opaque [box]. */
+        internal fun contrast(text: Int, box: Int): Double =
+            ColorUtils.calculateContrast(ColorUtils.compositeColors(text, box), box)
 
         private const val OPAQUE = -0x1000000
         private const val BAR_COUNT = 48
