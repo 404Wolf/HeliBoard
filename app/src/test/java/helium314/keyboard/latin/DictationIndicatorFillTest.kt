@@ -48,7 +48,9 @@ class DictationIndicatorFillTest {
             val other = if (box == Color.BLACK) Color.WHITE else Color.BLACK
             kotlin.test.assertTrue(DictationIndicatorView.contrast(text, box) >= DictationIndicatorView.contrast(text, other))
         }
-        // a translucent text colour is judged as drawn
+        // the text is drawn opaque, so a translucent text colour is judged opaque: this green
+        // reads 8.5:1 on black but 2.5:1 on white, whatever its alpha
+        assertEquals(Color.BLACK, DictationIndicatorView.fill(null, Color.TRANSPARENT, 0x2000c000))
         assertEquals(Color.BLACK, DictationIndicatorView.fill(null, Color.TRANSPARENT, 0xccb0b0b0.toInt()))
     }
 }

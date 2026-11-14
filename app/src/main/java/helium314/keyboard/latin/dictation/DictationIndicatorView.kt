@@ -188,7 +188,8 @@ class DictationIndicatorView(
          * keyboard's own background, as the keys then have none (their colour is transparent).
          * Made opaque so the strip's words and icons never show through: laid over the keyboard
          * background when that is opaque, else (a transparent theme, a background image) over
-         * black or white, whichever gives the key text the higher contrast.
+         * black or white, whichever gives the key text, drawn opaque as [onDraw] draws it, the
+         * higher contrast.
          */
         fun fill(colors: Colors): Int = fill(
             if (colors.hasKeyBorders) colors.get(ColorType.FUNCTIONAL_KEY_BACKGROUND) else null,
@@ -199,14 +200,14 @@ class DictationIndicatorView(
         internal fun fill(key: Int?, background: Int, text: Int): Int {
             val wanted = key ?: background
             if (Color.alpha(background) == 0xFF) return ColorUtils.compositeColors(wanted, background)
+            val drawn = text or OPAQUE // the text is drawn opaque, see init
             return listOf(Color.BLACK, Color.WHITE)
                 .map { ColorUtils.compositeColors(wanted, it) }
-                .maxBy { contrast(text, it) }
+                .maxBy { contrast(drawn, it) }
         }
 
-        /** WCAG contrast of [text] (as drawn, over the box) against the opaque [box]. */
-        internal fun contrast(text: Int, box: Int): Double =
-            ColorUtils.calculateContrast(ColorUtils.compositeColors(text, box), box)
+        /** WCAG contrast of opaque [text] against the opaque [box]. */
+        internal fun contrast(text: Int, box: Int): Double = ColorUtils.calculateContrast(text or OPAQUE, box)
 
         private const val OPAQUE = -0x1000000
         private const val BAR_COUNT = 48
