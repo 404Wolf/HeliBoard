@@ -11,11 +11,15 @@ import android.os.SystemClock
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.graphics.ColorUtils
 import helium314.keyboard.event.HapticEvent
+import helium314.keyboard.keyboard.KeyShapeDrawable
+import helium314.keyboard.keyboard.KeyboardTheme
 import helium314.keyboard.keyboard.internal.keyboard_parser.floris.KeyCode
 import helium314.keyboard.latin.AudioAndHapticFeedbackManager
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.common.ColorType
+import helium314.keyboard.latin.common.Colors
 import helium314.keyboard.latin.settings.Settings
 import kotlin.math.PI
 import kotlin.math.max
@@ -25,10 +29,15 @@ import kotlin.math.sin
 /**
  * Compact listening indicator covering the suggestion strip while dictating: a pulsing dot and a
  * scrolling level meter (from the recognizer's RMS dB) in the theme's accent colour, with a status
- * label. Tap to stop, long-press to choose the engine.
+ * label. Tap to stop, long-press to choose the engine. It is drawn like the keyboard's own keys
+ * (their corner radius in the rounded style) in an opaque colour of the keyboard's ([fill]), so
+ * it fits the look and nothing under it shows through, in every style and colour scheme.
  */
 @SuppressLint("ViewConstructor")
-class DictationIndicatorView(context: Context) : View(context) {
+class DictationIndicatorView(
+    context: Context,
+    colors: Colors = Settings.getValues().mColors,
+) : View(context) {
     enum class State { STARTING, LISTENING, LISTENING_OFFLINE, DESKTOP_OFFLINE, FINISHING }
 
     var onTap: () -> Unit = {}
@@ -41,12 +50,13 @@ class DictationIndicatorView(context: Context) : View(context) {
 
     private val accent: Int
     private val textColor: Int
-    private val background: Int
     init {
-        val colors = Settings.getValues().mColors
         accent = colors.get(ColorType.GESTURE_TRAIL) or OPAQUE
         textColor = colors.get(ColorType.KEY_TEXT) or OPAQUE
-        background = colors.get(ColorType.STRIP_BACKGROUND).let { if (Color.alpha(it) < 0xFF) Color.BLACK else it }
+        // the keys' corner radius in the rounded style, square in the others, as the keys are
+        val radius = if (colors.themeStyle == KeyboardTheme.STYLE_ROUNDED)
+            resources.getDimension(R.dimen.config_key_corner_radius_rounded) else 0f
+        background = KeyShapeDrawable(radius, 0f).also { it.setTint(fill(colors)) }
         contentDescription = context.getString(R.string.dictation_listening)
         isClickable = true
         isLongClickable = true
@@ -121,7 +131,6 @@ class DictationIndicatorView(context: Context) : View(context) {
             lastShift = now
         }
 
-        canvas.drawColor(background)
         val h = height.toFloat()
         val w = width.toFloat()
         val cy = h / 2
@@ -174,6 +183,32 @@ class DictationIndicatorView(context: Context) : View(context) {
     }
 
     companion object {
+        /**
+         * The box's colour: the functional keys' where keys are drawn (key borders on), else the
+         * keyboard's own background, as the keys then have none (their colour is transparent).
+         * Made opaque so the strip's words and icons never show through: laid over the keyboard
+         * background when that is opaque, else (a transparent theme, a background image) over
+         * black or white, whichever gives the key text, drawn opaque as [onDraw] draws it, the
+         * higher contrast.
+         */
+        fun fill(colors: Colors): Int = fill(
+            if (colors.hasKeyBorders) colors.get(ColorType.FUNCTIONAL_KEY_BACKGROUND) else null,
+            colors.get(ColorType.MAIN_BACKGROUND),
+            colors.get(ColorType.KEY_TEXT),
+        )
+
+        internal fun fill(key: Int?, background: Int, text: Int): Int {
+            val wanted = key ?: background
+            if (Color.alpha(background) == 0xFF) return ColorUtils.compositeColors(wanted, background)
+            val drawn = text or OPAQUE // the text is drawn opaque, see init
+            return listOf(Color.BLACK, Color.WHITE)
+                .map { ColorUtils.compositeColors(wanted, it) }
+                .maxBy { contrast(drawn, it) }
+        }
+
+        /** WCAG contrast of opaque [text] against the opaque [box]. */
+        internal fun contrast(text: Int, box: Int): Double = ColorUtils.calculateContrast(text or OPAQUE, box)
+
         private const val OPAQUE = -0x1000000
         private const val BAR_COUNT = 48
         private const val BAR_INTERVAL_MS = 50L

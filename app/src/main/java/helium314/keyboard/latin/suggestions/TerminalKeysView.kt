@@ -82,6 +82,22 @@ class TerminalKeysView(context: Context, rows: List<List<Key>>, keyGap: Int) : L
             }
             addView(line, LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f).apply { if (r > 0) topMargin = keyGap })
         }
+        setVoiceKeyVisible(!Settings.getValues().mInputAttributes.mNoMicrophoneKeyRequested)
+    }
+
+    /**
+     * The mic shows in terminal fields although the toolbar's voice key does not (terminal mode
+     * hides that), but not where the app asks for no microphone key (it has its own dictation,
+     * e.g. Herdr's talk control); its neighbours then take its room.
+     */
+    fun setVoiceKeyVisible(show: Boolean) {
+        for (r in 0 until childCount) {
+            val line = getChildAt(r) as LinearLayout
+            for (i in 0 until line.childCount) {
+                val key = line.getChildAt(i)
+                if (key.tag == ToolbarKey.VOICE) key.visibility = if (show) VISIBLE else GONE
+            }
+        }
     }
 
     private fun keyBackground(tint: ColorStateList) = KeyShapeDrawable(

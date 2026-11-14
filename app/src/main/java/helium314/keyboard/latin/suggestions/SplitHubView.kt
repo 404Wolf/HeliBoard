@@ -85,6 +85,7 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
         pad.background = keyBackground()
         buttons = listOf(ToolbarKey.UNDO, ToolbarKey.CLIPBOARD, ToolbarKey.EMOJI, ToolbarKey.VOICE).map { button(it) }
         fillButtonBlock()
+        setVoiceKeyVisible(Settings.getValues().mShowsVoiceInputKey)
         terminalBlock?.let { removeView(it) }
         terminalBlock = TerminalKeysView(context, TerminalKeysView.HUB_BLOCK, cellGap).also { it.listener = listener }
         terminal = !terminal
@@ -117,6 +118,22 @@ class SplitHubView @JvmOverloads constructor(context: Context, attrs: AttributeS
                 if (r > 0) topMargin = rowGap
             })
         }
+    }
+
+    /**
+     * The voice button follows the field like the toolbar's voice key
+     * (SettingsValues.mShowsVoiceInputKey): gone where the app asks for no
+     * microphone key (privateImeOptions "<package>.noMicrophoneKey", e.g. an
+     * app with its own dictation), in a password or email field, or with no
+     * voice input. Emoji then takes its row.
+     */
+    fun setVoiceKeyVisible(show: Boolean) {
+        buttons.firstOrNull { it.tag == ToolbarKey.VOICE }?.visibility = if (show) VISIBLE else GONE
+    }
+
+    /** The terminal block's mic: hidden only where the app asks for no microphone key. */
+    fun setTerminalVoiceKeyVisible(show: Boolean) {
+        terminalBlock?.setVoiceKeyVisible(show)
     }
 
     /** Copy the strip's words, the centre (best) one first, to show them on the pad. */
