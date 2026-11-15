@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.SuggestTest" tests="29" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:58:44.162Z" hostname="server" time="8.589">
+  <properties/>
+  <testcase name="CenterSuggestionTextToEnter has typed text or autocorrect as first suggestion" classname="helium314.keyboard.latin.SuggestTest" time="5.185"/>
+  <testcase name="no 'ill' to 'I'll' if 'ill' has somewhat better ngram score" classname="helium314.keyboard.latin.SuggestTest" time="0.131"/>
+  <testcase name="'ill' to 'I'll' if 'ill' not used before in this context, and I'll is whitelisted" classname="helium314.keyboard.latin.SuggestTest" time="0.097"/>
+  <testcase name="typed word is first suggestion" classname="helium314.keyboard.latin.SuggestTest" time="0.14"/>
+  <testcase name="'né' instead of 'ne' if 'né' has clearly better score in ngram context" classname="helium314.keyboard.latin.SuggestTest" time="0.204"/>
+  <testcase name="no 'ne' instead of 'né'" classname="helium314.keyboard.latin.SuggestTest" time="0.176"/>
+  <testcase name="next word and glide typing suggestions use automatic caps modes" classname="helium314.keyboard.latin.SuggestTest" time="0.118"/>
+  <testcase name="autocorrect will &quot;correct&quot; capitalization with manual caps modes" classname="helium314.keyboard.latin.SuggestTest" time="0.123"/>
+  <testcase name="shortcuts might be autocorrected by default" classname="helium314.keyboard.latin.SuggestTest" time="0.149"/>
+  <testcase name="suggestions use manual caps modes" classname="helium314.keyboard.latin.SuggestTest" time="0.116"/>
+  <testcase name="empty typed word gives next word suggestions" classname="helium314.keyboard.latin.SuggestTest" time="0.087"/>
+  <testcase name="single letter suggestions are suppressed dependent on score of other suggestions" classname="helium314.keyboard.latin.SuggestTest" time="0.134"/>
+  <testcase name="no 'né' instead of 'ne' if both with same score in ngram context" classname="helium314.keyboard.latin.SuggestTest" time="0.098"/>
+  <testcase name="normal autocorrect works with manual caps modes" classname="helium314.keyboard.latin.SuggestTest" time="0.083"/>
+  <testcase name="'né' instead of 'ne' if 'né' in ngram context" classname="helium314.keyboard.latin.SuggestTest" time="0.085"/>
+  <testcase name="no English 'in' instead of French 'un' when typing in French" classname="helium314.keyboard.latin.SuggestTest" time="0.083"/>
+  <testcase name="prefer next word suggestions" classname="helium314.keyboard.latin.SuggestTest" time="0.079"/>
+  <testcase name="'ill' to 'I'll' if both have same ngram score" classname="helium314.keyboard.latin.SuggestTest" time="0.129"/>
+  <testcase name="no autocorrect if more than one uppercase character in typed word, but not all uppercase" classname="helium314.keyboard.latin.SuggestTest" time="0.176"/>
+  <testcase name="shortcuts are not autocorrected when setting is off" classname="helium314.keyboard.latin.SuggestTest" time="0.143"/>
+  <testcase name="no 'né' instead of 'ne'" classname="helium314.keyboard.latin.SuggestTest" time="0.117"/>
+  <testcase name="'on' to 'in' if 'in' was used before in this context" classname="helium314.keyboard.latin.SuggestTest" time="0.099"/>
+  <testcase name="English 'I' instead of Polish 'i' when typing in English" classname="helium314.keyboard.latin.SuggestTest" time="0.182"/>
+  <testcase name="no caps mode autocorrect if word has many uppercase letters" classname="helium314.keyboard.latin.SuggestTest" time="0.1"/>
+  <testcase name="single quotes at end are attached to suggestions" classname="helium314.keyboard.latin.SuggestTest" time="0.054"/>
+  <testcase name="typed word is second suggestion if autocorrect is pending" classname="helium314.keyboard.latin.SuggestTest" time="0.164"/>
+  <testcase name="no English 'I' for Polish 'i' when typing in Polish" classname="helium314.keyboard.latin.SuggestTest" time="0.133"/>
+  <testcase name="not 'ill' to 'I'll' if only 'ill' was used before in this context" classname="helium314.keyboard.latin.SuggestTest" time="0.114"/>
+  <testcase name="tap typing suggestions depend on typed word capitalization, ignoring automatic caps modes" classname="helium314.keyboard.latin.SuggestTest" time="0.087"/>
+  <system-out><![CDATA[I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/AutoCorrectionUtils: Normalized ne,né,1899999, 0.9499995 (0.1877951)
+D/AutoCorrectionUtils: Exceeds threshold.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/AutoCorrectionUtils: Normalized gd,good,700000, 0.35 (0.06625807)
+D/AutoCorrectionUtils: Exceeds threshold.
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized gd,good,300000, 0.15 (0.1877951)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/Suggest: reduced score of a from 100, new first: next (95)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/AutoCorrectionUtils: Normalized ne,né,1899999, 0.9499995 (0.1877951)
+D/AutoCorrectionUtils: Exceeds threshold.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized Bur,But,650000, 0.43333328 (0.06625807)
+D/AutoCorrectionUtils: Exceeds threshold.
+D/AutoCorrectionUtils: Normalized BUR,BUT,650000, 0.43333328 (0.06625807)
+D/AutoCorrectionUtils: Exceeds threshold.
+D/AutoCorrectionUtils: Normalized Bur,But,6500, 0.004333333 (0.06625807)
+D/AutoCorrectionUtils: Normalized BUR,BUT,6500, 0.004333333 (0.06625807)
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/AutoCorrectionUtils: Normalized ne,né,1899999, 0.9499995 (0.1877951)
+D/AutoCorrectionUtils: Exceeds threshold.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/Suggest: replaced batch word ab with next
+D/Suggest: replaced batch word ab with ab
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized bur,but,650000, 0.43333328 (0.017085731)
+D/AutoCorrectionUtils: Exceeds threshold.
+D/AutoCorrectionUtils: Normalized Bur,But,650000, 0.43333328 (0.017085731)
+D/AutoCorrectionUtils: Exceeds threshold.
+D/AutoCorrectionUtils: Normalized BUR,BUT,650000, 0.43333328 (0.017085731)
+D/AutoCorrectionUtils: Exceeds threshold.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/AutoCorrectionUtils: Normalized ne,né,1899999, 0.9499995 (0.1877951)
+D/AutoCorrectionUtils: Exceeds threshold.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized on,in,600000, 0.3 (0.1877951)
+D/AutoCorrectionUtils: Exceeds threshold.
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized BuT,But,100, 6.666666E-5 (0.06625807)
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+D/AutoCorrectionUtils: Normalized henlo,hello,650000, 0.52 (0.017085731)
+D/AutoCorrectionUtils: Exceeds threshold.
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+I/Settings: loadSettings
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+I/Settings: loadSettings
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/Settings: loadSettings
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+W/InputAttributes: No editor info for this field. Bug?
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+I/Settings: loadSettings
+I/Settings: loadSettings
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.DictationTextTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:44:13.723Z" hostname="server" time="0.01">
+  <properties/>
+  <testcase name="spacing" classname="helium314.keyboard.latin.DictationTextTest" time="0.003"/>
+  <testcase name="commands disabled" classname="helium314.keyboard.latin.DictationTextTest" time="0.004"/>
+  <testcase name="trailing stop listening" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="punctuation words after determiners are literal" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="lowercase continuing function word" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="whole utterance commands" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="partial results never run whole utterance commands" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="capitalize inside body after inserted punctuation" classname="helium314.keyboard.latin.DictationTextTest" time="0.001"/>
+  <testcase name="sentence start detection" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="capitalize at sentence start" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="spoken punctuation" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="plain text passes through" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="line breaks" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <testcase name="commands inside text are text" classname="helium314.keyboard.latin.DictationTextTest" time="0.001"/>
+  <testcase name="recognizer punctuation on command words is not doubled" classname="helium314.keyboard.latin.DictationTextTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

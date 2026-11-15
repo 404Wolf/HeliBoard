@@ -1,0 +1,28 @@
+head: tests=195, failures=4, errors=0, skipped=0
+helium314.keyboard.XLinkTest.layoutsLinks
+java.lang.AssertionError: expected:<200> but was:<404>
+helium314.keyboard.XLinkTest.readmeLinks
+java.lang.AssertionError: expected:<200> but was:<404>
+error checking https://roccobot.github.io/HeliBoard-RLM/
+error checking https://roccobot.github.io/HeliBoard-RLM/
+helium314.keyboard.latin.DictationTextTest: tests=15, failures=0
+helium314.keyboard.latin.InputLogicTest.insertLetterIntoWordHangulFails
+org.junit.ComparisonFailure: expected:<[ㅛㅎㄹㄲ혀ㅛ]> but was:<[]>
+helium314.keyboard.latin.StringUtilsTest.detectEmojisAtEndFails
+org.junit.ComparisonFailure: expected:<[🏼]> but was:<[]>
+helium314.keyboard.latin.ToolbarHideKeyTest: tests=2, failures=0
+base: tests=193, failures=5, errors=0, skipped=0
+helium314.keyboard.XLinkTest.layoutsLinks
+java.lang.AssertionError: expected:<200> but was:<404>
+helium314.keyboard.XLinkTest.readmeLinks
+java.lang.AssertionError: expected:<200> but was:<404>
+helium314.keyboard.XLinkTest.knownDictionaries
+java.lang.AssertionError: expected:<200> but was:<404>
+error checking https://roccobot.github.io/HeliBoard-RLM/
+error checking https://roccobot.github.io/HeliBoard-RLM/
+error checking https://codeberg.org/Helium314/aosp-dictionaries/raw/branch/main/dictionaries/main_bn2.dict
+helium314.keyboard.latin.DictationTextTest: tests=15, failures=0
+helium314.keyboard.latin.InputLogicTest.insertLetterIntoWordHangulFails
+org.junit.ComparisonFailure: expected:<[ㅛㅎㄹㄲ혀ㅛ]> but was:<[]>
+helium314.keyboard.latin.StringUtilsTest.detectEmojisAtEndFails
+org.junit.ComparisonFailure: expected:<[🏼]> but was:<[]>

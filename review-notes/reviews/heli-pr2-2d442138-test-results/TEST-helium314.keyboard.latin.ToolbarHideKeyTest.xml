@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.ToolbarHideKeyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:44:50.600Z" hostname="server" time="0.133">
+  <properties/>
+  <testcase name="hideKeyboardIsPinnedByDefaultAndNothingElseIs" classname="helium314.keyboard.latin.ToolbarHideKeyTest" time="0.061"/>
+  <testcase name="anExistingPinnedSetGainsHideKeyboardPinnedOnUpgrade" classname="helium314.keyboard.latin.ToolbarHideKeyTest" time="0.072"/>
+  <system-out><![CDATA[E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review-pr2/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #27
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review-pr2/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #27
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,14 @@
+1:  8a31a4ca = 1:  326bdbb3 Split hub: no voice button where the app asks for no microphone key
+-:  -------- > 2:  ef7ff5dc Terminal keys: no mic where the app asks for no microphone key
+2:  e255ed45 = 3:  d4809eed Dictation: the listening box is drawn as one of the keyboard's keys
+3:  9e6dbb1c = 4:  76c2548c Toolbar: a hide keyboard key, pinned by default
+4:  16f8cc58 ! 5:  2d442138 Dictation box: an opaque keyboard colour in every style
+    @@ app/src/main/java/helium314/keyboard/latin/dictation/DictationIndicatorView.kt:
+     +    context: Context,
+     +    colors: Colors = Settings.getValues().mColors,
+     +) : View(context) {
+    -     enum class State { STARTING, LISTENING, LISTENING_OFFLINE, FINISHING }
+    +     enum class State { STARTING, LISTENING, LISTENING_OFFLINE, DESKTOP_OFFLINE, FINISHING }
+      
+          var onTap: () -> Unit = {}
+     @@ app/src/main/java/helium314/keyboard/latin/dictation/DictationIndicatorView.kt: class DictationIndicatorView(context: Context) : View(context) {

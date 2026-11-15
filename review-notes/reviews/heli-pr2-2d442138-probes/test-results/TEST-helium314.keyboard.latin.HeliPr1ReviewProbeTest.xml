@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.HeliPr1ReviewProbeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:45:43.870Z" hostname="server" time="0.95">
+  <properties/>
+  <testcase name="indicatorBackgroundMustStillCoverTheUnderlyingSuggestions" classname="helium314.keyboard.latin.HeliPr1ReviewProbeTest" time="0.301"/>
+  <testcase name="migrationPreservesEveryOldEntryOrderAndExplicitOptOut" classname="helium314.keyboard.latin.HeliPr1ReviewProbeTest" time="0.227"/>
+  <testcase name="noMicFlagUpdatesAllThreeSurfacesAndNormalAppRestoresVoice" classname="helium314.keyboard.latin.HeliPr1ReviewProbeTest" time="0.421"/>
+  <system-out><![CDATA[BACKGROUND Rounded-light-borders-true center-alpha=255 corner-alpha=0
+BACKGROUND Rounded-light-borders-false center-alpha=255 corner-alpha=0
+BACKGROUND Rounded-dark-borders-true center-alpha=255 corner-alpha=0
+BACKGROUND Rounded-dark-borders-false center-alpha=255 corner-alpha=0
+BACKGROUND Material-light-borders-true center-alpha=255 corner-alpha=255
+BACKGROUND Material-light-borders-false center-alpha=255 corner-alpha=255
+BACKGROUND Material-dark-borders-true center-alpha=255 corner-alpha=255
+BACKGROUND Material-dark-borders-false center-alpha=255 corner-alpha=255
+BACKGROUND Holo-light-borders-true center-alpha=255 corner-alpha=255
+BACKGROUND Holo-light-borders-false center-alpha=255 corner-alpha=255
+BACKGROUND Holo-dark-borders-true center-alpha=255 corner-alpha=255
+BACKGROUND Holo-dark-borders-false center-alpha=255 corner-alpha=255
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

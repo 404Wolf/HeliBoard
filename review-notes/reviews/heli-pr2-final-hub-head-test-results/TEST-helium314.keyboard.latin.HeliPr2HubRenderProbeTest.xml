@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.HeliPr2HubRenderProbeTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:59:42.827Z" hostname="server" time="6.606">
+  <properties/>
+  <testcase name="renderActualHubOverlay" classname="helium314.keyboard.latin.HeliPr2HubRenderProbeTest" time="6.606"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

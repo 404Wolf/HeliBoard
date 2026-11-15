@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.latin.InputAttributesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:58:25.977Z" hostname="server" time="0.055">
+  <properties/>
+  <testcase name="anAppWithItsOwnDictationCanAskForNoMicrophoneKey" classname="helium314.keyboard.latin.InputAttributesTest" time="0.03"/>
+  <testcase name="theRequestCountsForTerminalInputToo" classname="helium314.keyboard.latin.InputAttributesTest" time="0.025"/>
+  <system-out><![CDATA[V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review-pr2/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #27
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review-pr2/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #27
+I/FoldableUtils: not foldable
+I/InputAttributes: InputType.TYPE_NULL is specified
+I/InputAttributes: InputType.TYPE_NULL is specified
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

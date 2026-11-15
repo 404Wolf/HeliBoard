@@ -1,0 +1,1732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="helium314.keyboard.InputTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-14T02:49:54.584Z" hostname="server" time="27.762">
+  <properties/>
+  <testcase name="slidingInputFromCapsLock" classname="helium314.keyboard.InputTest" time="22.366"/>
+  <testcase name="keyInput" classname="helium314.keyboard.InputTest" time="0.798"/>
+  <testcase name="holdShift" classname="helium314.keyboard.InputTest" time="1.536"/>
+  <testcase name="endCapsLockWithShift" classname="helium314.keyboard.InputTest" time="1.225"/>
+  <testcase name="slidingInput" classname="helium314.keyboard.InputTest" time="1.148"/>
+  <testcase name="pressShift" classname="helium314.keyboard.InputTest" time="0.683"/>
+  <system-out><![CDATA[D/KeyboardSwitcher: create new input view
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardState: setShifted: shiftMode=MANUAL [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_shifted, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift$inner(KeyboardState.kt:380)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift(KeyboardState.kt:388)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressKey(KeyboardState.kt:228)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onPressKey(KeyboardSwitcher.java:248)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onPressKey(KeyboardActionListenerImpl.kt:55)
+	at helium314.keyboard.keyboard.PointerTracker.callListenerOnPressAndCheckKeyboardLayoutChange(PointerTracker.java:302)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEventInternal(PointerTracker.java:729)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEvent(PointerTracker.java:681)
+	at helium314.keyboard.keyboard.PointerTracker.processMotionEvent(PointerTracker.java:642)
+	at helium314.keyboard.keyboard.internal.NonDistinctMultitouchHelper.processMotionEvent(NonDistinctMultitouchHelper.java:46)
+	at helium314.keyboard.keyboard.MainKeyboardView.onTouchEvent(MainKeyboardView.java:593)
+	at helium314.keyboard.InputTest.touchKey(InputTest.kt:101)
+	at helium314.keyboard.InputTest.touchKey$default(InputTest.kt:88)
+	at helium314.keyboard.InputTest.slidingInputFromCapsLock(InputTest.kt:76)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: setShifted: shiftMode=LOCKED [keyboard=MANUAL shift=PRESSING symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_locked, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onReleaseKey(KeyboardState.kt:257)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onReleaseKey(KeyboardSwitcher.java:253)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onReleaseKey(KeyboardActionListenerImpl.kt:67)
+	at helium314.keyboard.keyboard.PointerTracker.onLongPressed(PointerTracker.java:1170)
+	at helium314.keyboard.keyboard.internal.TimerHandler.handleMessage(TimerHandler.java:60)
+	at android.os.Handler.$$robo$$android_os_Handler$dispatchMessage(Handler.java:110)
+	at android.os.Handler.dispatchMessage(Handler.java)
+	at org.robolectric.shadows.ShadowPausedLooper$IdlingRunnable.doRun(ShadowPausedLooper.java:677)
+	at org.robolectric.shadows.ShadowPausedLooper$IdleForRunnable.doRun(ShadowPausedLooper.java:658)
+	at org.robolectric.shadows.ShadowPausedLooper$ControlRunnable.run(ShadowPausedLooper.java:599)
+	at org.robolectric.shadows.ShadowPausedLooper$HandlerExecutor.execute(ShadowPausedLooper.java:849)
+	at org.robolectric.shadows.ShadowPausedLooper.executeOnLooper(ShadowPausedLooper.java:765)
+	at org.robolectric.shadows.ShadowPausedLooper.idleFor(ShadowPausedLooper.java:114)
+	at org.robolectric.shadows.ShadowPausedLooper.runToEndOfTasks(ShadowPausedLooper.java:205)
+	at org.robolectric.shadows.ShadowLooper.runUiThreadTasksIncludingDelayedTasks(ShadowLooper.java:204)
+	at helium314.keyboard.InputTest.slidingInputFromCapsLock(InputTest.kt:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: setShifted: shiftMode=UNSHIFT [keyboard=LOCKED shift=PRESSING symbol=RELEASED]
+D/PointerTracker: [0] isMajorEnoughMoveToBeOnNewKey: 2.97 key width from key edge
+D/RichInputConnection: setting composing text of length 1
+D/KeyboardState: setShifted: shiftMode=LOCKED [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+E/DictionaryInfoUtils: Could not create the directory for locale en_US
+D/KeyboardSwitcher: create new input view
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/RichInputConnection: committing 1 characters
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+E/DictionaryInfoUtils: Could not create the directory for locale en_US
+D/KeyboardSwitcher: create new input view
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardState: setShifted: shiftMode=MANUAL [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_shifted, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift$inner(KeyboardState.kt:380)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift(KeyboardState.kt:388)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressKey(KeyboardState.kt:228)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onPressKey(KeyboardSwitcher.java:248)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onPressKey(KeyboardActionListenerImpl.kt:55)
+	at helium314.keyboard.keyboard.PointerTracker.callListenerOnPressAndCheckKeyboardLayoutChange(PointerTracker.java:302)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEventInternal(PointerTracker.java:729)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEvent(PointerTracker.java:681)
+	at helium314.keyboard.keyboard.PointerTracker.processMotionEvent(PointerTracker.java:642)
+	at helium314.keyboard.keyboard.internal.NonDistinctMultitouchHelper.processMotionEvent(NonDistinctMultitouchHelper.java:46)
+	at helium314.keyboard.keyboard.MainKeyboardView.onTouchEvent(MainKeyboardView.java:593)
+	at helium314.keyboard.InputTest.touchKey(InputTest.kt:101)
+	at helium314.keyboard.InputTest.touchKey$default(InputTest.kt:88)
+	at helium314.keyboard.InputTest.holdShift(InputTest.kt:49)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: setShifted: shiftMode=LOCKED [keyboard=MANUAL shift=PRESSING symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_locked, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onReleaseKey(KeyboardState.kt:257)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onReleaseKey(KeyboardSwitcher.java:253)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onReleaseKey(KeyboardActionListenerImpl.kt:67)
+	at helium314.keyboard.keyboard.PointerTracker.onLongPressed(PointerTracker.java:1170)
+	at helium314.keyboard.keyboard.internal.TimerHandler.handleMessage(TimerHandler.java:60)
+	at android.os.Handler.$$robo$$android_os_Handler$dispatchMessage(Handler.java:110)
+	at android.os.Handler.dispatchMessage(Handler.java)
+	at org.robolectric.shadows.ShadowPausedLooper$IdlingRunnable.doRun(ShadowPausedLooper.java:677)
+	at org.robolectric.shadows.ShadowPausedLooper$IdleForRunnable.doRun(ShadowPausedLooper.java:658)
+	at org.robolectric.shadows.ShadowPausedLooper$ControlRunnable.run(ShadowPausedLooper.java:599)
+	at org.robolectric.shadows.ShadowPausedLooper$HandlerExecutor.execute(ShadowPausedLooper.java:849)
+	at org.robolectric.shadows.ShadowPausedLooper.executeOnLooper(ShadowPausedLooper.java:765)
+	at org.robolectric.shadows.ShadowPausedLooper.idleFor(ShadowPausedLooper.java:114)
+	at org.robolectric.shadows.ShadowPausedLooper.runToEndOfTasks(ShadowPausedLooper.java:205)
+	at org.robolectric.shadows.ShadowLooper.runUiThreadTasksIncludingDelayedTasks(ShadowLooper.java:204)
+	at helium314.keyboard.InputTest.holdShift(InputTest.kt:51)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+E/DictionaryInfoUtils: Could not create the directory for locale en_US
+D/KeyboardSwitcher: create new input view
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardState: setShifted: shiftMode=MANUAL [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_shifted, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift$inner(KeyboardState.kt:380)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift(KeyboardState.kt:388)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressKey(KeyboardState.kt:228)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onPressKey(KeyboardSwitcher.java:248)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onPressKey(KeyboardActionListenerImpl.kt:55)
+	at helium314.keyboard.keyboard.PointerTracker.callListenerOnPressAndCheckKeyboardLayoutChange(PointerTracker.java:302)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEventInternal(PointerTracker.java:729)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEvent(PointerTracker.java:681)
+	at helium314.keyboard.keyboard.PointerTracker.processMotionEvent(PointerTracker.java:642)
+	at helium314.keyboard.keyboard.internal.NonDistinctMultitouchHelper.processMotionEvent(NonDistinctMultitouchHelper.java:46)
+	at helium314.keyboard.keyboard.MainKeyboardView.onTouchEvent(MainKeyboardView.java:593)
+	at helium314.keyboard.InputTest.touchKey(InputTest.kt:101)
+	at helium314.keyboard.InputTest.touchKey$default(InputTest.kt:88)
+	at helium314.keyboard.InputTest.endCapsLockWithShift(InputTest.kt:65)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: setShifted: shiftMode=LOCKED [keyboard=MANUAL shift=PRESSING symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_locked, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onReleaseKey(KeyboardState.kt:257)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onReleaseKey(KeyboardSwitcher.java:253)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onReleaseKey(KeyboardActionListenerImpl.kt:67)
+	at helium314.keyboard.keyboard.PointerTracker.onLongPressed(PointerTracker.java:1170)
+	at helium314.keyboard.keyboard.internal.TimerHandler.handleMessage(TimerHandler.java:60)
+	at android.os.Handler.$$robo$$android_os_Handler$dispatchMessage(Handler.java:110)
+	at android.os.Handler.dispatchMessage(Handler.java)
+	at org.robolectric.shadows.ShadowPausedLooper$IdlingRunnable.doRun(ShadowPausedLooper.java:677)
+	at org.robolectric.shadows.ShadowPausedLooper$IdleForRunnable.doRun(ShadowPausedLooper.java:658)
+	at org.robolectric.shadows.ShadowPausedLooper$ControlRunnable.run(ShadowPausedLooper.java:599)
+	at org.robolectric.shadows.ShadowPausedLooper$HandlerExecutor.execute(ShadowPausedLooper.java:849)
+	at org.robolectric.shadows.ShadowPausedLooper.executeOnLooper(ShadowPausedLooper.java:765)
+	at org.robolectric.shadows.ShadowPausedLooper.idleFor(ShadowPausedLooper.java:114)
+	at org.robolectric.shadows.ShadowPausedLooper.runToEndOfTasks(ShadowPausedLooper.java:205)
+	at org.robolectric.shadows.ShadowLooper.runUiThreadTasksIncludingDelayedTasks(ShadowLooper.java:204)
+	at helium314.keyboard.InputTest.endCapsLockWithShift(InputTest.kt:66)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: setShifted: shiftMode=UNSHIFT [keyboard=LOCKED shift=PRESSING symbol=RELEASED]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+E/DictionaryInfoUtils: Could not create the directory for locale en_US
+D/KeyboardSwitcher: create new input view
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardState: setShifted: shiftMode=MANUAL [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_shifted, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift$inner(KeyboardState.kt:380)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift(KeyboardState.kt:388)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressKey(KeyboardState.kt:228)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onPressKey(KeyboardSwitcher.java:248)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onPressKey(KeyboardActionListenerImpl.kt:55)
+	at helium314.keyboard.keyboard.PointerTracker.callListenerOnPressAndCheckKeyboardLayoutChange(PointerTracker.java:302)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEventInternal(PointerTracker.java:729)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEvent(PointerTracker.java:681)
+	at helium314.keyboard.keyboard.PointerTracker.processMotionEvent(PointerTracker.java:642)
+	at helium314.keyboard.keyboard.internal.NonDistinctMultitouchHelper.processMotionEvent(NonDistinctMultitouchHelper.java:46)
+	at helium314.keyboard.keyboard.MainKeyboardView.onTouchEvent(MainKeyboardView.java:593)
+	at helium314.keyboard.InputTest.touchKey(InputTest.kt:101)
+	at helium314.keyboard.InputTest.touchKey$default(InputTest.kt:88)
+	at helium314.keyboard.InputTest.slidingInput(InputTest.kt:56)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/PointerTracker: [0] isMajorEnoughMoveToBeOnNewKey: 2.97 key width from key edge
+D/RichInputConnection: setting composing text of length 1
+D/KeyboardState: setShifted: shiftMode=UNSHIFT [keyboard=MANUAL shift=RELEASED symbol=RELEASED]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/OverlayConfig: partition_order.xml does not exist.
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+V/Configuration: Updating configuration, locales updated from [] to [en_US]
+W/PackageParser: Unknown element under <manifest>: queries at /home/wolf/herdr-android/src/HeliBoard-review/app/build/intermediates/apk_for_local_test/debugUnitTest/packageDebugUnitTestForUnitTest/apk-for-local-test.ap_ Binary XML file line #24
+I/FoldableUtils: not foldable
+I/startup: Starting helium314.keyboard.debug version 4.1 (4101) on Android 16 (SDK 36)
+I/LatinIME: Hardware accelerated drawing: true
+W/WindowContextController: attachToDisplayArea fail, type:2011, displayId:0
+I/Settings: loadSettings
+I/DictionaryFacilitatorImpl: resetDictionaries, force reloading main dictionary: false
+E/DictionaryInfoUtils: Could not create the directory for locale en_US
+D/KeyboardSwitcher: create new input view
+E/DictionaryFacilitatorImpl: could not initialize main dictionaries for [en_US]
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.latin.BinaryDictionary.openNative(java.lang.String, long, long, boolean)'
+	at com.android.inputmethod.latin.BinaryDictionary.openNative(Native Method)
+	at com.android.inputmethod.latin.BinaryDictionary.loadDictionary(BinaryDictionary.java:211)
+	at com.android.inputmethod.latin.BinaryDictionary.<init>(BinaryDictionary.java:119)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeaderWithOffsetAndLength(BinaryDictionaryUtils.java:47)
+	at com.android.inputmethod.latin.utils.BinaryDictionaryUtils.getHeader(BinaryDictionaryUtils.java:40)
+	at helium314.keyboard.latin.utils.DictionaryInfoUtils.getDictionaryFileHeaderOrNull(DictionaryInfoUtils.kt:120)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getDictionary(DictionaryFactory.kt:87)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.checkAndAddDictionaryToListIfNewType(DictionaryFactory.kt:73)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.getMainDictsForLocale(DictionaryFactory.kt:43)
+	at helium314.keyboard.latin.dictionary.DictionaryFactory.createMainDictionaryCollection(DictionaryFactory.kt:28)
+	at helium314.keyboard.latin.DictionaryFacilitatorImpl$asyncReloadUninitializedMainDictionaries$1.invokeSuspend(DictionaryFacilitatorImpl.kt:248)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:811)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:715)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:702)
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/BogusMoveEventDetector: needsProximateBogusDownMoveUpEventHack=false smallestScreenWidthDp=320 densityDpi=160 screenMetrics=0
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for q, 113: x 0, w 32
+D/Keyboard.Builder: setting size and position for w, 119: x 32, w 32
+D/Keyboard.Builder: setting size and position for e, 101: x 64, w 32
+D/Keyboard.Builder: setting size and position for r, 114: x 96, w 32
+D/Keyboard.Builder: setting size and position for t, 116: x 128, w 32
+D/Keyboard.Builder: setting size and position for y, 121: x 160, w 32
+D/Keyboard.Builder: setting size and position for u, 117: x 192, w 32
+D/Keyboard.Builder: setting size and position for i, 105: x 224, w 32
+D/Keyboard.Builder: setting size and position for o, 111: x 256, w 32
+D/Keyboard.Builder: setting size and position for p, 112: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for a, 97: x 15, w 32
+D/Keyboard.Builder: setting size and position for s, 115: x 47, w 32
+D/Keyboard.Builder: setting size and position for d, 100: x 79, w 32
+D/Keyboard.Builder: setting size and position for f, 102: x 111, w 32
+D/Keyboard.Builder: setting size and position for g, 103: x 143, w 32
+D/Keyboard.Builder: setting size and position for h, 104: x 175, w 32
+D/Keyboard.Builder: setting size and position for j, 106: x 207, w 32
+D/Keyboard.Builder: setting size and position for k, 107: x 239, w 32
+D/Keyboard.Builder: setting size and position for l, 108: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for z, 122: x 48, w 32
+D/Keyboard.Builder: setting size and position for x, 120: x 80, w 32
+D/Keyboard.Builder: setting size and position for c, 99: x 112, w 32
+D/Keyboard.Builder: setting size and position for v, 118: x 144, w 32
+D/Keyboard.Builder: setting size and position for b, 98: x 176, w 32
+D/Keyboard.Builder: setting size and position for n, 110: x 208, w 32
+D/Keyboard.Builder: setting size and position for m, 109: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.loadLayout(KeyboardState.kt:177)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onLoadKeyboard(KeyboardState.kt:111)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.loadKeyboard(KeyboardSwitcher.java:174)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.reloadMainKeyboard(KeyboardSwitcher.java:548)
+	at helium314.keyboard.InputTest.<init>(InputTest.kt:33)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:250)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.createTest(RobolectricTestRunner.java:510)
+	at org.junit.runners.BlockJUnit4ClassRunner.createTest(BlockJUnit4ClassRunner.java:260)
+	at org.junit.runners.BlockJUnit4ClassRunner$2.runReflectiveCall(BlockJUnit4ClassRunner.java:309)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:306)
+	at org.robolectric.internal.SandboxTestRunner$HelperTestRunner.methodBlock(SandboxTestRunner.java:628)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner.methodBlock(RobolectricTestRunner.java:519)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:493)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+D/KeyboardState: loadLayout(Alphabet{shiftMode=UNSHIFT, autoCapsFlags=none, recapitalizeMode=null})
+D/KeyboardState: setShifted: shiftMode=MANUAL [keyboard=UNSHIFT shift=RELEASED symbol=RELEASED]
+D/KeyboardParser: adding key q, 0
+D/KeyboardParser: adding key w, 0
+D/KeyboardParser: adding key e, 0
+D/KeyboardParser: adding key r, 0
+D/KeyboardParser: adding key t, 0
+D/KeyboardParser: adding key y, 0
+D/KeyboardParser: adding key u, 0
+D/KeyboardParser: adding key i, 0
+D/KeyboardParser: adding key o, 0
+D/KeyboardParser: adding key p, 0
+D/KeyboardParser: adding key a, 0
+D/KeyboardParser: adding key s, 0
+D/KeyboardParser: adding key d, 0
+D/KeyboardParser: adding key f, 0
+D/KeyboardParser: adding key g, 0
+D/KeyboardParser: adding key h, 0
+D/KeyboardParser: adding key j, 0
+D/KeyboardParser: adding key k, 0
+D/KeyboardParser: adding key l, 0
+D/KeyboardParser: adding key z, 0
+D/KeyboardParser: adding key x, 0
+D/KeyboardParser: adding key c, 0
+D/KeyboardParser: adding key v, 0
+D/KeyboardParser: adding key b, 0
+D/KeyboardParser: adding key n, 0
+D/KeyboardParser: adding key m, 0
+D/Keyboard.Builder: setting size and position for Q, 81: x 0, w 32
+D/Keyboard.Builder: setting size and position for W, 87: x 32, w 32
+D/Keyboard.Builder: setting size and position for E, 69: x 64, w 32
+D/Keyboard.Builder: setting size and position for R, 82: x 96, w 32
+D/Keyboard.Builder: setting size and position for T, 84: x 128, w 32
+D/Keyboard.Builder: setting size and position for Y, 89: x 160, w 32
+D/Keyboard.Builder: setting size and position for U, 85: x 192, w 32
+D/Keyboard.Builder: setting size and position for I, 73: x 224, w 32
+D/Keyboard.Builder: setting size and position for O, 79: x 256, w 32
+D/Keyboard.Builder: setting size and position for P, 80: x 288, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 0, w 15
+D/Keyboard.Builder: setting size and position for A, 65: x 15, w 32
+D/Keyboard.Builder: setting size and position for S, 83: x 47, w 32
+D/Keyboard.Builder: setting size and position for D, 68: x 79, w 32
+D/Keyboard.Builder: setting size and position for F, 70: x 111, w 32
+D/Keyboard.Builder: setting size and position for G, 71: x 143, w 32
+D/Keyboard.Builder: setting size and position for H, 72: x 175, w 32
+D/Keyboard.Builder: setting size and position for J, 74: x 207, w 32
+D/Keyboard.Builder: setting size and position for K, 75: x 239, w 32
+D/Keyboard.Builder: setting size and position for L, 76: x 272, w 32
+D/Keyboard.Builder: setting size and position for null, -10008: x 304, w 15
+D/Keyboard.Builder: setting size and position for shift_key_shifted, -11: x 0, w 48
+D/Keyboard.Builder: setting size and position for Z, 90: x 48, w 32
+D/Keyboard.Builder: setting size and position for X, 88: x 80, w 32
+D/Keyboard.Builder: setting size and position for C, 67: x 112, w 32
+D/Keyboard.Builder: setting size and position for V, 86: x 144, w 32
+D/Keyboard.Builder: setting size and position for B, 66: x 176, w 32
+D/Keyboard.Builder: setting size and position for N, 78: x 208, w 32
+D/Keyboard.Builder: setting size and position for M, 77: x 240, w 32
+D/Keyboard.Builder: setting size and position for delete_key, -7: x 272, w 48
+D/Keyboard.Builder: setting size and position for ?123, -10001: x 0, w 48
+D/Keyboard.Builder: setting size and position for ,, 44: x 48, w 32
+D/Keyboard.Builder: setting size and position for space_key, 32: x 80, w 160
+D/Keyboard.Builder: setting size and position for ., 46: x 240, w 32
+D/Keyboard.Builder: setting size and position for enter_key, 10: x 272, w 48
+E/ProximityInfo: could not create proximity info
+java.lang.UnsatisfiedLinkError: 'long com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(int, int, int, int, int, int, int[], int, int[], int[], int[], int[], int[], float[], float[], float[])'
+	at com.android.inputmethod.keyboard.ProximityInfo.setProximityInfoNative(Native Method)
+	at com.android.inputmethod.keyboard.ProximityInfo.createNativeProximityInfo(ProximityInfo.java:217)
+	at com.android.inputmethod.keyboard.ProximityInfo.<init>(ProximityInfo.java:74)
+	at helium314.keyboard.keyboard.Keyboard.<init>(Keyboard.java:122)
+	at helium314.keyboard.keyboard.internal.KeyboardBuilder.build(KeyboardBuilder.kt:109)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:87)
+	at helium314.keyboard.keyboard.KeyboardLayoutSet.getKeyboard(KeyboardLayoutSet.kt:64)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setKeyboard(KeyboardSwitcher.java:216)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.setAlphabetKeyboard(KeyboardSwitcher.java:267)
+	at helium314.keyboard.keyboard.internal.KeyboardState.setShifted(KeyboardState.kt:143)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift$inner(KeyboardState.kt:380)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressShift(KeyboardState.kt:388)
+	at helium314.keyboard.keyboard.internal.KeyboardState.onPressKey(KeyboardState.kt:228)
+	at helium314.keyboard.keyboard.KeyboardSwitcher.onPressKey(KeyboardSwitcher.java:248)
+	at helium314.keyboard.keyboard.KeyboardActionListenerImpl.onPressKey(KeyboardActionListenerImpl.kt:55)
+	at helium314.keyboard.keyboard.PointerTracker.callListenerOnPressAndCheckKeyboardLayoutChange(PointerTracker.java:302)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEventInternal(PointerTracker.java:729)
+	at helium314.keyboard.keyboard.PointerTracker.onDownEvent(PointerTracker.java:681)
+	at helium314.keyboard.keyboard.PointerTracker.processMotionEvent(PointerTracker.java:642)
+	at helium314.keyboard.keyboard.internal.NonDistinctMultitouchHelper.processMotionEvent(NonDistinctMultitouchHelper.java:46)
+	at helium314.keyboard.keyboard.MainKeyboardView.onTouchEvent(MainKeyboardView.java:593)
+	at helium314.keyboard.InputTest.touchKey(InputTest.kt:101)
+	at helium314.keyboard.InputTest.touchKey$default(InputTest.kt:88)
+	at helium314.keyboard.InputTest.pressShift(InputTest.kt:38)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

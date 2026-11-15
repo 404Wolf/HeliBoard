@@ -1,0 +1,13 @@
+dtext=#b0b0b0 fill=ffffffff contrast=2.16873306642071 black=9.683072723494979 white=2.16873306642071
+FBACKGROUND Rounded-light-borders-true center-alpha=255 corner-alpha=0
+GBACKGROUND Rounded-light-borders-false center-alpha=255 corner-alpha=0
+EBACKGROUND Rounded-dark-borders-true center-alpha=255 corner-alpha=0
+FBACKGROUND Rounded-dark-borders-false center-alpha=255 corner-alpha=0
+IBACKGROUND Material-light-borders-true center-alpha=255 corner-alpha=255
+JBACKGROUND Material-light-borders-false center-alpha=255 corner-alpha=255
+HBACKGROUND Material-dark-borders-true center-alpha=255 corner-alpha=255
+IBACKGROUND Material-dark-borders-false center-alpha=255 corner-alpha=255
+EBACKGROUND Holo-light-borders-true center-alpha=255 corner-alpha=255
+FBACKGROUND Holo-light-borders-false center-alpha=255 corner-alpha=255
+DBACKGROUND Holo-dark-borders-true center-alpha=255 corner-alpha=255
+EBACKGROUND Holo-dark-borders-false center-alpha=255 corner-alpha=255

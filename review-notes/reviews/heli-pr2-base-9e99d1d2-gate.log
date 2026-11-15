@@ -1,0 +1,134 @@
+Starting a Gradle Daemon, 1 busy and 1 stopped Daemons could not be reused, use --status for details
+Reusing configuration cache.
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:preDebugNoMinifyBuild UP-TO-DATE
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:generateDebugResources
+> Task :app:configureNdkBuildDebug[x86_64]
+> Task :app:configureNdkBuildDebug[arm64-v8a]
+> Task :app:configureNdkBuildDebug[armeabi-v7a]
+> Task :app:configureNdkBuildDebug[x86]
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:buildNdkBuildDebug[armeabi-v7a]
+> Task :app:buildNdkBuildDebug[arm64-v8a]
+> Task :app:buildNdkBuildDebug[x86_64]
+> Task :app:buildNdkBuildDebug[x86]
+> Task :app:processDebugMainManifest
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:processDebugUnitTestManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:processDebugResources
+> Task :app:packageDebugUnitTestForUnitTest
+> Task :app:generateDebugUnitTestConfig
+
+> Task :app:compileDebugKotlin
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/AccessibilityUtils.kt:69:13 Condition is always 'true'.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/AccessibilityUtils.kt:69:29 'static field ACCESSIBILITY_SPEAK_PASSWORD: String' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/AccessibilityUtils.kt:71:37 'static field ACCESSIBILITY_SPEAK_PASSWORD: String' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/AccessibilityUtils.kt:157:46 'static field TYPE_ANNOUNCEMENT: Int' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/KeyboardAccessibilityNodeProvider.kt:161:24 'static fun onInitializeAccessibilityNodeInfo(p0: View, p1: AccessibilityNodeInfoCompat): Unit' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/accessibility/KeyboardAccessibilityNodeProvider.kt:193:14 'fun setBoundsInParent(p0: Rect!): Unit' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/ClipboardHistoryManager.kt:118:9 This is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/DictionaryFacilitatorImpl.kt:704:26 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/common/LocaleUtils.kt:164:17 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/common/LocaleUtils.kt:167:22 'constructor(p0: String!, p1: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/common/LocaleUtils.kt:174:17 'constructor(p0: String!, p1: String!, p2: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/spellcheck/AndroidWordLevelSpellCheckerSession.kt:78:62 'val locale: String' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/spellcheck/AndroidWordLevelSpellCheckerSession.kt:84:65 'val locale: String' is deprecated. Deprecated in Java.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/suggestions/SuggestionStripView.kt:419:13 This is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/utils/GestureDataGatheringSettings.kt:91:9 This is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/latin/utils/ToolbarUtils.kt:48:5 This is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+w: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/settings/screens/AdvancedScreen.kt:153:44 Redundant call of conversion method.
+
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: /home/wolf/herdr-android/src/HeliBoard-review-base/app/src/main/java/helium314/keyboard/keyboard/PointerTracker.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :app:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:minifyDebugWithR8
+> Task :app:testDebugUnitTest
+> Task :app:packageDebug
+> Task :app:assembleDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+
+Exception: java.lang.NullPointerException thrown from the UncaughtExceptionHandler in thread "DefaultDispatcher-worker-2"
+
+> Task :app:testDebugUnitTest
+
+XLinkTest > layoutsLinks FAILED
+    java.lang.AssertionError at XLinkTest.kt:79
+
+XLinkTest > readmeLinks FAILED
+    java.lang.AssertionError at XLinkTest.kt:79
+
+XLinkTest > knownDictionaries FAILED
+    java.lang.AssertionError at XLinkTest.kt:79
+
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+
+> Task :app:testDebugUnitTest
+
+InputLogicTest > insertLetterIntoWordHangulFails FAILED
+    org.junit.ComparisonFailure at InputLogicTest.kt:179
+
+StringUtilsTest > detectEmojisAtEndFails FAILED
+    org.junit.ComparisonFailure at StringUtilsTest.kt:163
+
+193 tests completed, 5 failed
+
+> Task :app:testDebugUnitTest FAILED
+
+[Incubating] Problems report is available at: file:///home/wolf/herdr-android/src/HeliBoard-review-base/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/wolf/herdr-android/src/HeliBoard-review-base/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 6m 12s
+55 actionable tasks: 30 executed, 25 up-to-date
+Configuration cache entry reused.
