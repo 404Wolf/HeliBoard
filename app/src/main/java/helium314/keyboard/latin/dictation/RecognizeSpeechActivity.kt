@@ -73,12 +73,29 @@ class RecognizeSpeechActivity : Activity() {
                     finish()
                 }
                 override fun onSaved(clip: PendingClip) = end(RecognizerIntent.RESULT_NETWORK_ERROR)
-                override fun onError(error: DictationException) = end(when (error.reason()) {
+                override fun onError(error: DictationException) {
+                    if (error.reason().nothingHeard()) {
+                        // Said in the panel for a moment, then the app hears there was nothing.
+                        main.removeCallbacks(tick)
+                        text.text = ""
+                        status.setText(WhisperRecognizer.nothingHeardText(error.reason()))
+                        val result = if (error.reason() == DictationException.Reason.SILENCED)
+                            RecognizerIntent.RESULT_AUDIO_ERROR else RecognizerIntent.RESULT_NO_MATCH
+                        main.postDelayed({ end(result) }, NOTHING_SHOWN_MS)
+                        return
+                    }
+                    onFailure(error)
+                }
+                private fun onFailure(error: DictationException) = end(when (error.reason()) {
                     DictationException.Reason.AUDIO, DictationException.Reason.PERMISSION -> RecognizerIntent.RESULT_AUDIO_ERROR
                     DictationException.Reason.UNREACHABLE -> RecognizerIntent.RESULT_NETWORK_ERROR
                     else -> RecognizerIntent.RESULT_CLIENT_ERROR
                 })
             }).also { it.start() }
+    }
+
+    private companion object {
+        const val NOTHING_SHOWN_MS = 1500L
     }
 
     private fun end(result: Int) {
@@ -87,7 +104,7 @@ class RecognizeSpeechActivity : Activity() {
     }
 
     override fun onDestroy() {
-        main.removeCallbacks(tick)
+        main.removeCallbacksAndMessages(null)
         // Back, or the app went away, without a result: drop it (the result is RESULT_CANCELED).
         utterance?.cancel()
         super.onDestroy()

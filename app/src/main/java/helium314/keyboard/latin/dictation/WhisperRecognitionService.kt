@@ -58,6 +58,9 @@ class WhisperRecognitionService : RecognitionService() {
                 override fun onSaved(clip: PendingClip) = call { listener.error(SpeechRecognizer.ERROR_NETWORK) }
                 override fun onError(error: DictationException) = call {
                     listener.error(when (error.reason()) {
+                        DictationException.Reason.SILENCED -> SpeechRecognizer.ERROR_AUDIO
+                        DictationException.Reason.SILENT_AUDIO, DictationException.Reason.QUIET_AUDIO,
+                        DictationException.Reason.NO_AUDIO, DictationException.Reason.NOTHING -> SpeechRecognizer.ERROR_NO_MATCH
                         DictationException.Reason.PERMISSION -> SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS
                         DictationException.Reason.AUDIO -> SpeechRecognizer.ERROR_AUDIO
                         DictationException.Reason.UNREACHABLE -> SpeechRecognizer.ERROR_NETWORK

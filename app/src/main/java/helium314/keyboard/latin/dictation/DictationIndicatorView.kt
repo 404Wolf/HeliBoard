@@ -38,11 +38,14 @@ class DictationIndicatorView(
     context: Context,
     colors: Colors = Settings.getValues().mColors,
 ) : View(context) {
-    enum class State { STARTING, LISTENING, LISTENING_OFFLINE, DESKTOP_OFFLINE, FINISHING }
+    enum class State { STARTING, LISTENING, LISTENING_OFFLINE, DESKTOP_OFFLINE, DESKTOP_ERROR, FINISHING, NOTHING_HEARD }
 
     var onTap: () -> Unit = {}
     var onLongPress: () -> Unit = {}
     var engineLabel: String = ""
+        set(value) { field = value; invalidate() }
+    /** What [State.NOTHING_HEARD] says: a string resource. */
+    var problem: Int = R.string.dictation_nothing_heard
         set(value) { field = value; invalidate() }
 
     private var state = State.STARTING
@@ -142,6 +145,7 @@ class DictationIndicatorView(
         val dotR = baseR + current * 4 * density
         val cx = pad + 9 * density
         val active = state == State.LISTENING || state == State.LISTENING_OFFLINE || state == State.DESKTOP_OFFLINE
+                || state == State.DESKTOP_ERROR
         accentPaint.alpha = if (active) 0xFF else 0x80
         canvas.drawCircle(cx, cy, dotR, accentPaint)
         ringPaint.alpha = ((if (active) 0x90 else 0x40) * (1 - breathe)).toInt()
@@ -153,7 +157,9 @@ class DictationIndicatorView(
             State.LISTENING -> R.string.dictation_listening
             State.LISTENING_OFFLINE -> R.string.dictation_listening_offline
             State.DESKTOP_OFFLINE -> R.string.dictation_desktop_offline
+            State.DESKTOP_ERROR -> R.string.dictation_desktop_error
             State.FINISHING -> R.string.dictation_finishing
+            State.NOTHING_HEARD -> problem
         })
         val textX = cx + 18 * density
         val textY = cy - (textPaint.descent() + textPaint.ascent()) / 2 - (if (engineLabel.isEmpty()) 0f else 5 * density)

@@ -27,6 +27,7 @@ import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.Log
 import helium314.keyboard.latin.utils.prefs
+import helium314.keyboard.latin.dictation.desktop.DictationException
 import helium314.keyboard.latin.dictation.desktop.PendingClip
 import helium314.keyboard.latin.dictation.desktop.PendingDictations
 
@@ -76,6 +77,10 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     private var silenceTimeoutMs = Long.MAX_VALUE
 
     private var indicator: DictationIndicatorView? = null
+    /** This session's desktop answered with an error: the box says so rather than "offline". */
+    private var desktopError = false
+    /** The box saying why a dictation heard nothing goes after a while (or a tap). */
+    private val hideProblem = Runnable { if (!isActive) hideIndicator() }
 
     /** True while dictation itself sends key codes (undo, enter), which must not stop dictation. */
     var isDispatchingKey = false
@@ -157,7 +162,35 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     override fun onOffline(source: WhisperRecognizer) {
         if (!isActive || recognizer !== source) return
         withdrawComposing()
-        indicator?.setState(DictationIndicatorView.State.DESKTOP_OFFLINE)
+        indicator?.setState(if (desktopError) DictationIndicatorView.State.DESKTOP_ERROR
+            else DictationIndicatorView.State.DESKTOP_OFFLINE)
+    }
+
+    override fun onDesktopError(source: WhisperRecognizer) {
+        if (!isActive || recognizer !== source) return
+        desktopError = true
+        indicator?.setState(DictationIndicatorView.State.DESKTOP_ERROR)
+    }
+
+    /** Nothing was heard (a silenced mic, or the desktop's code): end, and say why in the box. */
+    override fun onNothingHeard(source: WhisperRecognizer, reason: DictationException.Reason) {
+        if (!isActive || recognizer !== source) return
+        Log.i(TAG, "dictation heard nothing ($reason)")
+        cancel()
+        showProblem(WhisperRecognizer.nothingHeardText(reason))
+    }
+
+    /** The dictation box, where it was, saying [text] for a few seconds; a tap hides it. */
+    private fun showProblem(text: Int) {
+        val strip = ime.suggestionStripViewForDictation ?: return
+        val view = DictationIndicatorView(strip.context).also { indicator = it }
+        view.onTap = { hideIndicator() }
+        view.onLongPress = {}
+        updateIndicatorEngine()
+        view.problem = text
+        view.setState(DictationIndicatorView.State.NOTHING_HEARD)
+        strip.showDictationView(view)
+        handler.postDelayed(hideProblem, PROBLEM_SHOWN_MS)
     }
 
     override fun onPending(source: WhisperRecognizer, clip: PendingClip) {
@@ -205,6 +238,9 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
     // ---- session ----
 
     private fun start() {
+        handler.removeCallbacks(hideProblem)
+        if (!isActive) hideIndicator() // what the last dictation said
+        desktopError = false
         if (ContextCompat.checkSelfPermission(ime, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             DictationPermissionActivity.request(ime)
             return
@@ -240,6 +276,10 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
             }
         }
         isActive = true
+        // The tap is the manual retry for recordings the desktop kept refusing.
+        if (current is DictationEngine.Recognizer.Whisper) WhisperRecognizer.pending(ime).let {
+            if (it.stuck() > 0) it.retryStuck()
+        }
         ime.suggestionStripViewForDictation?.setDictationActive(true)
         showIndicator()
         lastActivity = SystemClock.uptimeMillis()
@@ -693,6 +733,7 @@ class DictationController(private val ime: LatinIME, private val inputLogic: Inp
         private const val RESTART_DELAY_MS = 50L
         private const val FINISH_TIMEOUT_MS = 2000L
         private const val WHISPER_FINISH_TIMEOUT_MS = 25_000L
+        private const val PROBLEM_SHOWN_MS = 4000L
 
         /** 0:12 */
         fun duration(ms: Long): String {

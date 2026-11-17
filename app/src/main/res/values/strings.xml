@@ -82,6 +82,14 @@
     <string name="dictation_server_url">Desktop dictation server</string>
     <string name="dictation_server_url_info">ws:// address of the desktop\'s dictation server, e.g. ws://100.64.0.1:8770/v1/dictate</string>
     <string name="dictation_desktop_offline">Desktop offline, recording</string>
+    <!-- Shown in the dictation box when the desktop answered with an error; the recording is kept -->
+    <string name="dictation_desktop_error">Desktop error, recording</string>
+    <!-- Shown in the dictation box when a dictation heard nothing, by cause -->
+    <string name="dictation_mic_silenced">Mic silenced by Android</string>
+    <string name="dictation_mic_sent_silence">Mic sent silence</string>
+    <string name="dictation_too_quiet">Too quiet to transcribe</string>
+    <string name="dictation_no_audio">No audio reached the desktop</string>
+    <string name="dictation_nothing_heard">Nothing to transcribe</string>
     <string name="dictation_desktop_offline_for">Desktop offline, recording %s</string>
     <string name="whisper_recognizer">Desktop Whisper</string>
     <string name="dictation_insert">Insert dictation: %s</string>

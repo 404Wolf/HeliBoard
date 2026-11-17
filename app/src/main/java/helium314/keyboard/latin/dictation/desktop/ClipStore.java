@@ -31,17 +31,33 @@ final class ClipStore {
     static final long MAX_TOTAL_BYTES = 30L * 60 * BYTES_PER_SECOND;
     static final int MAX_CLIPS = 64;
     static final String INDEX = "index-v1.json";
+    /**
+     * Desktop errors on one clip before the courier stops trying it by itself: it stays, as
+     * stuck, until the next tap on the microphone tries it again ({@link #retryStuck}).
+     */
+    static final int MAX_SERVER_ERRORS = 3;
 
     /** One saved clip; {@code text} is null until transcribed. */
     static final class Entry {
         final PendingClip clip;
         final long bytes;
         final String text;
+        /** Desktop errors while uploading it since the last manual retry. */
+        final int errors;
 
         Entry(PendingClip clip, long bytes, String text) {
+            this(clip, bytes, text, 0);
+        }
+
+        Entry(PendingClip clip, long bytes, String text, int errors) {
             this.clip = clip;
             this.bytes = bytes;
             this.text = text;
+            this.errors = errors;
+        }
+
+        boolean stuck() {
+            return text == null && errors >= MAX_SERVER_ERRORS;
         }
     }
 
@@ -200,6 +216,49 @@ final class ClipStore {
         return out;
     }
 
+    /** The clips the courier tries by itself: waiting and not stuck, oldest first. */
+    synchronized List<PendingClip> due() {
+        List<PendingClip> out = new ArrayList<>();
+        for (Entry e : entries) if (e.text == null && !e.stuck()) out.add(e.clip);
+        return out;
+    }
+
+    /** Waiting clips the courier stopped trying after {@link #MAX_SERVER_ERRORS} desktop errors. */
+    synchronized int stuck() {
+        int n = 0;
+        for (Entry e : entries) if (e.stuck()) n++;
+        return n;
+    }
+
+    /**
+     * One more desktop error for {@code id}; returns its count, or 0 when the clip is gone. The
+     * clip is kept either way: its audio is still good.
+     */
+    synchronized int failed(String id) {
+        for (int i = 0; i < entries.size(); i++) {
+            Entry e = entries.get(i);
+            if (!e.clip.id.equals(id) || e.text != null) continue;
+            Entry next = new Entry(e.clip, e.bytes, null, e.errors + 1);
+            entries.set(i, next);
+            save();
+            return next.errors;
+        }
+        return 0;
+    }
+
+    /** The user asked again: stuck clips are tried afresh. Returns whether there were any. */
+    synchronized boolean retryStuck() {
+        boolean any = false;
+        for (int i = 0; i < entries.size(); i++) {
+            Entry e = entries.get(i);
+            if (!e.stuck()) continue;
+            entries.set(i, new Entry(e.clip, e.bytes, null, 0));
+            any = true;
+        }
+        if (any) save();
+        return any;
+    }
+
     /** Transcribed clips whose text the composer has not taken yet, oldest first. */
     synchronized List<Entry> transcribed() {
         List<Entry> out = new ArrayList<>();
@@ -250,7 +309,7 @@ final class ClipStore {
                     if (clipText == null && audio(id).length() != bytes) continue;
                     PendingClip clip = new PendingClip(id, PendingClip.cutTarget(o.optString("target")),
                             o.getLong("created"), o.getLong("duration"));
-                    entries.add(new Entry(clip, bytes, clipText));
+                    entries.add(new Entry(clip, bytes, clipText, o.optInt("errors", 0)));
                 }
             } catch (JSONException damaged) {
                 entries.clear();
@@ -280,6 +339,7 @@ final class ClipStore {
                 o.put("duration", e.clip.durationMs);
                 o.put("bytes", e.bytes);
                 o.put("text", e.text == null ? JSONObject.NULL : e.text);
+                if (e.errors != 0) o.put("errors", e.errors);
                 list.put(o);
             }
             write(new File(dir, INDEX), list.toString());

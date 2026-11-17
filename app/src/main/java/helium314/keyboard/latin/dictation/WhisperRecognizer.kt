@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
+import helium314.keyboard.latin.R
 import helium314.keyboard.latin.dictation.desktop.DictationException
 import helium314.keyboard.latin.dictation.desktop.PendingClip
 import helium314.keyboard.latin.dictation.desktop.PendingDictations
@@ -33,6 +34,10 @@ class WhisperRecognizer(
         fun onOffline(source: WhisperRecognizer)
         /** The recording was saved (maybe after [cancel]); its text arrives through [PendingDictations]. */
         fun onPending(source: WhisperRecognizer, clip: PendingClip)
+        /** The session heard nothing ([DictationException.Reason.nothingHeard]): it is over, nothing kept. */
+        fun onNothingHeard(source: WhisperRecognizer, reason: DictationException.Reason)
+        /** The desktop answered with an error (not away); the recording goes on for later. */
+        fun onDesktopError(source: WhisperRecognizer)
     }
 
     private val engine = ServerDictationEngine(context, uri, pending(context))
@@ -72,8 +77,14 @@ class WhisperRecognizer(
                 }
             }
 
+            override fun onDesktopError() = events.onDesktopError(this@WhisperRecognizer)
+
             override fun onError(error: DictationException) {
                 running = false
+                if (error.reason().nothingHeard()) {
+                    events.onNothingHeard(this@WhisperRecognizer, error.reason())
+                    return
+                }
                 listener?.onError(when (error.reason()) {
                     DictationException.Reason.PERMISSION -> SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS
                     DictationException.Reason.AUDIO -> SpeechRecognizer.ERROR_AUDIO
@@ -115,6 +126,15 @@ class WhisperRecognizer(
         /** The process's waiting recordings; none are ever transcribed without a server set. */
         fun pending(context: Context): PendingDictations =
             PendingDictations.shared(context, DictationEngine.serverUri(context))
+
+        /** How a dictation that heard nothing ([reason]) is said in the dictation box. */
+        fun nothingHeardText(reason: DictationException.Reason): Int = when (reason) {
+            DictationException.Reason.SILENCED -> R.string.dictation_mic_silenced
+            DictationException.Reason.SILENT_AUDIO -> R.string.dictation_mic_sent_silence
+            DictationException.Reason.QUIET_AUDIO -> R.string.dictation_too_quiet
+            DictationException.Reason.NO_AUDIO -> R.string.dictation_no_audio
+            else -> R.string.dictation_nothing_heard
+        }
 
         /** Main thread: the mic keys' dot for what [pending] holds ([MicKeyState.Badge]). */
         fun showBadge(context: Context) {
